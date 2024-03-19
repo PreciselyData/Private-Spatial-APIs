@@ -17,16 +17,13 @@
 5. **Portability:**
     Can be deployed on premise or to a cloud provider. Portability and flexibility in multi-cloud environments.
 
-> This solution is specifically for users who are looking for REST interface to interact with Geo Addressing SDK and Kubernetes based deployments. --Remove--
+> This solution is specifically for users who are looking for REST interface to interact with Geo Addressing SDK and Kubernetes based deployments.
 
 
-> [!IMPORTANT] --Optional--
+> [!IMPORTANT]
 > 1. Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
 > 2. These charts can be taken as a reference on how one can take advantage of the precisely data ecosystem and build a number of services around the same piece of software, creating a collection of microservices that can scale on a need basis.
 
-## Architecture
-
-![architecture.png](images/geoaddressing_architecture.png) --Diagram Is Missing / Not Have
 
 <br>The core of the geo-addressing helm-chart-based solution relies on the Operational Addressing SDK (OAS). The robust
 functionality of OAS forms the backbone of our geo-addressing solution, empowering it to deliver accurate and efficient
@@ -59,9 +56,9 @@ Learn more  <link to documentation that provides steps to upload images to custo
  
 2.Prepare your environment
 To deploy Spatial APIs in your Kubernetes cluster, install the following client tools:
-•	kubectl : https://kubernetes.io/docs/tasks/tools/
-•	helm3 : https://kubernetes.io/docs/tasks/tools/
-Install cloud platform specific tools - https://github.com/PreciselyData/SpatialAnalytics/tree/main/docs/getting-started
+• kubectl : https://kubernetes.io/docs/tasks/tools/
+• helm3 : https://kubernetes.io/docs/tasks/tools/
+Install cloud platform specific tools - https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/tree/master/docs/guides
 Clone GitHub repository cloudnative-spatial-analytics-helm  
  
 3.Create your Kubernetes Cluster
@@ -76,7 +73,7 @@ Learn how to create File System
 A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data. If you have an external instance available, just collect the connection string and credentials for further use.   
 Learn more on setting up a MongoDB
  
-6.Enabling Security (optional)  
+6.Enabling Security
 A Keycloak service is used for authentication and authorization. If you have an external Keycloak instance that can be accessed from inside the cluster, then collect the issuer URL for further service config, otherwise, you can deploy a Keycloak service into the cluster.
 Learn how to enable security
  
