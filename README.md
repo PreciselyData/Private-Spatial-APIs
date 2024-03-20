@@ -49,9 +49,9 @@
 
 > NOTE: 
 
-## Geo-Addressing Helm Version Chart
+## Spatial Analytics Helm Version Chart
 
-Following is the helm version chart against geo-addressing PDX docker image version.
+Following is the helm version chart against spatial analytics PDX docker image version.
 
 | Docker Image PDX Version                      | Helm Chart Version |
 |-----------------------------------------------|--------------------|
@@ -73,7 +73,6 @@ Following is the helm version chart against geo-addressing PDX docker image vers
 - [Helm Values](.)
 - [Environment Variables](.)
 - [Memory Recommendations](.)
-- [Geo-Addressing Service API Usage](.)
 
 ## Links
 
