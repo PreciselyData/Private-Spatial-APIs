@@ -34,7 +34,7 @@
 
 - [Reference Data Installation](.)
 - [Quickstart Guide AKS](./docs/guides/docs/guides/aks/QuickStartAKS.md)
-- [Quickstart Guide EKS](./docs/guides/eks/QuickStartEKS.md)
+- [Quickstart Guide EKS](./docs/guides/eks/README.md)
 - [Quickstart Guide GKE](./docs/guides/docs/guides/gke/QuickStartGKE.md)
 - [Upgrade Guide AKS](./docs/guides/gke/UninstallGuide.md)
 - [Upgrade Guide EKS](./docs/guides/gke/UninstallGuide.md)
