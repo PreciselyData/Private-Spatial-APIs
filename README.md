@@ -33,9 +33,9 @@
 ## Guides
 
 - [Reference Data Installation](.)
-- [Quickstart Guide AKS](../cloudnative-spatial-analytics-helm/docs/guides/aks/QuickStartAKS.md)
-- [Quickstart Guide EKS](../cloudnative-spatial-analytics-helm/docs/guides/eks/QuickStartEKS.md)
-- [Quickstart Guide GKE](../cloudnative-spatial-analytics-helm/docs/guides/gke/QuickStartGKE.md)
+- [Quickstart Guide AKS](./docs/guides/docs/guides/aks/QuickStartAKS.md)
+- [Quickstart Guide EKS](./docs/guides/eks/QuickStartEKS.md)
+- [Quickstart Guide GKE](./docs/guides/docs/guides/gke/QuickStartGKE.md)
 - [Upgrade Guide AKS](../cloudnative-spatial-analytics-helm/docs/guides/gke/UninstallGuide.md)
 - [Upgrade Guide EKS](../cloudnative-spatial-analytics-helm/docs/guides/gke/UninstallGuide.md)
 - [Upgrade Guide GKE](../cloudnative-spatial-analytics-helm/docs/guides/gke/UninstallGuide.md)
