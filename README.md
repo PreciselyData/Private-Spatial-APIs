@@ -1,4 +1,4 @@
-# Cloud Native Helm Charts
+# Spatial Analytics Helm Charts
 
 ## Motivation
 
@@ -24,9 +24,8 @@
 
 <br>Infomation About the Given Architecture Image.
 
-### Capabilities
+### Components
 
-- [Reference Data](.)
 - [Docker Images](.)
 - [Helm Charts](.)  
 
@@ -52,9 +51,9 @@
 
 ## Geo-Addressing Helm Version Chart
 
-Following is the helm version chart against geo-addressing PDX docker image version and GA-SDK version.
+Following is the helm version chart against geo-addressing PDX docker image version.
 
-| Docker Image PDX Version & GA-SDK Version     | Helm Chart Version |
+| Docker Image PDX Version                      | Helm Chart Version |
 |-----------------------------------------------|--------------------|
 | `0.4.0/2023.9/Sept 12,2023` & `5.1.488` | `0.1.0` - `0.4.0`️ |
 | `0.5.0/2024.2/Feb 20,2024` & `5.1.644` | `0.5.0`️ |
@@ -78,7 +77,6 @@ Following is the helm version chart against geo-addressing PDX docker image vers
 
 ## Links
 
-- [Geo-Addressing API Guide](.)
-- [Geo-Addressing Custom Output Fields](.)
+- [Spatial Analytics API Guide](.)
 - [Helm Chart Tricks](https://helm.sh/docs/howto/charts_tips_and_tricks/)
 - [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/)
