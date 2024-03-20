@@ -1,4 +1,4 @@
-# Geo Addressing Helm Charts
+# Spatial Analytics Helm Charts
 
 ## Motivation
 
@@ -17,66 +17,65 @@
 5. **Portability:**
     Can be deployed on premise or to a cloud provider. Portability and flexibility in multi-cloud environments.
 
-> This solution is specifically for users who are looking for REST interface to interact with Geo Addressing SDK and Kubernetes based deployments.
 
+## Architecture
 
-> [!IMPORTANT]
-> 1. Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
-> 2. These charts can be taken as a reference on how one can take advantage of the precisely data ecosystem and build a number of services around the same piece of software, creating a collection of microservices that can scale on a need basis.
+![architecture.png](images/geoaddressing_architecture.png)
 
+<br>Infomation About the Given Architecture Image.
 
-<br>The core of the geo-addressing helm-chart-based solution relies on the Operational Addressing SDK (OAS). The robust
-functionality of OAS forms the backbone of our geo-addressing solution, empowering it to deliver accurate and efficient
-geo-addressing services while maintaining data integrity and usability.
+### Components
 
-The geo-addressing application is designed as a robust microservice-based architecture, utilizing a modular approach to
-provide highly optimized, scalable and precise addressing solutions.
+- [Docker Images](.)
+- [Helm Charts](.)  
 
-### Capabilities
+## Guides
 
-Within this architecture, there are two key types of microservices:
+- [Reference Data Installation](.)
+- [Quickstart Guide AKS](./docs/guides/docs/guides/aks/QuickStartAKS.md)
+- [Quickstart Guide EKS](./docs/guides/eks/README.md)
+- [Quickstart Guide GKE](./docs/guides/docs/guides/gke/QuickStartGKE.md)
+- [Upgrade Guide AKS](./docs/guides/gke/UninstallGuide.md)
+- [Upgrade Guide EKS](./docs/guides/gke/UninstallGuide.md)
+- [Upgrade Guide GKE](./docs/guides/gke/UninstallGuide.md)
+- [Uninstall Guide AKS](./docs/guides/gke/UpgradeGuide.md)
+- [Uninstall Guide EKS](./docs/guides/gke/UpgradeGuide.md)
+- [Uninstall Guide GKE](./docs/guides/gke/UpgradeGuide.md)
 
-- _Regional Addressing Service_: This microservice is an interface exposed to user consisting all the endpoints
-  pertaining the geo-addressing capabilities:
-    - **_Verify_**: performs address verification and standardization using the specified processing engine.
-    - **_Geocode_**: performs forward geocoding using input addresses and returning location data and other information.
-    - **_Reverse Geocode_**: performs reverse geocoding using input coordinates and returns address information that is
-      the best match for that point.
-    - **_Autocomplete_**: yields matched addresses and place for the given input addresses.
-    - **_Lookup Service_**: returns geocoded candidates when given a unique key.
-- _Addressing Service_ (Country-Specific): These microservices are specialized for individual countries, allowing us to
-  cater to unique addressing requirements and regulations in different regions. Each country-based addressing service is
-  optimized for accuracy within its specific jurisdiction.
-  
-high level steps for Customer deployment: 
- 
-1.Download Spatial API Docker images
-You can find the docker images that you are entitled to in the data product list below. Download the docker images to your local machine or copy the cURL snippet.
-Learn more  <link to documentation that provides steps to upload images to customer's own container registry>
- 
-2.Prepare your environment
-To deploy Spatial APIs in your Kubernetes cluster, install the following client tools:
-• kubectl : https://kubernetes.io/docs/tasks/tools/
-• helm3 : https://kubernetes.io/docs/tasks/tools/
-Install cloud platform specific tools - https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/tree/master/docs/guides
-Clone GitHub repository cloudnative-spatial-analytics-helm  
- 
-3.Create your Kubernetes Cluster
-If you don't have an existing Kubernetes cluster, you can deploy one using our sample cluster installation script.
-Learn how to create Cloud Platform Kubernetes cluster
- 
-4.Create a File System
-Spatial APIs require Spatial data such as MapInfo TAB files for providing spatial capabilities. This Spatial data should be deployed using a persistent volume. The persistent volume is backed by a File System such as EFS so that the data is ready to use immediately when the volume is mounted to the pods. If you don't have an existing File System, you can create one using our samples.
-Learn how to create File System
- 
-5.Prepare a MongoDB for repository.
-A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data. If you have an external instance available, just collect the connection string and credentials for further use.   
-Learn more on setting up a MongoDB
- 
-6.Enabling Security
-A Keycloak service is used for authentication and authorization. If you have an external Keycloak instance that can be accessed from inside the cluster, then collect the issuer URL for further service config, otherwise, you can deploy a Keycloak service into the cluster.
-Learn how to enable security
- 
-7.Deploy Spatial APIs using helm charts
-You are all set with the prerequisites and just one step away! Next step is to deploy the Spatial APIs helm chart.
-Once you run the Spatial APIs helm install/upgrade command, it might take few seconds to complete the deployment. You can check the creation of pods using the command.
+## Setup
+
+- [Local Setup](.)
+- [Kubernetes Setup](.)
+
+> NOTE: 
+
+## Spatial Analytics Helm Version Chart
+
+Following is the helm version chart against spatial analytics PDX docker image version.
+
+| Docker Image PDX Version                      | Helm Chart Version |
+|-----------------------------------------------|--------------------|
+| `0.4.0/2023.9/Sept 12,2023` & `5.1.488` | `0.1.0` - `0.4.0`️ |
+| `0.5.0/2024.2/Feb 20,2024` & `5.1.644` | `0.5.0`️ |
+
+> NOTE:
+
+## Miscellaneous
+
+- [Metrics](.)
+- [Application Tracing](.)
+- [Logs and Monitoring](.)
+- [FAQs](./docs/faq/FAQs.md)
+
+## References
+
+- [Releases](https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/releases)
+- [Helm Values](.)
+- [Environment Variables](.)
+- [Memory Recommendations](.)
+
+## Links
+
+- [Spatial Analytics API Guide](.)
+- [Helm Chart Tricks](https://helm.sh/docs/howto/charts_tips_and_tricks/)
+- [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/)

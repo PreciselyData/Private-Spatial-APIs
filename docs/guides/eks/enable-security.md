@@ -81,4 +81,4 @@ Login to Spatial Manager when all services are ready. Initial password for `admi
 
 Verify if you can preview a map in Spatial Manager.
 
-### [Next Step](../spatial-utilities.md)
+### [Next Step](../deploy-spatial-services.md)
