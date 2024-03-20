@@ -16,4 +16,4 @@ username: "jackrabbit_user"
 password: "jackrabbit_user"
 ```
 
-### [Next Step](deploy-spatial-services.md)
+### [Next Step](enable-security.md)

@@ -20,4 +20,4 @@ IP version	Type	Protocol	Port range	Source
 IPv4		NFS	TCP		2049		0.0.0.0/0
 ```
 
-### [Next Step](create-pv-pvc.md)
+### [Next Step](prepare-repository-database.md)
