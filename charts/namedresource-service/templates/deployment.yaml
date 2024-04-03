@@ -1,0 +1,106 @@
+### 
+# This Deployment includes a Named Resource Service 
+#
+#   Note: localize the nfs mount and the path of the command before apply 
+###
+
+---
+# Product - Named Resource Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: namedresource-service
+  labels:
+    app: namedresource-service
+spec:
+  replicas: {{ .Values.initReplicaCount }}
+  selector:
+    matchLabels:
+      app: namedresource-service
+  template:
+    metadata:
+      labels:
+        app: namedresource-service
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/actuator/prometheus'
+        prometheus.io/port: '8081'
+        spatial.build: {{ .Values.build | default .Chart.Version | quote }}
+    spec:
+      containers:
+        - name: namedresource-service
+          image: "{{ .Values.registry.url }}/namedresource-service:{{ .Values.registry.tag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: spatial-config
+                optional: true
+            - secretRef:
+                name: spatial-config
+                optional: true
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: $(jvm.opts.namedresource)
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8081
+              name: actuator
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /opt/data
+          resources:
+            requests:
+              cpu: {{ .Values.requestCPU }}
+              memory: {{ .Values.requestMemory }}
+            limits:
+              {{- if .Values.limitCPU }}
+              cpu: {{ .Values.limitCPU }}
+              {{- end }}
+              memory: {{ .Values.limitMemory }}
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 30
+          livenessProbe:
+            # similar to the startupProbe except the failureThreshold is smaller
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8081
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            # similar to the livenessProbe
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8081
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: 
+                  - sh
+                  - -c
+                  - "sleep 15"
+      imagePullSecrets:
+        - name: {{ .Values.registry.secrets }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-volume-claim
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 60
+

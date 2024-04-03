@@ -1,0 +1,14 @@
+{{- if .Values.externalDatabase.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keycloak-db-secret
+  namespace: {{ .Release.Namespace }}
+stringData:
+  POSTGRES_EXTERNAL_ADDRESS: {{ .Values.externalDatabase.externalAddress | quote }}
+  POSTGRES_EXTERNAL_PORT: {{ .Values.externalDatabase.port | quote }}
+  POSTGRES_DATABASE: {{ .Values.externalDatabase.databaseName | quote }}
+  POSTGRES_USERNAME: {{ .Values.externalDatabase.userName | quote }}
+  POSTGRES_PASSWORD: {{ .Values.externalDatabase.password | quote }}
+type: Opaque
+{{- end }}

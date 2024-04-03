@@ -1,0 +1,32 @@
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakUser
+metadata:
+  name: spatial-realm-user1
+  labels:
+    app: spatial
+spec:
+  user:
+    username: "user1"
+    firstName: "User1"
+    lastName: "Spatial"
+    email: "user1.spatial@precisely.com"
+    enabled: True
+    totp : False
+    emailVerified: False
+    credentials:
+      - type: "password"
+        value: "user1"
+    realmRoles:
+      - "offline_access"
+      - "uma_authorization"
+    clientRoles:
+      spatial:
+        - "spatial-admin"
+        - "spatial-user"
+      account:
+        - "manage-account"
+      gateway: 
+        - "uma_protection"
+  realmSelector:
+    matchLabels:
+      app: spatial

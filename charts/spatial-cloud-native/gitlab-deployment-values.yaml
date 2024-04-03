@@ -1,0 +1,72 @@
+###
+#   Values for deployment using GitLab container registry
+###
+
+# Global
+global:
+  ingress:
+    host: 
+ 
+# Individual service overrides
+feature-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  hpaEnabled: false
+  registry:
+    url: registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework/feature-service
+    tag: 1.0-SNAPSHOT
+    secrets: regcred-gitlab
+
+mapping-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  hpaEnabled: false
+  registry:
+    url: registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework/mapping-service
+    tag: 1.0-SNAPSHOT
+    secrets: regcred-gitlab
+  
+namedresource-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  hpaEnabled: false
+  registry:
+    url: registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework/namedresource-service
+    tag: 1.0-SNAPSHOT
+    secrets: regcred-gitlab
+
+tiling-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  hpaEnabled: false
+  registry:
+    url: registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework/tiling-service
+    tag: 1.0-SNAPSHOT
+    secrets: regcred-gitlab
+
+spatialmanager-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  hpaEnabled: false
+  registry:
+    url: registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework/spatialmanager-service
+    tag: 1.0-SNAPSHOT
+    secrets: regcred-gitlab
+
+# END
+

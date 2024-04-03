@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: upload-samples
+spec:
+  template:
+    spec:
+      containers:
+        - name: upload-samples
+          image: "{{ .Values.registry.url }}/samples-data:{{ .Values.registry.tag }}"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: spatial-config
+                optional: true
+            - secretRef:
+                name: spatial-config
+                optional: true
+          volumeMounts:
+            - name: data
+              mountPath: /opt/data
+          resources:
+            requests:
+              cpu: {{ .Values.requestCPU }}
+              memory: {{ .Values.requestMemory  }}
+            limits:
+              cpu: {{ .Values.limitCPU }}
+              memory: {{ .Values.limitMemory}}
+      restartPolicy: Never
+      imagePullSecrets:
+        - name: {{ .Values.registry.secrets }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-volume-claim
+      securityContext:
+        fsGroup: 1000

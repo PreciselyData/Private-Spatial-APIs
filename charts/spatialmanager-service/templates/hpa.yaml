@@ -1,0 +1,20 @@
+{{- if .Values.hpaEnabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ssm-service
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ssm-service
+  minReplicas: {{ .Values.initReplicaCount }}
+  maxReplicas: {{ .Values.maxReplicaCount }}
+  metrics: 
+  - type: Resource
+    resource:
+      name: cpu 
+      target:
+        type: Utilization 
+        averageUtilization : {{ default 80 .Values.hpaCpuAverageUtilization }}
+{{- end }}

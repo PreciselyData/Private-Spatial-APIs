@@ -1,0 +1,14 @@
+# Default values for samples-upload.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Image registry
+registry:
+  url: "registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework"
+  tag: "latest"
+  secrets: "regcred-gitlab"
+
+requestCPU: 100m
+requestMemory: 512Mi
+limitCPU: 200m
+limitMemory: 1Gi

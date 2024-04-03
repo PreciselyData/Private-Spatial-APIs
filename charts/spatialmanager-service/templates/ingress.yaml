@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ssm-service
+spec:
+  ingressClassName: "nginx"
+  rules:
+  {{- if .Values.global }}
+  - host: {{ .Values.global.ingress.host | quote }}
+  {{- else }}
+  - host: {{ .Values.ingress.host | quote }}
+  {{- end }}
+    http:
+      paths:
+      - path: /SpatialServerManager
+        pathType: Prefix
+        backend:
+          service:
+            name: ssm-service
+            port:
+              number: 8080
+      - path: /managers
+        pathType: Prefix
+        backend:
+          service:
+            name: ssm-service
+            port:
+              number: 8080
+      - path: /help
+        pathType: Prefix
+        backend:
+          service:
+            name: ssm-service
+            port:
+              number: 8080
+      - path: /rest/Spatial/NamedResourceService/internal/resources/analystConfig
+        pathType: Prefix
+        backend:
+          service:
+            name: ssm-service
+            port:
+              number: 8080

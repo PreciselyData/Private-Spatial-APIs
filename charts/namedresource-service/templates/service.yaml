@@ -1,0 +1,14 @@
+# Named Resource service
+apiVersion: v1
+kind: Service
+metadata:
+  name: namedresource-service
+  labels:
+    app: namedresource-service
+spec:
+  selector:
+      app: namedresource-service
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http

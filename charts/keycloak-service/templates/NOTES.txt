@@ -1,0 +1,21 @@
+Spatial Keycloak operator and service are installed in namespace {{ .Release.Namespace }}.
+
+Service Endpoint URL 
+
+    {{- if .Values.global }}
+    http://keycloak.{{ .Values.global.ingress.host}}
+    {{- else }}
+    http://keycloak.{{ .Values.ingress.host}}
+    {{- end }}
+
+Admin credentials
+    {{range $k,$v := (lookup "v1" "Secret" "{{ .Release.Namespace }}" "credential-spatial-keycloak").data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | b64dec}}{{end}}{{"\n"}}{{end}}
+
+    also get the credentials from,
+    $ kubectl -n {{ .Release.Namespace }} get secret credential-spatial-keycloak -o=jsonpath="{.data.ADMIN_USERNAME"}" | base64 -d
+    $ kubectl -n {{ .Release.Namespace }} get secret credential-spatial-keycloak -o=jsonpath="{.data.ADMIN_PASSWORD}" | base64 -d
+
+To learn more about the release, try:
+
+    $ helm status {{ .Release.Name }} --namespace={{ .Release.Namespace }}
+    $ helm get all {{ .Release.Name }} --namespace={{ .Release.Namespace }}

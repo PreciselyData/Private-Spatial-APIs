@@ -1,0 +1,73 @@
+# Default values for platform.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Image registry
+registry:
+  url: jfrog.precisely.engineering:443
+  prefix: /spatial-docker
+  tag: latest
+  secrets: regcred
+
+# Global values
+global:
+  ingress:
+    # A specific host should be specified for ingress when deploying into a namespace other than default.
+    #   Host should include full domain name, IP address is not valid.
+    #
+    host: ""
+
+# Service configuration
+security:
+  enabled: "false"
+  oauth2:
+    issuerUri: ""
+    clientId: ""
+    clientSecret: ""
+    unsecuredPaths: ""
+    requiredAuthority: "user"
+    usernameAttribute: "preferred_username"
+    userroleAttribute: "role"
+url:
+  namedresource: "http://namedresource-service:8080"
+  feature: "http://feature-service:8080"
+  mapping: "http://mapping-service:8080"
+  tiling: "http://tiling-service:8080"
+repository:
+  mongodb:
+    url: ""
+jvm:
+  opts:
+    mapping: ""
+    feature: ""
+    tiling: ""
+    namedresource: ""
+    spatialmanager: ""
+property:
+  repositoryCacheCapacity: "1000"
+  repositoryCachePolicy: "3"
+  repositoryCacheExpire: "1000"
+  timeoutFeatureValue: "-1"
+  timeoutMappingValue: "-1"
+  poolFileEnabled: "true"
+  poolFileMaxTotal: "20"
+  poolFileMaxTotalPerKey: "10"
+  poolFileMinIdlePerKey: "-1"
+  poolFileMaxIdlePerKey: "-1"
+  poolFileMaxWaitMillis: "30000"
+  poolFileMinEvictableIdleTimeMillis: "60000"
+  poolFileNumTestsPerEvictionRun: "1"
+  poolFileTestOnBorrow: "false"
+  poolFileTestWhileIdle: "false"
+  poolFileTimeBetweenEvictionRunsMillis: "10000"
+  poolFileBlockWhenExhausted: "false"
+  poolDatabaseMaxActive: "10"
+  poolDatabaseMaxIdle: "10"
+  poolDatabaseMinIdle: "5"
+  poolDatabaseInitialSize: "5"
+  poolDatabaseTestOnBorrow: "true"
+  poolDatabaseJdbcInterceptors: "QueryTimeoutInterceptor(queryTimeout=-1);SlowQueryReport(threshold=1000)"
+  poolDatabaseAutoRegisterMBean: "false"
+  searchTabCaseInsensitive: "false"
+  restrictedPath: "/opt/data"
+# The END

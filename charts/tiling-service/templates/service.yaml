@@ -1,0 +1,14 @@
+# Tiling service
+apiVersion: v1
+kind: Service
+metadata:
+  name: tiling-service
+  labels:
+    app: tiling-service
+spec:
+  selector:
+      app: tiling-service
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
