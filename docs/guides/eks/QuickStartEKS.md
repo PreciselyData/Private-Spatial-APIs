@@ -1,22 +1,77 @@
-# Installing Geo-Addressing Helm Chart on AWS EKS
+# Installing Spatial Analytics Helm Chart on AWS EKS
+
+### Before starting
+Make sure you have a AWS account with following permissions:  
+  - create IAM roles  
+  - create IAM policies  
+  - create EKS clusters (EC2 based)  
+  - create EFS filesystem  
+  - use CloudShell
+
+To make it easier, this guide is based on AWS CloudShell.
 
 ## Step 1: Prepare your environment
+Login to AWS Management Console.
+Ensure you are in the right Region.
+Open CloudShell by clicking on the icon on the toolbar.
+Verify if these client tools are installed:
+```
+aws -h
+```
+```
+eksctl -h
+```
+```
+kubectl -h
+```
+To deploy Spatial Analytics application in AWS EKS, install the following client tools:
+### Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+```
+mkdir ~/bin
+```
+```
+curl -o ~/bin/kubectl https://dl.k8s.io/release/v1.29.3/bin/linux/arm64/kubectl
+```
+```
+kubectl -h
+```
+### Install [helm3](https://helm.sh/docs/intro/install/)
 
-To deploy the Geo-Addressing application in AWS EKS, install the following client tools:
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+```
+```
+chmod 700 get_helm.sh
+```
+```
+./get_helm.sh
+```
+```
+cp /usr/local/bin/helm ~/bin
+```
+```
+helm -h
+```
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [helm3](https://helm.sh/docs/intro/install/)
+### Install [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
+```
+curl --silent --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C ~/bin
+```
 
-##### Amazon Elastic Kubernetes Service (EKS)
+### Install [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
+This is required only if you are not using AWS CloudShell.
 
-- [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
-- [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
 
-## Step 2: Create the EKS Cluster
+### Clone Getting Started resources
+```
+git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
+```
 
-You can create the EKS cluster or use existing EKS cluster.
+## Step 2: Create K8s Cluster (EKS)
 
-- If you DON'T have EKS cluster, we have provided you with a
+You can create the EKS cluster or use an existing EKS cluster.
+
+- If you DON'T have a EKS cluster, we have provided you with a
   sample [cluster installation script](../../../cluster-sample/create-eks-cluster.yaml). Run the following command from
   parent directory to create the cluster using the script:
     ```shell
@@ -65,16 +120,16 @@ You can create the EKS cluster or use existing EKS cluster.
 
 **NOTE**: EKS cluster must have the above addons and ingress for the east of installation of Geo-Addressing Helm Chart.
 
-## Step 3: Download Geo-Addressing Docker Images
+## Step 3: Download Spatial Analytics Docker Images
 
 The docker files can be downloaded from Precisely's Data Portfolio. For information about Precisely's data portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
 access softwares, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
 
-This projects assumes the docker images to be present in the ECR. However, if you haven't pushed the required docker
-images in the ECR, we have provided you with the sample scripts to download the docker images
+The Spatial Analytics docker images need to be present in the ECR. If you haven't pushed the required docker
+images to ECR, then you can use a sample script [upload_ecr.py](../../../scripts/images-to-ecr-uploader) to download the docker images
 from [Precisely Data Experience](https://data.precisely.com/)
-and push it to your Elastic Container Repositories.
+and push it to your Elastic Container Registry.
 
 (Note: This script requires python, docker and awscli to be installed in your system)
 
@@ -84,7 +139,7 @@ pip install -r requirements.txt
 python upload_ecr.py --pdx-api-key [pdx-api-key] --pdx-api-secret [pdx-secret] --aws-access-key [aws-access-key] --aws-secret [aws-secret] --aws-region [aws-region]
 ```
 
-There are four docker container images which will be pushed to ECR with the tag of helm chart version.
+There are six docker images which will be pushed to ECR with the tag of helm chart version.
 
 1. regional-addressing-service
 2. addressing-service
@@ -94,7 +149,7 @@ There are four docker container images which will be pushed to ECR with the tag 
 For more details related to docker images download script, follow the
 instructions [here](../../../scripts/images-to-ecr-uploader/README.md)
 
-## Step 4: Create Elastic File System (EFS)
+## Step 4: Create a Persistent Volume
 
 The Geo-Addressing Application requires reference data for geo-addressing capabilities. This reference data should be
 deployed using [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). This persistent
@@ -119,29 +174,17 @@ We have provided python script to create EFS and link it to EKS cluster, or dire
   python ./create_efs.py --cluster-name [eks-cluster-name] --existing true --aws-access-key [aws-access-key] --aws-secret [aws-secret-key] --aws-region [aws-region] --file-system-id [file-system-id]
   ```
 
-## Step 5: Installation of Reference Data
+## Step 5: Deploy Mongo DB
+A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data. If you have an external instance available, just collect the connection string and credentials for further use.
 
-The Geo-Addressing Application relies on reference data for performing geo-addressing operations. For more information related to reference data, please refer to [this link](../../ReferenceData.md).
-
-
-You can make use of a [miscellaneous helm chart for installing reference data](../../../charts/reference-data-setup/README.md), please follow the instructions mentioned in the helm chart or run the below command for installing data in EFS or contact Precisely Sales Team for the reference data installation.
-```shell
-helm install reference-data ./charts/reference-data-setup/ \
---set "global.pdxApiKey=[your-pdx-key]" \
---set "global.pdxSecret=[your-pdx-secret]" \
---set "global.efs.fileSystemId=[fileSystemId]" \
---set "dataDownload.image.repository=[reference-data-image-repository]" \
---dependency-update --timeout 60m
-```
-
-## Step 6: Installation of Geo-Addressing Helm Chart
+## Step 6: Installation of Spatial Analytics Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
 
-To install/upgrade the geo-addressing helm chart, use the following command:
+To install/upgrade the Spatial Analytics helm chart, use the following command:
 
 ```shell
-helm upgrade --install geo-addressing ./charts/geo-addressing \
+helm upgrade --install spatial-analytics ./charts/geo-addressing \
 --dependency-update \
 --set "global.awsRegion=[aws-region]" \ 
 --set "global.efs.fileSystemId=[file-system-id]" \
@@ -202,7 +245,7 @@ reverse-geocode you have to set the parameters in helm command as follows.
 
 For more information on helm values, follow [this link](../../../charts/geo-addressing/README.md#helm-values).
 
-## Step 7: Monitoring Geo-Addressing Helm Chart Installation
+## Step 7: Monitoring Spatial Analytics Helm Chart Installation
 
 Once you run the geo-addressing helm install/upgrade command, it might take a couple of seconds to trigger the deployment. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
