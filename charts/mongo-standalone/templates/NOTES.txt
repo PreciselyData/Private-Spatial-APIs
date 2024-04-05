@@ -1,0 +1,11 @@
+MongoDB test instance and service are installed in namespace {{ .Release.Namespace }}.
+
+To access the MongoDB instance, use 'mongo-svc' service
+    mongodb://mongo-svc.{{ .Release.Namespace }}.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get {{ .Release.Name }}
+	
+Note: this instance is for test only, not intended for production

@@ -1,0 +1,15 @@
+Keycloak test instance and service are installed in namespace {{ .Release.Namespace }}.
+
+Service Endpoint URL 
+
+    http://{{.Values.hostname}}/auth
+
+Admin credentials
+    {{.Values.adminUser}}/{{.Values.adminPassword}}
+
+To learn more about the release, try:
+
+    $ helm status {{ .Release.Name }} --namespace={{ .Release.Namespace }}
+    $ helm get all {{ .Release.Name }} --namespace={{ .Release.Namespace }}
+	
+Note: this instance is for test only, not intended for production
