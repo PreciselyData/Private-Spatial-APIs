@@ -6,63 +6,20 @@ Make sure you have a AWS account with following permissions:
   - create IAM policies  
   - create EKS clusters (EC2 based)  
   - create EFS filesystem  
-  - use CloudShell
-
-To make it easier, this guide is based on AWS CloudShell.
-
+  
 ## Step 1: Prepare your environment
-Login to AWS Management Console.
-Ensure you are in the right Region.
-Open CloudShell by clicking on the icon on the toolbar.
-Verify if these client tools are installed:
-```
-aws -h
-```
-```
-eksctl -h
-```
-```
-kubectl -h
-```
 To deploy Spatial Analytics application in AWS EKS, install the following client tools:
-### Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-```
-mkdir ~/bin
-```
-```
-curl -o ~/bin/kubectl https://dl.k8s.io/release/v1.29.3/bin/linux/arm64/kubectl
-```
-```
-kubectl -h
-```
-### Install [helm3](https://helm.sh/docs/intro/install/)
 
-```
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-```
-```
-chmod 700 get_helm.sh
-```
-```
-./get_helm.sh
-```
-```
-cp /usr/local/bin/helm ~/bin
-```
-```
-helm -h
-```
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [helm3](https://helm.sh/docs/intro/install/)
 
-### Install [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
-```
-curl --silent --location "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C ~/bin
-```
+##### Amazon Elastic Kubernetes Service (EKS)
 
-### Install [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
-This is required only if you are not using AWS CloudShell.
+- [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
+- [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
 
 
-### Clone Getting Started resources
+### Clone Spatial Analytics helm charts & resources
 ```
 git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
 ```
@@ -106,7 +63,7 @@ You can create the EKS cluster or use an existing EKS cluster.
     ```shell
     kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
     ```
-- The geo-addressing service requires ingress controller setup. Run the following command for setting up NGINX ingress controller:
+- The spatial-analytics service requires ingress controller setup. Run the following command for setting up NGINX ingress controller:
   ```shell
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm install nginx-ingress ingress-nginx/ingress-nginx -f ./cluster-sample/ingress-values.yaml
@@ -118,20 +75,20 @@ You can create the EKS cluster or use an existing EKS cluster.
   kubectl get services -o wide -w nginx-ingress-ingress-nginx-controller    
   ```
 
-**NOTE**: EKS cluster must have the above addons and ingress for the east of installation of Geo-Addressing Helm Chart.
+**NOTE**: EKS cluster must have the above addons and ingress for the ease of installation of spatial-analytics Helm Chart.
 
 ## Step 3: Download Spatial Analytics Docker Images
 
-The docker files can be downloaded from Precisely's Data Portfolio. For information about Precisely's data portfolio,
+The docker files can be downloaded from Precisely's Data Portfolio. For information about Precisely's Data Portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
-access softwares, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
+access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
 
 The Spatial Analytics docker images need to be present in the ECR. If you haven't pushed the required docker
 images to ECR, then you can use a sample script [upload_ecr.py](../../../scripts/images-to-ecr-uploader) to download the docker images
 from [Precisely Data Experience](https://data.precisely.com/)
 and push it to your Elastic Container Registry.
 
-(Note: This script requires python, docker and awscli to be installed in your system)
+(Note: This script requires python, docker and AWS CLI to be installed in your system)
 
 ```shell
 cd ./scripts/images-to-ecr-uploader
@@ -140,23 +97,23 @@ python upload_ecr.py --pdx-api-key [pdx-api-key] --pdx-api-secret [pdx-secret] -
 ```
 
 There are six docker images which will be pushed to ECR with the tag of helm chart version.
+1. feature-service
+2. mapping-service
+3. tiling-service
+4. namedresource-service
+5. spatialmanager-service
+6. samples-data
 
-1. regional-addressing-service
-2. addressing-service
-3. express-engine
-4. express-engine-data-restore
-
-For more details related to docker images download script, follow the
-instructions [here](../../../scripts/images-to-ecr-uploader/README.md)
+For more details related to docker images download script, follow the instructions [here](../../../scripts/images-to-ecr-uploader/README.md)
 
 ## Step 4: Create a Persistent Volume
+The Spatial Analytics Application supports caching of map tiles, file based spatial data and can be extended by
+adding custom data access providers and symbology. This spatial data should be deployed using a [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+The persistent volume is backed by Amazon Elastic File System (EFS) so that the data is ready to use immediately when the
+volume is mounted to the pods.
 
-The Geo-Addressing Application requires reference data for geo-addressing capabilities. This reference data should be
-deployed using [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). This persistent
-volume is backed by Amazon Elastic File System (EFS) so that the data is ready to use immediately when the volume is
-mounted to the pods.
-
-We have provided python script to create EFS and link it to EKS cluster, or directly link existing EFS to the EKS cluster by creating mount targets.
+If you don't have an existing File System, you can create one using given sample. We have provided a python script
+to create EFS and link it to EKS cluster, or directly link existing EFS to the EKS cluster by creating mount targets.
 
 **NOTE: If you already have created mount targets for the EFS to EKS cluster, skip this step.**
 
@@ -164,7 +121,7 @@ We have provided python script to create EFS and link it to EKS cluster, or dire
   ```shell
   cd ./scripts/efs-creator
   pip install -r requirements.txt
-  python ./create_efs.py --cluster-name [eks-cluster-name] --aws-access-key [aws-access-key] --aws-secret [aws-secret] --aws-region [aws-region] --efs-name [precisely-geo-addressing-efs] --security-group-name [precisely-geo-addressing-sg]
+  python ./create_efs.py --cluster-name [eks-cluster-name] --aws-access-key [aws-access-key] --aws-secret [aws-secret] --aws-region [aws-region] --efs-name [precisely-spatial-analytics-efs] --security-group-name [precisely-spatial-analytics-sg]
   ```
 
 - If you already have EFS, but you want to create mount targets so that EFS can be accessed from the EKS cluster, run the following command:
@@ -173,9 +130,23 @@ We have provided python script to create EFS and link it to EKS cluster, or dire
   pip install -r requirements.txt
   python ./create_efs.py --cluster-name [eks-cluster-name] --existing true --aws-access-key [aws-access-key] --aws-secret [aws-secret-key] --aws-region [aws-region] --file-system-id [file-system-id]
   ```
+Create a StorageClass for EFS Driver  
+Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system.
+```kubectl apply -f ./deploy/eks/efs-sc.yaml ```
+You can check the result by executing: ```kubectl get sc```  
+
+Create a PVC  
+We will deploy spatial services into a new namespace 'spatial', so create a namespace first,  
+```kubectl create ns spatial```
+
+Create a PVC in the namespace that dynamically provisioning a PV using efs-sc storage class,  
+```kubectl apply -f ./deploy/eks/efs-pvc.yaml -n spatial```  
+Check results, wait until the pvc status becomes Bound.  
+```kubectl get pvc -n spatial```
 
 ## Step 5: Deploy Mongo DB
-A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data. If you have an external instance available, just collect the connection string and credentials for further use.
+A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data.  
+You need to install [MongoDB](https://www.mongodb.com/products/integrations/kubernetes) if you don't have one already. If you have an instance available, just collect the connection string and credentials for further use. For the performance reason, keep the database instance as close to the cluster as possible.  
 
 ## Step 6: Installation of Spatial Analytics Helm Chart
 

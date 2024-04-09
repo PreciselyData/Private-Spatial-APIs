@@ -1,7 +1,7 @@
 controller:
-  replicaCount: 3
+  replicaCount: 1
   nodeSelector:
-    node-app: geo-addressing-ingress
+    node-app: spatial-analytics-ingress
   autoscaling:
     enabled: true
   resources:

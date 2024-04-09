@@ -7,7 +7,11 @@ spec:
     spec:
       containers:
         - name: upload-samples
+          {{- if .Values.global }}
+          image: "{{ .Values.global.registry.url }}/samples-data:{{ .Values.global.registry.tag }}"
+          {{- else }}
           image: "{{ .Values.registry.url }}/samples-data:{{ .Values.registry.tag }}"
+          {{- end }}
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -28,7 +32,11 @@ spec:
               memory: {{ .Values.limitMemory}}
       restartPolicy: Never
       imagePullSecrets:
+        {{- if .Values.global }}
+        - name: {{ .Values.global.registry.secrets }}
+        {{- else }}
         - name: {{ .Values.registry.secrets }}
+        {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:

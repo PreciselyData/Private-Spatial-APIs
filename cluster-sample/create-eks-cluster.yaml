@@ -3,8 +3,7 @@ kind: ClusterConfig
 
 metadata:
   name: spatial-analytics
-  region: ap-south-1
-  # region: us-east-1
+  region: us-east-1
   version: "1.29"
 
 addons:
@@ -16,7 +15,7 @@ addons:
 
 managedNodeGroups:
   - name: spatial-analytics-worker
-    instanceType: t3.xlarge
+    instanceType: t3.large
     iam:
       attachPolicyARNs:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
@@ -40,14 +39,14 @@ managedNodeGroups:
         albIngress: true
         cloudWatch: true
     minSize: 1
-    maxSize: 20
+    maxSize: 3
     volumeSize: 50
     labels: { node-app: spatial-analytics }
     tags:
       CreatedBy: Precisely
 
   - name: spatial-analytics-ingress
-    instanceType: m5n.2xlarge
+    instanceType: t3.xlarge
     iam:
       attachPolicyARNs:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy

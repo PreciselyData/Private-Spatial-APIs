@@ -11,12 +11,10 @@ from builtins import bytes
 from zipfile import ZipFile
 import subprocess
 
+image_tag = '1.1.0'
+DOCKER_PRODUCT_NAME = "Spatial Cloud Native SDK#GLOBAL#ALL GLB#Spectrum Platform Data"
 
 def current_milli_time(): return int(round(time.time() * 1000))
-
-
-GEOCODING_DOCKER_PRODUCT = "GEO ADDRESSING DOCKER IMAGE#GLOBAL#ALL GLB#Spectrum Platform Data"
-
 
 class DataDeliveryClient:
     auth_token = ''
@@ -198,7 +196,6 @@ LOCAL_PATH = args.local_path
 AWS_REGION = args.aws_region
 AWS_ACCESS_KEY = args.aws_access_key
 AWS_SECRET_KEY = args.aws_secret_key
-image_tag = '1.0.0'
 date_folder = str(time.strftime("%Y%m%d%H%M"))
 
 if not AWS_REGION:
@@ -219,20 +216,20 @@ spd_path = os.path.join(LOCAL_PATH, "docker_images")
 os.makedirs(spd_path, exist_ok=True)
 
 try:
-    product_name, product_url = get_product(GEOCODING_DOCKER_PRODUCT)
+    product_name, product_url = get_product(DOCKER_PRODUCT_NAME)
     if not product_name and not product_url:
         raise Exception(
-            f"No Deliveries available for product {GEOCODING_DOCKER_PRODUCT}. "
+            f"No Deliveries available for product {DOCKER_PRODUCT_NAME}. "
             "To request access to the particular data, please visit https://data.precisely.com/")
 except Exception as ex:
-    raise Exception(f'Exception while getting download url for {GEOCODING_DOCKER_PRODUCT}: {ex}', ex)
+    raise Exception(f'Exception while getting download url for {DOCKER_PRODUCT_NAME}: {ex}', ex)
 
 try:
     file_path = download_spd_to_local(product_url, spd_path)
     if file_path and os.path.exists(file_path):
         unzip(spd_path, file_path)
 except Exception as ex:
-    raise Exception(f'Exception while downloading spds to local for {GEOCODING_DOCKER_PRODUCT}: {ex}', ex)
+    raise Exception(f'Exception while downloading spds to local for {DOCKER_PRODUCT_NAME}: {ex}', ex)
 
 try:
     sts_identity_str = subprocess.check_output(
@@ -287,10 +284,10 @@ try:
                 print(f"Exception: {ex}, Output: {ex.output}, StdOut: {ex.stdout}, StdErr: {ex.stderr}")
     
     if len(images) != 0:
-        print(f"Precisely geocoding docker images successfully pushed into {ecr_url}")
+        print(f"Precisely docker images successfully pushed into {ecr_url}")
         print(json.dumps(images, indent=4))
     else:
-        print(f"Failed to push Precisely geocoding docker images into {ecr_url}")
+        print(f"Failed to push Precisely docker images into {ecr_url}")
 
 except Exception as ex:
     print(f"Exception: {ex}, Output: {ex.output}, StdOut: {ex.stdout}, StdErr: {ex.stderr}")

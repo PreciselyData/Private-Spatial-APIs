@@ -27,7 +27,11 @@ spec:
     spec:
       containers:
         - name: ssm-service
+          {{- if .Values.global }}
+          image: "{{ .Values.global.registry.url }}/spatialmanager-service:{{ .Values.global.registry.tag }}"
+          {{- else }}
           image: "{{ .Values.registry.url }}/spatialmanager-service:{{ .Values.registry.tag }}"
+          {{- end }}
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -90,7 +94,11 @@ spec:
                   - -c
                   - "sleep 15"
       imagePullSecrets:
+        {{- if .Values.global }}
+        - name: {{ .Values.global.registry.secrets }}
+        {{- else }}
         - name: {{ .Values.registry.secrets }}
+        {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:

@@ -2,15 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# Image registry
-registry:
-  url: jfrog.precisely.engineering:443
-  prefix: /spatial-docker
-  tag: latest
-  secrets: regcred
-
 # Global values
 global:
+  # Image registry
+  registry:
+    url: "registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework"
+    tag: "latest"
+    secrets: "regcred-gitlab"
+
   ingress:
     # A specific host should be specified for ingress when deploying into a namespace other than default.
     #   Host should include full domain name, IP address is not valid.

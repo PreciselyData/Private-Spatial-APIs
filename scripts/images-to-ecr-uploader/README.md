@@ -2,13 +2,14 @@
 
 ## Description
 
-The geo-addressing helm chart relies on the availability of Docker images for several essential microservices, all of
+Spatial Analytics helm chart relies on the availability of Docker images for several essential microservices, all of
 which are conveniently obtainable from Precisely Data Experience. The required docker images include:
-
-1. Regional Addressing Service Docker Image
-2. Addressing Service Docker Image
-3. Express Engine Docker Image
-4. Express Engine Data Restore Docker Image
+1. Feature Service Docker Image
+2. Mapping Service Docker Image
+3. Tiling Service Docker Image
+4. NamedResource Service Docker Image
+5. Spatial Manager Docker Image 
+6. Sample Data Upload Docker Image 
 
 > [!NOTE]:  
 > Contact Precisely for buying subscription to docker image
