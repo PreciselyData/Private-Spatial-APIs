@@ -88,7 +88,7 @@ images to ECR, then you can use a sample script [upload_ecr.py](../../../scripts
 from [Precisely Data Experience](https://data.precisely.com/)
 and push it to your Elastic Container Registry.
 
-(Note: This script requires python, docker and AWS CLI to be installed in your system)
+>Note: This script requires python, docker and AWS CLI to be installed in your system. Also make sure that AWS CLI is configured before you run the script. Run this command - ``aws sts get-caller-identity``
 
 ```shell
 cd ./scripts/images-to-ecr-uploader
@@ -130,19 +130,19 @@ to create EFS and link it to EKS cluster, or directly link existing EFS to the E
   pip install -r requirements.txt
   python ./create_efs.py --cluster-name [eks-cluster-name] --existing true --aws-access-key [aws-access-key] --aws-secret [aws-secret-key] --aws-region [aws-region] --file-system-id [file-system-id]
   ```
-Create a StorageClass for EFS Driver  
+####Create a StorageClass for EFS Driver  
 Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system.
 ```kubectl apply -f ./deploy/eks/efs-sc.yaml ```
 You can check the result by executing: ```kubectl get sc```  
 
-Create a PVC  
+####Create a PVC  
 We will deploy spatial services into a new namespace 'spatial', so create a namespace first,  
-```kubectl create ns spatial```
+```kubectl create ns spatial-analytics```
 
 Create a PVC in the namespace that dynamically provisioning a PV using efs-sc storage class,  
-```kubectl apply -f ./deploy/eks/efs-pvc.yaml -n spatial```  
+```kubectl apply -f ./deploy/eks/efs-pvc.yaml -n spatial-analytics```  
 Check results, wait until the pvc status becomes Bound.  
-```kubectl get pvc -n spatial```
+```kubectl get pvc -n spatial-analytics```
 
 ## Step 5: Deploy Mongo DB
 A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data.  
@@ -152,84 +152,52 @@ You need to install [MongoDB](https://www.mongodb.com/products/integrations/kube
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
 
+Create a secret for pulling image from ECR repository  
+```
+kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.ecr.[aws_region].amazonaws.com   --docker-username=AWS   --docker-password=$(aws ecr get-login-password --region [aws-reqion]) --namespace=spatial-analytics
+```
 To install/upgrade the Spatial Analytics helm chart, use the following command:
 
 ```shell
-helm upgrade --install spatial-analytics ./charts/geo-addressing \
---dependency-update \
---set "global.awsRegion=[aws-region]" \ 
---set "global.efs.fileSystemId=[file-system-id]" \
---set "ingress.hosts[0].host=[ingress-host-name]" \ 
---set "ingress.hosts[0].paths[0].path=/precisely/addressing" \
---set "ingress.hosts[0].paths[0].pathType=ImplementationSpecific" \
---set "global.nodeSelector.node-app=[node-selector-label]" \
---set "image.repository=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com/regional-addressing-service" \
---set "global.addressingImage.repository=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com/addressing-service" \
---set "global.expressEngineImage.repository=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com/express-engine" \
---set "global.expressEngineDataRestoreImage.repository=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com/express-engine-data-restore" \
---set "addressing-express.expressenginedata.nodeSelector.node-app=[node-selector-label-arm64-node]" \
---set "addressing-express.expressenginemaster.nodeSelector.node-app=[node-selector-label-arm64-node]" \ 
---set "addressing-express.expressEngineDataRestore.nodeSelector.node-app=[node-selector-label-arm64-node]" \
---set "global.countries={usa,can,aus,nzl}" \
---namespace geo-addressing --create-namespace
+helm upgrade --install spatial-analytics  --version 1.1.0 \
+ ./charts/spatial-cloud-native  --dependency-update  \
+ --set "global.ingress.host=[ingress-host-name]" \
+ --set "repository.mongodb.url=[mongodb-url]" \ 
+ --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
+ --set "global.registry.tag=1.1.0" \ 
+ --set "global.registry.secrets=regcred" \ 
+ -f ./charts/spatial-cloud-native/gitlab-deployment-values.yaml \
+ --namespace spatial-analytics   
 ```
 
-By default, only verify/geocode functionality is enabled.
+This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.
 
-> Note: addressing-express service is needed for Geocoding without country.
-
-To enable other functionalities like autocomplete, lookup and
-reverse-geocode you have to set the parameters in helm command as follows.
-
-```shell
---set "autocomplete-svc.enabled=true"
---set "lookup-svc.enabled=true"
---set "reverse-svc.enabled=true"
-```
-> NOTE: By default, the geo-addressing helm chart runs a hook job, which identifies the latest reference-data vintage mount path.
-> 
-> To override this behaviour, you can disable the addressing-hook by `addressing-hook.enabled` and provide manual reference data configuration using `global.manualDataConfig`.
-> 
-> Refer [helm values](../../../charts/geo-addressing/README.md#helm-values) for the parameters related to `global.manualDataConfig.*` and `addressing-hook.*`.
-> 
->
-> NOTE: `addressing-hook` job not applicable to addressing-express service.
->
-> Also, for more information, refer to the comments in [values.yaml](../../../charts/geo-addressing/values.yaml)
+> Also, for more information, refer to the comments in [values.yaml](../../../charts/spatial-cloud-native/values.yaml)
 #### Mandatory Parameters
+* ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
+* ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false 
+* ``global.registry.url``: The ECR repository for Spatial Analytics docker image e.g. account_id.dkr.ecr.us-east-1.amazonaws.com
+* ``global.registry.tag``: The docker image tag value e.g. 1.1.0 or latest.
+* ``global.registry.secrets``: The name of the secret holding ECR credential information.
 
-* ``global.awsRegion``: AWS Region
-* ``global.efs.fileSystemId``: The ID of the EFS
-* ``global.countries``: Required countries for Geo-Addressing (e.g. ``--set "global.countries={usa,deu,gbr}"``).
-  Provide a comma separated list to enable a particular set of countries from: `{usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world}`
-* ``ingress.hosts[0].host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
-* ``ingress.hosts[0].paths[0].path``: The PATH at which the solution to be hosted. (e.g. ``/precisely/addressing``)
-* ``ingress.hosts[0].paths[0].pathType``: The pathType of the Ingress Path
-* ``image.repository``: The ECR image repository for the regional-addressing image
-* ``global.addressingImage.repository``: The ECR image repository for the addressing-service image
-* ``global.expressEngineImage.repository``: The ECR image repository for the express-engine image
-* ``global.expressEngineDataRestoreImage.repository``: The ECR image repository for the express-engine-data-restore image
-* ``global.nodeSelector``: The node selector to run the geo-addressing solutions on nodes of the cluster. Should be a amd64 based Node group.
-* ``addressing-express.expressEngineDataRestore.nodeSelector``: The node selector to run the express-engine data restore job. Should be a arm64 based Node group.
-* ``addressing-express.expressenginedata.nodeSelector``: The node selector to run the express-engine data service. Should be a arm64 based Node group.
-* ``addressing-express.expressenginemaster.nodeSelector``: The node selector to run the express-engine master service. Should be a arm64 based Node group.
+For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md#helm-values).
 
-For more information on helm values, follow [this link](../../../charts/geo-addressing/README.md#helm-values).
+After all the pods in namespace 'spatial-analytics' are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps. https://<your external ip>/SpatialServerManager
 
 ## Step 7: Monitoring Spatial Analytics Helm Chart Installation
 
-Once you run the geo-addressing helm install/upgrade command, it might take a couple of seconds to trigger the deployment. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
+Once you run Spatial Analytics helm install/upgrade command, it might take a couple of seconds to trigger the deployment. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
-kubectl get pods -w --namespace geo-addressing
+kubectl get pods -w --namespace spatial-analytics 
 ```
 
 When all the pods are up, you can run the following command to check the ingress service host:
 ```shell
-kubectl get services --namespace geo-addressing
+kubectl get services --namespace spatial-analytics 
 ```
 
 ## Next Sections
-- [Geo Addressing API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
+- [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
 - [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
 - [FAQs](../../faq/FAQs.md)
 
