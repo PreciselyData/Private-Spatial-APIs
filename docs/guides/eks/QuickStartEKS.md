@@ -130,14 +130,18 @@ to create EFS and link it to EKS cluster, or directly link existing EFS to the E
   pip install -r requirements.txt
   python ./create_efs.py --cluster-name [eks-cluster-name] --existing true --aws-access-key [aws-access-key] --aws-secret [aws-secret-key] --aws-region [aws-region] --file-system-id [file-system-id]
   ```
-  
+Make a note of `FileSystemId` displayed on you screen.  
+
 #### Create a StorageClass for EFS Driver  
-Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system.
-```kubectl apply -f ./deploy/eks/efs-sc.yaml ```
-You can check the result by executing: ```kubectl get sc```  
+Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system & run:  
+
+```kubectl apply -f ./deploy/eks/efs-sc.yaml ```  
+
+You can check the result by executing:    
+```kubectl get sc```  
 
 #### Create a PVC  
-We will deploy spatial services into a new namespace 'spatial-analytics', so create a namespace first,  
+We will deploy Spatial Analytics into a new namespace 'spatial-analytics', so create a namespace first,  
 ```kubectl create ns spatial-analytics```
 
 Create a PVC in the namespace that dynamically provisioning a PV using efs-sc storage class,  
@@ -148,7 +152,7 @@ Check results, wait until the pvc status becomes Bound.
 ## Step 5: Prepare a database for repository
 A MongoDB replica set is used to persistent repository content.
 
-For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/)
+For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
 
 
 If you have a MongoDB replica set that can be accessed from inside the Kubernetes cluster, then collect the connection uri for further service config.
@@ -191,7 +195,7 @@ helm upgrade --install spatial-analytics  --version 1.1.0 \
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
  --set "global.registry.tag=1.1.0" \ 
  --set "global.registry.secrets=regcred" \ 
- -f ./charts/spatial-cloud-native/gitlab-deployment-values.yaml \
+ -f ./deploy/gitlab-deployment-values.yaml \
  --namespace spatial-analytics   
 ```
 
@@ -207,7 +211,7 @@ This should install Spatial Analytics APIs and set up a sample dataset that can 
 
 For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md#helm-values).
 
-After all the pods in namespace 'spatial-analytics' are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps. https://<your external ip>/SpatialServerManager
+After all the pods in namespace 'spatial-analytics' are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps. The link to Spatial Manager: `https://<your external ip>/SpatialServerManager`
 
 ## Step 7: Monitoring Spatial Analytics Helm Chart Installation
 

@@ -22,7 +22,9 @@ feature-service:
   requestMemory: "2Gi"
   limitMemory: "2Gi"
   initReplicaCount: 1
-  hpaEnabled: false
+  maxReplicaCount: 1
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
 
 mapping-service:
   requestCPU: "100m"
@@ -30,7 +32,9 @@ mapping-service:
   requestMemory: "2Gi"
   limitMemory: "2Gi"
   initReplicaCount: 1
-  hpaEnabled: false
+  maxReplicaCount: 1
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
   
 namedresource-service:
   requestCPU: "100m"
@@ -38,7 +42,9 @@ namedresource-service:
   requestMemory: "2Gi"
   limitMemory: "2Gi"
   initReplicaCount: 1
-  hpaEnabled: false
+  maxReplicaCount: 1
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
 
 tiling-service:
   requestCPU: "100m"
@@ -46,7 +52,9 @@ tiling-service:
   requestMemory: "2Gi"
   limitMemory: "2Gi"
   initReplicaCount: 1
-  hpaEnabled: false
+  maxReplicaCount: 1
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
   
 spatialmanager-service:
   requestCPU: "100m"
@@ -54,7 +62,9 @@ spatialmanager-service:
   requestMemory: "2Gi"
   limitMemory: "2Gi"
   initReplicaCount: 1
-  hpaEnabled: false
+  maxReplicaCount: 1
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
 
 # END
 

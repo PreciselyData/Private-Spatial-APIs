@@ -15,7 +15,7 @@ addons:
 
 managedNodeGroups:
   - name: spatial-analytics-worker
-    instanceType: c7g.xlarge
+    instanceType: c7a.xlarge
     minSize: 1
     maxSize: 5
     desiredCapacity: 1
