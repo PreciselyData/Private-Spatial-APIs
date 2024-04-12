@@ -76,4 +76,5 @@ spec:
             name: keycloak-service
             port:
               number: 8080
-          
+
+    host: {{ .Values.hostname | quote }}

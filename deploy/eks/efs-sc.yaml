@@ -7,7 +7,7 @@ mountOptions:
   - tls
 parameters:
   provisioningMode: efs-ap
-  fileSystemId: fs-0b136b2448de1788b
+  fileSystemId: fs-0ea8e43d3eb855efc
   directoryPerms: "700"
   gidRangeStart: "1000"
   gidRangeEnd: "2000"
