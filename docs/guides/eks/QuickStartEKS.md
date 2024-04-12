@@ -145,7 +145,9 @@ We will deploy Spatial Analytics into a new namespace 'spatial-analytics', so cr
 ```kubectl create ns spatial-analytics```
 
 Create a PVC in the namespace that dynamically provisioning a PV using efs-sc storage class,  
+
 ```kubectl apply -f ./deploy/eks/efs-pvc.yaml -n spatial-analytics```  
+
 Check results, wait until the pvc status becomes Bound.  
 ```kubectl get pvc -n spatial-analytics```
 
@@ -182,7 +184,7 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
 
 Create a secret for pulling image from ECR repository  
-```
+```shell
 kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.ecr.[aws_region].amazonaws.com   --docker-username=AWS   --docker-password=$(aws ecr get-login-password --region [aws-reqion]) --namespace=spatial-analytics
 ```
 To install/upgrade the Spatial Analytics helm chart, use the following command:
@@ -222,7 +224,7 @@ kubectl get pods -w --namespace spatial-analytics
 
 When all the pods are up, you can run the following command to check the ingress service host:
 ```shell
-kubectl get services --namespace spatial-analytics 
+kubectl get services -o wide  nginx-ingress-ingress-nginx-controller
 ```
 
 ## Next Sections
