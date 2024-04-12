@@ -15,7 +15,10 @@ addons:
 
 managedNodeGroups:
   - name: spatial-analytics-worker
-    instanceType: t3.large
+    instanceType: c7g.xlarge
+    minSize: 1
+    maxSize: 5
+    desiredCapacity: 1
     iam:
       attachPolicyARNs:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
@@ -38,15 +41,14 @@ managedNodeGroups:
         autoScaler: true
         albIngress: true
         cloudWatch: true
-    minSize: 1
-    maxSize: 3
-    volumeSize: 50
+
+    volumeSize: 100
     labels: { node-app: spatial-analytics }
     tags:
       CreatedBy: Precisely
 
   - name: spatial-analytics-ingress
-    instanceType: t3.xlarge
+    instanceType: m5n.xlarge
     iam:
       attachPolicyARNs:
         - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
