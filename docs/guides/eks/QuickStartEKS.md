@@ -130,13 +130,14 @@ to create EFS and link it to EKS cluster, or directly link existing EFS to the E
   pip install -r requirements.txt
   python ./create_efs.py --cluster-name [eks-cluster-name] --existing true --aws-access-key [aws-access-key] --aws-secret [aws-secret-key] --aws-region [aws-region] --file-system-id [file-system-id]
   ```
-####Create a StorageClass for EFS Driver  
+  
+#### Create a StorageClass for EFS Driver  
 Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system.
 ```kubectl apply -f ./deploy/eks/efs-sc.yaml ```
 You can check the result by executing: ```kubectl get sc```  
 
-####Create a PVC  
-We will deploy spatial services into a new namespace 'spatial', so create a namespace first,  
+#### Create a PVC  
+We will deploy spatial services into a new namespace 'spatial-analytics', so create a namespace first,  
 ```kubectl create ns spatial-analytics```
 
 Create a PVC in the namespace that dynamically provisioning a PV using efs-sc storage class,  
@@ -144,10 +145,34 @@ Create a PVC in the namespace that dynamically provisioning a PV using efs-sc st
 Check results, wait until the pvc status becomes Bound.  
 ```kubectl get pvc -n spatial-analytics```
 
-## Step 5: Deploy Mongo DB
-A MongoDB replica set is used to persist the Spatial repository content. A Spatial repository contains metadata about the Spatial data.  
-You need to install [MongoDB](https://www.mongodb.com/products/integrations/kubernetes) if you don't have one already. If you have an instance available, just collect the connection string and credentials for further use. For the performance reason, keep the database instance as close to the cluster as possible.  
+## Step 5: Prepare a database for repository
+A MongoDB replica set is used to persistent repository content.
 
+For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/)
+
+
+If you have a MongoDB replica set that can be accessed from inside the Kubernetes cluster, then collect the connection uri for further service config.
+
+If you don't have a MongoDB replica set currently, for your convenience, you can deploy a single node MongoDB replica set for testing as below, otherwise, go to the next step.
+
+### Install a MongoDB instance by helm for testing
+
+Install MongoDB from helm chart
+```
+helm install mongo ./charts/mongo-standalone -n mongo --create-namespace
+```
+```
+kubectl get pod -n mongo
+```
+Wait until the mongo pod is ready
+```
+NAME                                      READY   STATUS    RESTARTS   AGE
+mongo-XXXXXXXXXX-XXXX                     1/1     Running   0          8m35s
+```
+This will install a single node replica set instance without authentication
+```
+connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
+```
 ## Step 6: Installation of Spatial Analytics Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
