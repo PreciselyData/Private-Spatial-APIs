@@ -1,0 +1,8 @@
+Spatial Manager service is installed in namespace {{ .Release.Namespace }}.
+
+Endpoint URL http://<host>:<port>/SpatialServerManager
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }} --namespace={{ .Release.Namespace }}
+  $ helm get all {{ .Release.Name }} --namespace={{ .Release.Namespace }}

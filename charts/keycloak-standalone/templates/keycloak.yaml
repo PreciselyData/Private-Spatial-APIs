@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+      annotations:
+    spec:
+      containers:
+        - name: keycloak
+          # Note: 24.0.1 has issues in dev mode that admin-console cannot login in modern browsers:
+          image: "quay.io/keycloak/keycloak:23.0.7"
+          imagePullPolicy: Always
+          command: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: {{ .Values.adminUser | quote }}
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: {{ .Values.adminPassword | quote }}
+            - name: KC_HOSTNAME
+              value: {{ .Values.hostname | quote }}
+            - name: KC_HTTP_RELATIVE_PATH
+              value: "/auth"
+          ports:
+            - containerPort: 8080
+              name: tcp
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 2
+              memory: 1Gi
+              
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: keycloak
+  name: keycloak-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: keycloak
+ 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /auth
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak-service
+            port:
+              number: 8080
+
+    host: {{ .Values.hostname | quote }}

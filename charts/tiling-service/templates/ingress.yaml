@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tiling-service
+spec:
+  ingressClassName: "nginx"
+  rules:
+  {{- if .Values.global }}
+  - host: {{ .Values.global.ingress.host | quote }}
+  {{- else }}
+  - host: {{ .Values.ingress.host | quote }}
+  {{- end }}
+    http:
+      paths:
+      - path: /rest/Spatial/WMTS
+        pathType: Prefix
+        backend:
+          service:
+            name: tiling-service
+            port:
+              number: 8080
+      - path: /rest/Spatial/MapTilingService
+        pathType: Prefix
+        backend:
+          service:
+            name: tiling-service
+            port:
+              number: 8080

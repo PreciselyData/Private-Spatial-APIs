@@ -1,0 +1,72 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: namedresource-service
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: "nginx"
+  rules:
+  {{- if .Values.global }}
+  - host: {{ .Values.global.ingress.host | quote }}
+  {{- else }}
+  - host: {{ .Values.ingress.host | quote }}
+  {{- end }}
+    http:
+      paths:
+      - path: /rest/Spatial/NamedResourceService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /rest/Spatial/ProjectService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /rest/Spatial/MIProAddinService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /rest/Spatial/AccessControlService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /rest/Spatial/GeometryService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /soap/NamedResourceService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /soap/GeometryService
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /(security|oauth2|login|logout)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080

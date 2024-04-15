@@ -1,0 +1,10 @@
+image:
+  tag: 7.0
+credentials:
+  rootUsername: mongoadmin
+  rootPassword: admin
+resources:
+  requestCPU: 500m
+  requestMemory: 512Mi
+  limitCPU: 2000m
+  limitMemory: 2Gi

@@ -1,0 +1,78 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: spatial-analytics
+  region: us-east-1
+  version: "1.29"
+
+addons:
+  - name: vpc-cni
+  - name: coredns
+  - name: kube-proxy
+  - name: aws-efs-csi-driver
+  - name: aws-ebs-csi-driver
+
+managedNodeGroups:
+  - name: spatial-analytics-worker
+    instanceType: c7a.xlarge
+    minSize: 1
+    maxSize: 5
+    desiredCapacity: 1
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+        - arn:aws:iam::aws:policy/AutoScalingFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess
+        - arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy
+      withAddonPolicies:
+        externalDNS: true
+        certManager: true
+        imageBuilder: true
+        ebs: true
+        fsx: true
+        efs: true
+        appMesh: true
+        xRay: true
+        autoScaler: true
+        albIngress: true
+        cloudWatch: true
+
+    volumeSize: 100
+    labels: { node-app: spatial-analytics }
+    tags:
+      CreatedBy: Precisely
+
+  - name: spatial-analytics-ingress
+    instanceType: m5n.xlarge
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+        - arn:aws:iam::aws:policy/AutoScalingFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess
+        - arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy
+      withAddonPolicies:
+        externalDNS: true
+        certManager: true
+        imageBuilder: true
+        ebs: true
+        fsx: true
+        efs: true
+        appMesh: true
+        xRay: true
+        autoScaler: true
+        albIngress: true
+        cloudWatch: true
+    desiredCapacity: 1
+    labels: { node-app: spatial-analytics-ingress }
+    volumeSize: 50
+    tags:
+      CreatedBy: Precisely

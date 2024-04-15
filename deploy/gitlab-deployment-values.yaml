@@ -1,0 +1,69 @@
+###
+#   Values for deployment using GitLab container registry
+###
+
+# Global
+global:
+  registry:
+    url: ""
+    tag: latest
+    secrets: regcred
+  ingress:
+    host: 
+
+repository:
+  mongodb:
+    url: "mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false"
+ 
+# Individual service overrides
+feature-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+
+mapping-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+  
+namedresource-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+
+tiling-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+
+spatialmanager-service:
+  requestCPU: "4"
+  requestMemory: "2G"
+  limitCPU: "4"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+
+# END
+

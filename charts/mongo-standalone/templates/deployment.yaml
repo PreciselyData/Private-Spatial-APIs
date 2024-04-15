@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+      annotations:
+        spatial.build: {{ .Values.build | default .Chart.Version | quote }}
+    spec:
+      containers:
+        - name: mongo
+          image: "mongo:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "{{ .Values.credentials.rootUsername }}"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "{{ .Values.credentials.rootPassword }}"
+          ports:
+            - containerPort: 27017
+              name: tcp
+              protocol: TCP
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+            - name: mongo-config
+              mountPath: /data/configdb
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requestCPU }}
+              memory: {{ .Values.resources.requestMemory }}
+            limits:
+              {{- if .Values.resources.limitCPU }}
+              cpu: {{ .Values.resources.limitCPU }}
+              {{- end }}
+              memory: {{ .Values.resources.limitMemory }}
+          startupProbe:
+            exec:
+              command: ["/bin/sh","-c","echo \"try { rs.status() } catch (err) { rs.initiate() }\" | mongosh --port 27017 --quiet"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: 27017
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+            periodSeconds: 2
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 2
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","sleep 15"]
+      volumes:
+        - name: mongo-data
+          emptyDir: {}
+        - name: mongo-config
+          emptyDir: {}
+      terminationGracePeriodSeconds: 60

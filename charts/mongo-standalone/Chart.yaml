@@ -1,0 +1,12 @@
+apiVersion: v1
+name: mongo
+description: Deploys a single node MongoDB replica set for testing
+version: "1.1.0"
+appVersion: "7.0"
+keywords:
+- mongo
+- replicaset
+- database
+home: https://github.com/docker-library/mongo/tree/master/7.0
+sources:
+- https://github.com/docker-library/mongo/tree/master/7.0

@@ -1,0 +1,28 @@
+# Default values for platform.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Image registry
+registry:
+  url: "registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-web-framework"
+  tag: "latest"
+  secrets: "regcred-gitlab"
+
+# HPA counts
+initReplicaCount: 1
+maxReplicaCount: 4
+
+# Resources
+requestCPU: "100m"
+limitCPU: "4"
+
+requestMemory: "1Gi"
+limitMemory: "2Gi"
+
+# Ingress
+ingress:
+  # A specific host should be specified when deploying into a namespace other than default.
+  #   For convenience, a hostname in nip.io domain can be used,
+  #     "spatial.<namespace>.172-30-33-53.nip.io"
+  #
+  host: ""

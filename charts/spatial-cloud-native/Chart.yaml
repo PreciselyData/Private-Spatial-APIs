@@ -1,0 +1,31 @@
+apiVersion: v2
+name: spatial-cloud-native
+description: A Helm chart for deploying spatial-cloud-native
+
+type: application
+
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 1.1.0
+
+appVersion: ${appVersion}
+
+dependencies:
+  - name: "namedresource-service"
+    version: "1.1.0"
+    repository: "file://../namedresource-service"
+  - name: "tiling-service"
+    version: "1.1.0"
+    repository: "file://../tiling-service"
+  - name: "mapping-service"
+    version: "1.1.0"
+    repository: "file://../mapping-service"
+  - name: "feature-service"
+    version: "1.1.0"
+    repository: "file://../feature-service"
+  - name: "spatialmanager-service"
+    version: "1.1.0"
+    repository: "file://../spatialmanager-service"
+  - name: "upload-samples"
+    version: "1.1.0"
+    repository: "file://../upload-samples"
+
