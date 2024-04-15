@@ -29,11 +29,11 @@ helm -h
 git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
 ```
 
-## Step 2: Create K8s Cluster (EKS)
+## Step 2: Create K8s Cluster (GKE)
 
 Also see Google Cloud Document https://cloud.google.com/kubernetes-engine?hl=en
 
-Note: a GKE Autopilot cluster is used in this doc. A Standard mode cluster can also be used but it has extra steps required that are not covered here.
+> NOTE: a GKE Autopilot cluster is used in this doc. A Standard mode cluster can also be used but it has extra steps required that are not covered here.
 
 ### Create GKE cluster
 
@@ -62,7 +62,7 @@ You may see no resources at beginning as no pods deployed yet.
 ```
 No resources found
 ```
-Note: if the cluster version was not found, using the following command to list all valid cluster versions. Looking for one under REGULAR channel.
+> NOTE: if the cluster version was not found, using the following command to list all valid cluster versions. Looking for one under REGULAR channel.
 ```
 gcloud container get-server-config
 ```
@@ -201,7 +201,7 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 
 There are two deployment files to choose from that require different amount of resources (CPU and Memory). Start from the small one (`~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-small-values.yaml`). A production deployment should use `~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
 
-Note: if you are not using MongoDB deployed from this guide, you need to update the mongo uri in the values file before install.
+> NOTE: if you are not using MongoDB deployed from this guide, you need to update the mongo uri in the values file before install.
 
 ```
 helm install spatial ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
@@ -279,7 +279,7 @@ Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It ma
 Open a browser and login to keycloak console with the admin credentials (default to admin/admin) at
 `http://<ingress external ip>/auth`
 
-Note: this keycloak server is running in DEV mode, only use HTTP to login to admin-console.
+> NOTE: this keycloak server is running in DEV mode, only use HTTP to login to admin-console.
 
 ### Create a realm for spatial services
 
@@ -311,7 +311,7 @@ oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
-Note: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
+> NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
 
 Restart all services to pick up the configuration changes
 ```
