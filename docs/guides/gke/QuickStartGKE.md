@@ -253,7 +253,7 @@ A `Keycloak` (18.0.0+) is used for authentication and authorization.
 
 General service flow,
 
-<img src="../../../images/security-flow.png"  width="685" height="782">
+<img src="../../../images/security-flow.png"  width="686" height="783">
 
 
 Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. SCN is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
