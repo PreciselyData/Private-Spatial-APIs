@@ -1,1 +1,0 @@
-Spatial Precisely realm is installed into Keycloak in namespace {{ .Release.Namespace }}.

@@ -7,8 +7,7 @@
 This guide is applicable in the following situations:
 
 1. Upgrading to newer versions of the chart.
-2. Upgrading to the newer reference dataset.
-3. Upgrading to the newer version of Geo-Addressing SDK releases.
+3. Upgrading to the newer version of Spatial Analytics releases.
 4. Applying changes to `values.yaml` file.
 
 ## Step 2 - Apply your changes
@@ -18,9 +17,9 @@ This guide is applicable in the following situations:
 helm repo update
 
 ## apply the changes values.yaml file AND upgrade the chart to newer version
-helm upgrade --install geo-addressing ./charts/geo-addressing \
+helm upgrade --install spatial-analytics ./charts/spatial-cloud-native \
 --dependency-update \
---namespace geo-addressing --create-namespace \
+--namespace spatial-analytics --create-namespace \
 --version [updated-version]
 ```
 
