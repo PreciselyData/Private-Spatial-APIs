@@ -107,8 +107,15 @@ There are six docker images which will be pushed to ECR with the tag of helm cha
 For more details related to docker images download script, follow the instructions [here](../../../scripts/images-to-ecr-uploader/README.md)
 
 ## Step 4: Create a Persistent Volume
-The Spatial Analytics Application supports caching of map tiles, file based spatial data and can be extended by
-adding custom data access providers and symbology. This spatial data should be deployed using a [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+A PV (Persistent Volume) is required to share files across all services (pods), including
+- File based Spatial data sets, such as Mapinfo TAB, Shape, GeoPackage and Geodatabase etc.
+- Tile cache
+- Map image cache
+- Custom Symbols
+- Extended DataProviders
+- JDBC drivers  
+
+This spatial data should be deployed using a [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 The persistent volume is backed by Amazon Elastic File System (EFS) so that the data is ready to use immediately when the
 volume is mounted to the pods.
 
