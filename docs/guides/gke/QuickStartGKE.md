@@ -333,9 +333,16 @@ Please follow the user guide for how to apply permissions and other security rel
 ### IDP Federation
 Keycloak Federation allows you to authenticate users from your own IDP (such as LDAP) and map user roles to spatial client roles for authorization. Referring to Keycloak documents for the details.
 
+## Step 8: Use Spatial Utilities
+There are various utilities for:
+- Generating MapTiling requests
+- Generating Map tiles for the WMTS service
+- Uploading maps from MapInfo Pro to the Spatial repository
+- Importing and exporting Spatial repository.
+
+More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Utilities](../../guides/spatial-utilities.md)
 - [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
 - [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
 - [FAQs](../../faq/FAQs.md)
