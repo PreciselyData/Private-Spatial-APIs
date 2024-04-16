@@ -335,6 +335,7 @@ Keycloak Federation allows you to authenticate users from your own IDP (such as 
 
 
 ## Next Sections
+- [Spatial Utilities](../../guides/spatial-utilities.md)
 - [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
 - [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
 - [FAQs](../../faq/FAQs.md)

@@ -328,6 +328,7 @@ Please follow the user guide for how to apply permissions and other security rel
 Keycloak Federation allows you to authenticate users from your own IDP (such as LDAP) and map user roles to spatial client roles for authorization. Referring to Keycloak documents for the details.
 
 ## Next Sections
+- [Spatial Utilities](../../guides/spatial-utilities.md)
 - [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
 - [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
 - [FAQs](../../faq/FAQs.md)
