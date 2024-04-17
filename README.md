@@ -35,8 +35,27 @@
 > Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
 
 ## Architecture
-TODO
-![architecture.png](images/spatial_analytics_architecture.png)
+The following diagram shows an overview of Spatial Cloud Native.
+
+![architecture.png](images/spatial_cloud_native_architecture.png)
+
+Spatial Cloud Native enables an organization to rapidly integrate location information into business applications and processes. This enables organizations to create and embed maps, understand spatial relationships, and carry out spatial calculations.
+
+The deployment is available as Micro Services architecture which can be deployed into cloud native Kubernetes environments such as Microsoft Azure (AKS), Amazon Web Services (EKS) and Google Cloud Platform (GKS) and scaled as needed.
+
+### Capabilities
+Following are the main components of architecture:
+
+- _Spatial Manager_: The foundation of Spatial Cloud Native is the spatial repository which is managed by the Spatial Manager application.
+It allows users to create connections to supported data sources and to then configure tables, layers, maps, tiles, and styles which are used in the APIs.
+These are collectively known as “Named Resources”. The named resources are persisted to a MongoDB database which is a pre-requisite for the deployment.
+- _REST Feature Service / OGC Web Feature Service (WFS)_: Serves geographical features in a vector format such as Geo JSON or GML. Requests are essentially a query with spatial and attribute filters.
+- _REST Mapping Service / OGC Web Map Service (WMS)_: Serves georeferenced map images which can be dynamically specified. Requests can include a bounding box or center and width along with the maps and layers to use and their styles.
+- _REST Map Tiling Service / OGC Web Map Tiling Service (WMTS)_: The Map Tiling Service returns map tiles on the fly or from a tile cache at the user's request. Both image-based tiles and vector tiles can be served.
+- _Supporting APIs_: The supporting services are there to facilitate integration with Precisely web and desktop applications. All these services are internal and not intended for use direct use.
+- _External / Other Services_: 
+  - MongoDB Database: This is a required pre-requisite. The named resources managed by Spatial Cloud Native using Spatial Manager are persisted to a MongoDB database.
+  - Keycloak: This is an optional service but is required if role-based access control (RBAC) is needed for individual named resources. You can use it as an IDP allowing SSO, User/Role provisioning & ACL management.  
 
 
 ### Components
