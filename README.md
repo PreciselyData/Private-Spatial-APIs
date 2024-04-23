@@ -64,16 +64,9 @@ These are collectively known as “Named Resources”. The named resources are p
 - [Helm Charts](charts/README.md)
 
 ## Guides
-
-- [Quickstart Guide EKS](./docs/guides/eks/QuickStartEKS.md)
-- [Upgrade Guide EKS](./docs/guides/eks/UninstallGuide.md)
-- [Uninstall Guide EKS](./docs/guides/eks/UpgradeGuide.md)
-- [Quickstart Guide GKE](./docs/guides/gke/QuickStartGKE.md)
-- [Uninstall Guide GKE](./docs/guides/gke/UpgradeGuide.md)
-- [Upgrade Guide GKE](./docs/guides/gke/UninstallGuide.md)
-- [Quickstart Guide AKS](./docs/guides/aks/QuickStartAKS.md)
-- [Uninstall Guide AKS](./docs/guides/gke/UpgradeGuide.md)
-- [Upgrade Guide AKS](./docs/guides/aks/UninstallGuide.md)
+- Quickstart Guide: [EKS](./docs/guides/eks/QuickStartEKS.md) | [GKE](./docs/guides/gke/QuickStartGKE.md) | [AKS](./docs/guides/aks/QuickStartAKS.md)
+- Upgrade Guide: [EKS](./docs/guides/eks/UninstallGuide.md) | [GKE](./docs/guides/gke/UpgradeGuide.md) | [AKS](./docs/guides/aks/UpgradeGuide.md) 
+- Uninstall Guide: [EKS](./docs/guides/eks/UpgradeGuide.md) | [GKE](./docs/guides/gke/UninstallGuide.md) | [AKS](./docs/guides/aks/UninstallGuide.md) 
 
 ## Installing Spatial Analytics Helm Chart
 ### 1. Prepare your environment
