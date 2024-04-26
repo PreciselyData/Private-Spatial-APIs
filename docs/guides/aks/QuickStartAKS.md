@@ -277,17 +277,111 @@ capacity can be enlarged after creation. Select the NFS protocol
 
 Create the Fileshares.
 
-
-
 #### 4.5 Create PersistentVolume (PV) and PersistentVolumeClaim (PVC)
+```shell
+cd SpatialAnalytics/deploy/azure-aks
+```
+##### Create PV from the Fileshares
+If you used different names of resource group and storage account, find
+out the actual NFS server name and path as below and update the template
+before creating PV, otherwise, you can skip the following part.\
+In Azure portal, go to the
+
+spatialstorage001 → Fileshares → fileshares
+
+###### Find connection server info for fileshares
+![Fileshares connect from linux](images/file-shares-connect.png "Fileshares connect from linux")
+
+After clicking on `Connect from Linux` it should display with information that can be used to mount Fileshares.
+we need server information so we can update `fileshare-pv.yaml`.
+
+![Fileshares connect from linux server info](images/file-shares-connect-string.png "Fileshares connect from linux  server info")
+
+Update the server and path in `fileshare-pv.yaml` if
+needed,
+
+**fileshare-pv.yaml**
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-volume
+  labels:
+    app: spatial
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  mountOptions:
+    - hard
+  nfs: #update server name and or path as needed based on storage creation
+    server: spatialstorage001.file.core.windows.net
+    path: /spatialstorage001/fileshares
+```
+create the PV from the template file (making sure your
+current directory is `cloudnative-spatial-analytics-helm/deploy/azure-aks`)
+
+```shell
+kubectl apply -f fileshare-pv.yaml
+```
+
+To verify
+
+```shell
+kubectl get pv
+```
+
+```shell
+NAME          CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+data-volume   100Gi      RWX            Retain           Available                                   13s
+```
+
+### Create PVC from the Fileshares PV
+
+In Cloud Shell, create the PVC from the template file
+
+**fileshare-pvc.yaml**
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-volume-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 100Gi
+  selector: 
+    matchLabels: 
+      app: spatial
+```
+
+```shell
+kubectl apply -f fileshare-pvc.yaml
+```
+
+To verify
+```shell
+kubectl get pvc
+```
+```shell
+NAME                STATUS   VOLUME        CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-volume-claim   Bound    data-volume   100Gi      RWX                           15s
+```
+Make sure the PVC is bound to the PV successfully.
 
 
 ## Step 5: Prepare a database for repository
 A MongoDB replica set is used to persistent repository content.
 
 For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
-
-
+\
 If you have a MongoDB replica set that can be accessed from inside the Kubernetes cluster, then collect the connection uri for further service config.
 
 If you don't have a MongoDB replica set currently, for your convenience, you can deploy a single node MongoDB replica set for testing as below, otherwise, go to the next step.
