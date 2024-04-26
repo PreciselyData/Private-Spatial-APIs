@@ -99,7 +99,7 @@ to find the commands to add the context to kubectl.
 
 ---
 **Note** az command is bound to a subscription, if the resource group is
-not in the current subscription, then need to switch.) Open the Cloud
+not in the current subscription, then need to switch) Open the Cloud
 Shell
 
 ---

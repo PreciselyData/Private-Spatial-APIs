@@ -1,43 +1,106 @@
-# Installing Geo-Addressing Helm Chart on AWS EKS
+# Installing Spatial Analytics Helm Chart on Azure AKS
 
 ## Step 1: Prepare your environment
-
-To deploy the Geo-Addressing application in AWS EKS, install the following client tools:
+To deploy Spatial Analytics application in Azure AKS, install the following client tools:
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [helm3](https://helm.sh/docs/intro/install/)
+- [Docker](https://docs.docker.com/engine/install/)
 
-##### Amazon Elastic Kubernetes Service (EKS)
+##### Azure Kubernetes Service (AKS)
 
-- [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
-- [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
 
-## Step 2: Create the EKS Cluster
+### Clone Spatial Analytics helm charts & resources
+```
+git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
+```
 
-You can create the EKS cluster or use existing EKS cluster.
+## Step 2: Create K8s Cluster (EKS)
 
-- If you DON'T have EKS cluster, we have provided you with a
-  sample [cluster installation script](../../../cluster-sample/create-eks-cluster.yaml). Run the following command from
-  parent directory to create the cluster using the script:
-    ```shell
-    eksctl create cluster -f ./cluster-sample/create-eks-cluster.yaml
-    ```
+You can create an AKS cluster or use an existing EKS cluster.
+\
+### 2.1 Create an AKS Cluster 
+Follow these steps to create AKS cluster by using Azure portal.
+![aks](images/kubernetes-service.PNG "aks")
 
-- If you already have an EKS cluster, make sure you have following addons or plugins related to it, installed on the
-  cluster:
-    ```yaml
-    addons:
-    - name: vpc-cni
-    - name: coredns
-    - name: kube-proxy
-    - name: aws-efs-csi-driver
-    ```
-  Run the following command to install addons only:
-    ```shell
-    aws eks --region [aws-region] update-kubeconfig --name [cluster-name]
-    
-    eksctl create addon -f ./cluster-sample/create-eks-cluster.yaml
-    ```
+Default Spatial-Cloud-Native deployment will need 30 vCPUs + 15GB RAM.
+It is good to start from a single node AKS cluster with `F32s_v2` VM. It
+has 32 vCPUs + 64GB RAM.
+
+In Azure portal, Create → Create a Kubernetes Cluster
+![create aks](images/create-kubernetes-services-1.PNG "create aks")
+
+#### Specify information for cluster
+![create aks-details](images/create-kubernetes-services-2.png "create aks-details")
+
+Create a new Resource group `spatial-aks` for this AKS cluster
+
+Kubernetes cluster name -> `spatial32`\
+Kubernetes version -> `1.23.8`\
+Node size -> Change size -> F32s_v2\
+Scale method -> `Manual`\
+Node count -> `1`
+
+---
+**NOTE** Create tag if you want to manage resource usage by application tag
+
+---
+Create the AKS cluster (It may take some time to get provisioned).
+
+### 2.2 Connect to AKS Cluster
+\
+These steps assume that you have installed Azure CLI on your local PC. Alternatively, you can also use Azure Cloud Shell as a bridge to manage the cluster and move
+data to the Fileshares.  \
+
+for using Azure Cloud Shell:
+At the home page of Azure portal, click on the Azure Cloud Shell icon
+(next to the search field), following the instructions to enable the
+Bash (you may need to create a storage Fileshares if you are first time
+using the Cloud
+Shell).
+#### Set kubectl context to AKS cluster
+\
+In Azure portal, go to
+
+spatial-aks → spatial32,
+and click on `Connect`
+
+to find the commands to add the context to kubectl.
+![azure shell select subscription](images/select-subscription-shell.png "azure shell select subscription")
+
+>Note: ``az`` command is bound to a subscription, if the resource group is
+not in the current subscription, then need to switch.) Open the Cloud
+Shell
+
+Clicking on `Open Cloud Shell` will also run the both az commands automatically and reset the cloud
+shell if it was already open
+
+
+```shell
+az account set --subscription 385ad333-7058-453d-846b-xxxxxxxxx
+```
+
+```shell
+az aks get-credentials --resource-group spatial-aks --name spatial32
+```
+
+```shell
+kubectl config use-context spatial32 && \
+kubectl config current-context
+
+\
+Now kubectl is set default to the AKS spatial32 cluster. You can check
+the status of the nodes
+```shell
+kubectl get nodes
+```
+```shell
+NAME                                STATUS   ROLES   AGE    VERSION
+aks-agentpool-39271417-vmss000000   Ready    agent   106s   v1.23.8
+```
+
+### Cluster Additional  
 - Once you create EKS cluster, you can
   apply [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) so that the
   cluster can be scaled vertically as per requirements. We have provided a sample cluster autoscaler script. Please run
@@ -51,156 +114,361 @@ You can create the EKS cluster or use existing EKS cluster.
     ```shell
     kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
     ```
-- The geo-addressing service requires ingress controller setup. Run the following command for setting up NGINX ingress controller:
+
+###  2.3 Install Ingress-NGINX controller
+> Note: If you would like to setup TLS for HTTPS traffic follow official azure docs: https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
+The spatial-analytics service requires ingress controller setup. 
+
+Run the following command for setting up NGINX ingress controller:
   ```shell
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-  helm install nginx-ingress ingress-nginx/ingress-nginx -f ./cluster-sample/ingress-values.yaml
+  helm repo update
+  kubectl create ns ingress-nginx
+  helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
   ```
-  *Note: You can update the nodeSelector according to your cluster's ingress node.*
-
+  
   Once ingress controller setup is completed, you can verify the status and get the ingress URL by using the following command:
   ```shell
-  kubectl get services -o wide -w nginx-ingress-ingress-nginx-controller    
+  kubectl get services -o wide -w nginx-ingress-ingress-nginx-controller  -n ingress-nginx  
   ```
 
-**NOTE**: EKS cluster must have the above addons and ingress for the east of installation of Geo-Addressing Helm Chart.
+> Make a note of EXTERNAL-IP, it will be used for later steps.
 
-## Step 3: Download Geo-Addressing Docker Images
+## Step 3: Download Spatial Analytics Docker Images
 
-The docker files can be downloaded from Precisely's Data Portfolio. For information about Precisely's data portfolio,
+The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
-access softwares, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
+access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
 
-This projects assumes the docker images to be present in the ECR. However, if you haven't pushed the required docker
-images in the ECR, we have provided you with the sample scripts to download the docker images
-from [Precisely Data Experience](https://data.precisely.com/)
-and push it to your Elastic Container Repositories.
+After download, the docker images need to be pushed to a container registry. You can create Azure Container Registry by following [these](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-) steps if you don't have one. Then you can use a script [push-images](../../../scripts/aks/push-images.sh) to push the docker images to container registry.
 
-(Note: This script requires python, docker and awscli to be installed in your system)
+>Note: This script requires **[Docker](https://docs.docker.com/engine/install/)** and **[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli)** to be installed in your system.
+
+Log in to your Azure Container Registry:
+```shell
+az login
+az acr login --name <azure_container_registry>
+```
+Run the shell script to push images to Azure Container Registry:
+```shell
+cd cloudnative-spatial-analytics-helm
+chmod a+x ./scripts/aks/push-images.sh
+./scripts/aks/push-images.sh <azure_container_registry>.azurecr.io
+```
+You can also load images one by one if there's no enough disk space available
+```shell
+./scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
+```
+List images in the registry:
+``az acr repository list --name <azure_container_registry> --output table``
+
+There are six docker images which will be pushed to container registry:
+1. feature-service
+2. mapping-service
+3. tiling-service
+4. namedresource-service
+5. spatialmanager-service
+6. samples-data
+
+## Step 4: Create a Persistent Volume
+A PV (Persistent Volume) is required to share files across all services (pods), including
+- File based Spatial data sets, such as Mapinfo TAB, Shape, GeoPackage and Geodatabase etc.
+- Tile cache
+- Map image cache
+- Custom Symbols
+- Extended DataProviders
+- JDBC drivers
+
+This spatial data should be deployed using a [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+The persistent volume is backed by Azure File share so that the data is ready to use immediately when the
+volume is mounted to the pods.
+\
+\
+By default, Azure File shares use SMB protocol that doesn't perform
+well with Spatial-Cloud-Native deployment. We recommend the NFS protocol.
+Also, see:\
+[https://docs.microsoft.com/en-us/azure/aks/azure-files-volume](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)\
+[https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-files](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-files)\
+[https://docs.microsoft.com/en-us/azure/storage/files/storage-files-scale-targets](https://helm.sh/docs/chart_template_guide/values_files/)\
+[https://docs.microsoft.com/en-us/azure/storage/files/storage-troubleshooting-files-performance](https://docs.microsoft.com/en-us/azure/storage/files/storage-troubleshooting-files-performance)
+
+###  4.1 Register the NFS feature to Subscription ID
+To use the NFS Fileshares, the feature needs to be registered to your
+Subscription ID first.
 
 ```shell
-cd ./scripts/images-to-ecr-uploader
-pip install -r requirements.txt
-python upload_ecr.py --pdx-api-key [pdx-api-key] --pdx-api-secret [pdx-secret] --aws-access-key [aws-access-key] --aws-secret [aws-secret] --aws-region [aws-region]
+az feature register --name AllowNfsFileShares --namespace Microsoft.Storage --subscription 78f8b96e-f0bf-47a9-81b6-xxxxxx
 ```
+\
+\
+It may take an hour to get approved. Check and wait until the state
+becomes "**Registered**",
 
-There are two docker container images which will be pushed to ECR with the tag of helm chart version.
-
-1. Feature Service
-2. Mapping Service
-3. Map Tiling Service
-2. Access Control Service
-
-For more details related to docker images download script, follow the
-instructions [here](../../../scripts/images-to-ecr-uploader/README.md)
-
-## Step 4: Create Elastic File System (EFS)
-
-The Geo-Addressing Application requires reference data for geo-addressing capabilities. This reference data should be
-deployed using [persistent volume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/). This persistent
-volume is backed by Amazon Elastic File System (EFS) so that the data is ready to use immediately when the volume is
-mounted to the pods.
-
-We have provided python script to create EFS and link it to EKS cluster, or directly link existing EFS to the EKS cluster by creating mount targets.
-
-**NOTE: If you already have created mount targets for the EFS to EKS cluster, skip this step.**
-
-- If you DON'T have existing EFS, run the following commands:
-  ```shell
-  cd ./scripts/efs-creator
-  pip install -r requirements.txt
-  python ./create_efs.py --cluster-name [eks-cluster-name] --aws-access-key [aws-access-key] --aws-secret [aws-secret] --aws-region [aws-region] --efs-name [precisely-geo-addressing-efs] --security-group-name [precisely-geo-addressing-sg]
-  ```
-
-- If you already have EFS, but you want to create mount targets so that EFS can be accessed from the EKS cluster, run the following command:
-  ```shell
-  cd ../scripts/efs-creator
-  pip install -r requirements.txt
-  python ./create_efs.py --cluster-name [eks-cluster-name] --existing true --aws-access-key [aws-access-key] --aws-secret [aws-secret-key] --aws-region [aws-region] --file-system-id [file-system-id]
-  ```
-
-## Step 5: Installation of Reference Data
-
-The Geo-Addressing Application relies on reference data for performing geo-addressing operations. For more information related to reference data, please refer to [this link](../../ReferenceData.md).
-
-
-You can make use of a [miscellaneous helm chart for installing reference data](../../../charts/reference-data-setup/README.md), please follow the instructions mentioned in the helm chart or run the below command for installing data in EFS or contact Precisely Sales Team for the reference data installation.
 ```shell
-helm install reference-data ./charts/reference-data-setup/ \
---set "global.pdxApiKey=[your-pdx-key]" \
---set "global.pdxSecret=[your-pdx-secret]" \
---set "global.efs.fileSystemId=[fileSystemId]" \
---set "dataDownload.image.repository=[reference-data-image-repository]" \
---dependency-update --timeout 60m
+az feature show --name AllowNfsFileShares --namespace Microsoft.Storage --subscription 78f8b96e-f0bf-47a9-81b6 xxxxxx
 ```
 
-## Step 6: Installation of Geo-Addressing Helm Chart
+```shell
+{
+"id": "/subscriptions/78f8b96e-f0bf-47a9-81b6-xxxxxx/providers/Microsoft.Features/providers/Microsoft.Storage/features/AllowNfsFileShares",
+"name": "Microsoft.Storage/AllowNfsFileShares",
+"properties": {
+"state": " Registered"
+},
+"type": "Microsoft.Features/providers/features"
+}
+```
+
+### 4.2 Create a Storage Account for Fileshares
+
+![azure storage](images/azure-storage.png "azure storage")
+
+#### Create a StorageClass for EFS Driver
+Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system & run:
+
+```kubectl apply -f ./deploy/eks/efs-sc.yaml ```
+
+You can check the result by executing:    
+```kubectl get sc```
+
+
+Storage Account → Create\
+Resource group → Create new → `spatial-fileshares`\
+Storage account name → `spatialstorage001`\
+Select performance → `Premium`\
+Select Premium account type → `File shares`
+
+Advanced → Security → Require secure transfer for REST API operations
+to allow HTTP → `Uncheck`\
+Click -> `Review + Create`\
+Click -> `Create`
+
+###  4.3 Configure virtual network
+
+\
+In Azure portal, go to spatial-fileshares → spatialstorage001, select
+Networking,\
+![storage aks networking](images/storage-connect-aks-network1.png "storage aks networking")
+
+Add existing virtual network from the resource group of spatial32 AKS
+cluster, so AKS cluster can access the NFS Fileshares.
+
+
+![storage aks networking 2](images/storage-connect-aks-network2.png "storage aks networking 2")
+
+And select the subnets, Enable..., Add...\
+Save ...
+
+##  4.4 Create a Fileshares
+
+In Azure portal, go to
+
+Home -> Resource Group -> spatial-fileshares ->
+spatialstorage001 -> File shares
+
+![Create File Shares](images/fileshare-create.PNG "Create File Shares")
+
+Add a Fileshares\
+Give a name `fileshares`
+
+Specify Provisioned capacity to 100GB (The size defines the cost and
+performance, check out the number of Maximum IO/s below it). The
+capacity can be enlarged after creation. Select the NFS protocol
+
+Create the Fileshares.
+
+
+
+#### 4.5 Create PersistentVolume (PV) and PersistentVolumeClaim (PVC)
+
+
+## Step 5: Prepare a database for repository
+A MongoDB replica set is used to persistent repository content.
+
+For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
+
+
+If you have a MongoDB replica set that can be accessed from inside the Kubernetes cluster, then collect the connection uri for further service config.
+
+If you don't have a MongoDB replica set currently, for your convenience, you can deploy a single node MongoDB replica set for testing as below, otherwise, go to the next step.
+
+### Install a MongoDB instance by helm for testing
+
+Install MongoDB from helm chart
+```
+helm install mongo ./charts/mongo-standalone -n mongo --create-namespace
+```
+```
+kubectl get pod -n mongo
+```
+Wait until the mongo pod is ready
+```
+NAME                                      READY   STATUS    RESTARTS   AGE
+mongo-XXXXXXXXXX-XXXX                     1/1     Running   0          8m35s
+```
+This will install a single node replica set instance without authentication
+```
+connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
+```
+## Step 6: Installation of Spatial Analytics Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
 
-To install/upgrade the geo-addressing helm chart, use the following command:
+There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
+
+Create a secret for pulling image from ECR repository
+```shell
+kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.ecr.[aws_region].amazonaws.com   --docker-username=AWS   --docker-password=$(aws ecr get-login-password --region [aws-reqion]) --namespace=spatial-analytics
+```
+To install/upgrade the Spatial Analytics helm chart, use the following command:
 
 ```shell
-helm upgrade --install geo-addressing ./charts/geo-addressing \
---dependency-update \
---set "global.awsRegion=[aws-region]" \ 
---set "global.efs.fileSystemId=[file-system-id]" \
---set "ingress.hosts[0].host=[ingress-host-name]" \ 
---set "ingress.hosts[0].paths[0].path=/precisely/addressing" \
---set "ingress.hosts[0].paths[0].pathType=ImplementationSpecific" \
---set "global.nodeSelector.node-app=geo-addressing" \
---set "image.repository=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com/regional-addressing-service" \
---set "global.addressingImage.repository=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com/addressing-service" \
---set "global.countries={usa,can,gbr}" \
---namespace geo-addressing --create-namespace
+helm upgrade --install spatial-analytics  --version 1.1.0 \
+ ./charts/spatial-cloud-native  --dependency-update  \
+ --set "global.ingress.host=[ingress-host-name]" \
+ --set "repository.mongodb.url=[mongodb-url]" \ 
+ --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
+ --set "global.registry.tag=1.1.0" \ 
+ --set "global.registry.secrets=regcred" \ 
+ -f ./deploy/gitlab-deployment-values.yaml \
+ --namespace spatial-analytics   
 ```
 
-By default, only verify/geocode functionality is enabled. 
-To enable other functionalities like autocomplete, lookup and
-reverse-geocode you have to set the parameters in helm command as follows.
+This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.
 
-```shell
---set "autocomplete-svc.enabled=true"
---set "lookup-svc.enabled=true"
---set "reverse-svc.enabled=true"
-```
-> NOTE: By default, the geo-addressing helm chart runs a hook job, which identifies the latest reference-data vintage mount path.
-> 
-> To override this behaviour, you can disable the addressing-hook by `addressing-hook.enabled` and provide manual reference data configuration using `global.manualDataConfig`.
-> 
-> Refer [helm values](../../../charts/geo-addressing/README.md#helm-values) for the parameters related to `global.manualDataConfig.*` and `addressing-hook.*`.
-> 
-> Also, for more information, refer to the comments in [values.yaml](../../../charts/geo-addressing/values.yaml)
-> 
+> Also, for more information, refer to the comments in [values.yaml](../../../charts/spatial-cloud-native/values.yaml)
 #### Mandatory Parameters
+* ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
+* ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
+* ``global.registry.url``: The ECR repository for Spatial Analytics docker image e.g. account_id.dkr.ecr.us-east-1.amazonaws.com
+* ``global.registry.tag``: The docker image tag value e.g. 1.1.0 or latest.
+* ``global.registry.secrets``: The name of the secret holding ECR credential information.
 
-* ``global.awsRegion``: AWS Region
-* ``global.efs.fileSystemId``: The ID of the EFS
-* ``global.countries``: Required countries for Geo-Addressing (e.g. ``--set "global.countries={usa,deu,gbr}"``).
-  Provide a comma separated list to enable a particular set of countries from: `{usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world}`
-* ``ingress.hosts[0].host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
-* ``ingress.hosts[0].paths[0].path``: The PATH at which the solution to be hosted. (e.g. ``/precisely/addressing``)
-* ``ingress.hosts[0].paths[0].pathType``: The pathType of the Ingress Path
-* ``image.repository``: The ECR image repository for the regional-addressing image
-* ``global.addressingImage.repository``: The ECR image repository for the addressing-service image
-* ``global.nodeSelector``: The node selector to run the geo-addressing solutions on nodes of the cluster
+For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md#helm-values).
 
-For more information on helm values, follow [this link](../../../charts/geo-addressing/README.md#helm-values).
-
-## Step 7: Monitoring Geo-Addressing Helm Chart Installation
-
-Once you run the geo-addressing helm install/upgrade command, it might take a couple of seconds to trigger the deployment. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
+Once you run Spatial Analytics helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
-kubectl get pods -w --namespace geo-addressing
+kubectl get pods -w --namespace spatial-analytics 
 ```
 
 When all the pods are up, you can run the following command to check the ingress service host:
 ```shell
-kubectl get services --namespace geo-addressing
+kubectl get services -o wide  nginx-ingress-ingress-nginx-controller
 ```
 
+
+After all the pods in namespace 'spatial-analytics' are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps. The link to Spatial Manager: `https://<your external ip>/SpatialServerManager`
+
+
+You can check HPA status while services are running
+```
+kubectl get hpa mapping-service
+```
+
+If you are using the OGC services please refer to the on-premise docs ([WFS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wfs_settings.html), [WMS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wms_settings.html), [WMTS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wmts_settings.html)) to configure the Online resource / Service URL with the public access url (Ingress EXTERNAL-IP).
+
+## Step 7: Enabling security - AuthN/AuthZ (Optional)
+A `Keycloak` (18.0.0+) is used for authentication and authorization.
+- Authenticate a user
+- Issue JWT token for an authenticated user
+- Verify the JWT token used in a service request
+- Resource based authorization
+- Manage users(realm)/roles(client)
+- Federate with other IDPs
+
+General service flow,
+
+<img src="../../../images/security-flow.png"  width="686" height="783">
+
+
+Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Spatial Analytics is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
+
+If you have a Keycloak instance that can be accessed from inside the Kubernetes cluster, then collect the issuer url for further service config.
+
+If you don't have a Keycloak instance available currently, for your convenience, you can deploy a Keycloak for testing by following the first step below, otherwise, you can skip the step.
+
+
+### Deploy Keycloak by helm chart for testing
+
+Identify the external loadbalancer host to expose the Keycloak Management Console UI
+```
+kubectl get svc -n ingress-nginx
+```
+looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
+
+```
+helm install keycloak ~/cloudnative-spatial-analytics-helm/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
+```
+Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It may take some time for Ingress to be deployed.
+
+Open a browser and login to keycloak console with the admin credentials (default to admin/admin) at
+`http://<ingress external ip>/auth`
+
+> NOTE: this keycloak server is running in DEV mode, only use HTTP to login to admin-console.
+
+### Create a realm for spatial services
+
+Spatial Analytics has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Spatial Analytics authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
+
+Download `cloudnative-spatial-analytics-helm/deploy/realm-spatial.json` to your local system.
+In the administration console, click on realm pulldown menu and select `Create realm`
+
+Click on `Browse...` button, select the realm file `realm-spatial.json`, give a name to the new realm (use all lowercase name, e.g. `development`) and click the `Create` (do not double clicks).
+
+After imported the realm from the template, use Keycloak Admin console to change admin credentials, default user credentials and spatial client secret.
+
+Keycloak Admin console is used to manage users in realm and roles in spatial client. Spatial Analytics do not use realm roles.
+
+also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
+
+
+### Update service config to use your realm in the keycloak
+```
+kubectl edit cm spatial-config
+```
+Update the following properties with the values below,
+```
+...
+oauth2.enabled: "true"
+oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
+oauth2.client-id: "spatial"
+oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
+spring.security.oauth2.resourceserver.jwt.issuer-uri: "<ingress external ip>/auth/realms/<your realm name>"
+...
+```
+> NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
+
+Restart all services to pick up the configuration changes
+```
+kubectl rollout restart deployment
+```
+Wait for all pods are ready
+```
+kubectl get pod
+```
+
+Login to Spatial Manager when all services are ready. Initial password for `admin` is `Spatialadmin0`
+
+`https://<your external ip>/SpatialServerManager`
+
+Verify if you can preview a map in Spatial Manager.
+
+Please follow the user guide for how to apply permissions and other security related topics.
+
+### IDP Federation
+Keycloak Federation allows you to authenticate users from your own IDP (such as LDAP) and map user roles to spatial client roles for authorization. Referring to Keycloak documents for the details.
+
+## Step 8: Use Spatial Utilities
+There are various utilities for:
+- Generating MapTiling requests
+- Generating Map tiles for the WMTS service
+- Uploading maps from MapInfo Pro to the Spatial repository
+- Importing and exporting Spatial repository.
+
+More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
+
 ## Next Sections
-- [Geo Addressing API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
+- [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
 - [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
 - [FAQs](../../faq/FAQs.md)
 

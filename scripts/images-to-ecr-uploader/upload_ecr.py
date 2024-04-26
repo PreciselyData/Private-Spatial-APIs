@@ -215,21 +215,21 @@ client = DataDeliveryClient(PDX_API_KEY, PDX_SECRET, "SDM_HELM_APP_1.0.0")
 spd_path = os.path.join(LOCAL_PATH, "docker_images")
 os.makedirs(spd_path, exist_ok=True)
 
-try:
-    product_name, product_url = get_product(DOCKER_PRODUCT_NAME)
-    if not product_name and not product_url:
-        raise Exception(
-            f"No Deliveries available for product {DOCKER_PRODUCT_NAME}. "
-            "To request access to the particular data, please visit https://data.precisely.com/")
-except Exception as ex:
-    raise Exception(f'Exception while getting download url for {DOCKER_PRODUCT_NAME}: {ex}', ex)
-
-try:
-    file_path = download_spd_to_local(product_url, spd_path)
-    if file_path and os.path.exists(file_path):
-        unzip(spd_path, file_path)
-except Exception as ex:
-    raise Exception(f'Exception while downloading spds to local for {DOCKER_PRODUCT_NAME}: {ex}', ex)
+# try:
+#     product_name, product_url = get_product(DOCKER_PRODUCT_NAME)
+#     if not product_name and not product_url:
+#         raise Exception(
+#             f"No Deliveries available for product {DOCKER_PRODUCT_NAME}. "
+#             "To request access to the particular data, please visit https://data.precisely.com/")
+# except Exception as ex:
+#     raise Exception(f'Exception while getting download url for {DOCKER_PRODUCT_NAME}: {ex}', ex)
+#
+# try:
+#     file_path = download_spd_to_local(product_url, spd_path)
+#     if file_path and os.path.exists(file_path):
+#         unzip(spd_path, file_path)
+# except Exception as ex:
+#     raise Exception(f'Exception while downloading spds to local for {DOCKER_PRODUCT_NAME}: {ex}', ex)
 
 try:
     sts_identity_str = subprocess.check_output(
