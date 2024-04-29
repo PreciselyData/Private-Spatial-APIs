@@ -19,7 +19,7 @@ git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
 ## Step 2: Create K8s Cluster (EKS)
 
 You can create an AKS cluster or use an existing EKS cluster.
-\
+
 ### 2.1 Create an AKS Cluster 
 Follow these steps to create AKS cluster by using Azure portal.
 ![aks](images/kubernetes-service.PNG "aks")
@@ -50,28 +50,17 @@ Create the AKS cluster (It may take some time to get provisioned).
 
 ### 2.2 Connect to AKS Cluster
 \
-These steps assume that you have installed Azure CLI on your local PC. Alternatively, you can also use Azure Cloud Shell as a bridge to manage the cluster and move
-data to the Fileshares.  \
+These steps assume that you have installed Azure CLI on your local PC. Alternatively, you can also use [Azure Cloud Shell](https://learn.microsoft.com/en-gb/azure/cloud-shell/get-started/classic?tabs=azurecli) as a bridge to manage the cluster and move
+data to the Fileshares.
 
-for using Azure Cloud Shell:
-At the home page of Azure portal, click on the Azure Cloud Shell icon
-(next to the search field), following the instructions to enable the
-Bash (you may need to create a storage Fileshares if you are first time
-using the Cloud
-Shell).
 #### Set kubectl context to AKS cluster
-\
 In Azure portal, go to
 
-spatial-aks → spatial32,
-and click on `Connect`
-
-to find the commands to add the context to kubectl.
+spatial-aks → spatial32,and click on `Connect` to find the commands to add the context to kubectl.
 ![azure shell select subscription](images/select-subscription-shell.png "azure shell select subscription")
 
 >Note: ``az`` command is bound to a subscription, if the resource group is
-not in the current subscription, then need to switch.) Open the Cloud
-Shell
+not in the current subscription, then need to switch.
 
 Clicking on `Open Cloud Shell` will also run the both az commands automatically and reset the cloud
 shell if it was already open
@@ -86,10 +75,10 @@ az aks get-credentials --resource-group spatial-aks --name spatial32
 ```
 
 ```shell
-kubectl config use-context spatial32 && \
+kubectl config use-context spatial32
 kubectl config current-context
 
-\
+````
 Now kubectl is set default to the AKS spatial32 cluster. You can check
 the status of the nodes
 ```shell
@@ -100,36 +89,21 @@ NAME                                STATUS   ROLES   AGE    VERSION
 aks-agentpool-39271417-vmss000000   Ready    agent   106s   v1.23.8
 ```
 
-### Cluster Additional  
-- Once you create EKS cluster, you can
-  apply [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) so that the
-  cluster can be scaled vertically as per requirements. We have provided a sample cluster autoscaler script. Please run
-  the following command to create cluster autoscaler:
-    ```shell
-    kubectl apply -f ./cluster-sample/cluster-auto-scaler.yaml
-    ```
-- To enable [HorizontalPodAutoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/), the
-  cluster also needs a [Metrics API Server](https://github.com/kubernetes-sigs/metrics-server) for capturing cluster
-  metrics. Run the following command for installing Metrics API Server:
-    ```shell
-    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-    ```
-
 ###  2.3 Install Ingress-NGINX controller
 > Note: If you would like to setup TLS for HTTPS traffic follow official azure docs: https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
-The spatial-analytics service requires ingress controller setup. 
+
+The Spatial Analytics services requires ingress controller setup. 
 
 Run the following command for setting up NGINX ingress controller:
   ```shell
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
-  kubectl create ns ingress-nginx
-  helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
+ helm upgrade --install ingress-nginx ingress-nginx  --repo https://kubernetes.github.io/ingress-nginx  --namespace ingress-nginx --create-namespace
   ```
   
   Once ingress controller setup is completed, you can verify the status and get the ingress URL by using the following command:
   ```shell
-  kubectl get services -o wide -w nginx-ingress-ingress-nginx-controller  -n ingress-nginx  
+  kubectl get services -o wide -w ingress-nginx-controller  -n ingress-nginx  
   ```
 
 > Make a note of EXTERNAL-IP, it will be used for later steps.
@@ -218,19 +192,14 @@ az feature show --name AllowNfsFileShares --namespace Microsoft.Storage --subscr
 "type": "Microsoft.Features/providers/features"
 }
 ```
+Once the feature 'AllowNfsFileShares' is registered, invoking 'az provider register -n Microsoft.Storage' is required to get the change propagated
+```
+az provider register -n Microsoft.Storage
+```
 
 ### 4.2 Create a Storage Account for Fileshares
 
 ![azure storage](images/azure-storage.png "azure storage")
-
-#### Create a StorageClass for EFS Driver
-Update template [efs-sc.yaml](../../../deploy/eks/efs-sc.yaml) with the file system id of your EFS file system & run:
-
-```kubectl apply -f ./deploy/eks/efs-sc.yaml ```
-
-You can check the result by executing:    
-```kubectl get sc```
-
 
 Storage Account → Create\
 Resource group → Create new → `spatial-fileshares`\
@@ -245,7 +214,6 @@ Click -> `Create`
 
 ###  4.3 Configure virtual network
 
-\
 In Azure portal, go to spatial-fileshares → spatialstorage001, select
 Networking,\
 ![storage aks networking](images/storage-connect-aks-network1.png "storage aks networking")
@@ -259,7 +227,7 @@ cluster, so AKS cluster can access the NFS Fileshares.
 And select the subnets, Enable..., Add...\
 Save ...
 
-##  4.4 Create a Fileshares
+##  4.4 Create a Fileshare
 
 In Azure portal, go to
 
@@ -278,9 +246,7 @@ capacity can be enlarged after creation. Select the NFS protocol
 Create the Fileshares.
 
 #### 4.5 Create PersistentVolume (PV) and PersistentVolumeClaim (PVC)
-```shell
-cd SpatialAnalytics/deploy/azure-aks
-```
+
 ##### Create PV from the Fileshares
 If you used different names of resource group and storage account, find
 out the actual NFS server name and path as below and update the template
@@ -323,10 +289,10 @@ spec:
     path: /spatialstorage001/fileshares
 ```
 create the PV from the template file (making sure your
-current directory is `cloudnative-spatial-analytics-helm/deploy/azure-aks`)
+current directory is `cloudnative-spatial-analytics-helm/deploy/aks`)
 
 ```shell
-kubectl apply -f fileshare-pv.yaml
+kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pv.yaml 
 ```
 
 To verify
@@ -342,33 +308,15 @@ data-volume   100Gi      RWX            Retain           Available              
 
 ### Create PVC from the Fileshares PV
 
-In Cloud Shell, create the PVC from the template file
-
-**fileshare-pvc.yaml**
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: data-volume-claim
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: ""
-  resources:
-    requests:
-      storage: 100Gi
-  selector: 
-    matchLabels: 
-      app: spatial
-```
+In Cloud Shell, create the PVC from the template file **fileshare-pvc.yaml**
 
 ```shell
-kubectl apply -f fileshare-pvc.yaml
+kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pvc.yaml -n spatial-analytics
 ```
 
 To verify
 ```shell
-kubectl get pvc
+kubectl get pvc -n spatial-analytics
 ```
 ```shell
 NAME                STATUS   VOLUME        CAPACITY   ACCESS MODES   STORAGECLASS   AGE
@@ -412,7 +360,7 @@ There are two deployment files to choose from that require different amount of r
 
 Create a secret for pulling image from ECR repository
 ```shell
-kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.ecr.[aws_region].amazonaws.com   --docker-username=AWS   --docker-password=$(aws ecr get-login-password --region [aws-reqion]) --namespace=spatial-analytics
+kubectl create secret docker-registry regcred --docker-server=spatialregistry.azurecr.io  --docker-username=AWS   --docker-password=$(aws ecr get-login-password --region [aws-reqion]) --namespace=spatial-analytics
 ```
 To install/upgrade the Spatial Analytics helm chart, use the following command:
 
