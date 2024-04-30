@@ -255,7 +255,7 @@ try:
                 file_name = os.path.basename(file_path)
                 file_name_withour_ext = os.path.basename(file_path).split(".")[0]
                 createRepo = True
-                
+
                 try:
                     subprocess.check_output(
                     f'aws ecr describe-repositories --repository-names {file_name_withour_ext}',
@@ -274,7 +274,7 @@ try:
                 print(subprocess.check_output(
                     f'docker tag {file_name_withour_ext}:latest {ecr_url}/{file_name_withour_ext}:{image_tag}',
                     shell=True, stderr=subprocess.STDOUT, encoding="utf-8"))
-                
+
                 print(subprocess.check_output(
                     f'docker push {ecr_url}/{file_name_withour_ext}:{image_tag}',
                     shell=True, stderr=subprocess.STDOUT, encoding="utf-8"))
@@ -282,7 +282,7 @@ try:
 
             except Exception as ex:
                 print(f"Exception: {ex}, Output: {ex.output}, StdOut: {ex.stdout}, StdErr: {ex.stderr}")
-    
+
     if len(images) != 0:
         print(f"Precisely docker images successfully pushed into {ecr_url}")
         print(json.dumps(images, indent=4))

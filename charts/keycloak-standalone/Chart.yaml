@@ -1,5 +1,5 @@
 apiVersion: v2
-name: keycloak-operator/service
+name: keycloak-operator-service
 description: A Helm chart for deploying Keycloak Operator and service
 
 # A chart can be either an 'application' or a 'library' chart.
