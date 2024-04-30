@@ -4,10 +4,20 @@
 
 Make sure you have the following items before starting:
 - Access tokens to Docker image registry.
-- A subscription that can use create Storage account, K8 cluster, file share. 
+- A subscription that can be used to create Storage account, K8 cluster, file share. 
 
 It is recommended to use a single Azure subscription to complete this tutorial. To make it easier, this tutorial is based on Azure portal and
-Azure Cloud Shell (Bash). In order to achieve the best performance, try to create all resources in the same region.
+Azure Cloud Shell (Bash). In order to achieve the best performance, create all resources in the same region.
+
+## Preview
+- [Step 1: Prepare your environment](#step-1-prepare-your-environment)
+- [Step 2: Create a AKS Cluster ](#step-2-create-k8s-cluster-aks)
+- [Step 3: Download Spatial Analytics Docker Images](#step-3-download-spatial-analytics-docker-images)
+- [Step 4: Create a Persistent Volume](#step-4-create-a-persistent-volume)
+- [Step 5: Prepare a database for repository](#step-5-prepare-a-database-for-repository)
+- [Step 6: Installation of Spatial Analytics Helm Chart](#step-6-installation-of-spatial-analytics-helm-chart)
+- [Step 7: Enabling security - AuthN/AuthZ (Optional)](#step-7-enabling-security---authnauthz-optional)
+- [Step 8: Use Spatial Utilities](#step-8-use-spatial-utilities)
 
 ## Step 1: Prepare your environment
 To deploy Spatial Analytics application in Azure AKS, install the following client tools on you machine:
@@ -45,15 +55,10 @@ You can create an AKS cluster or use an existing EKS cluster.
 -   [2.2 Connect to AKS Cluster](#22-connect-to-aks-cluster)
 -   [2.3 Install Ingress-NGINX controller](#23-install-ingress-nginx-controller)
 
----
-Also see
-\
-[ Deploy an Azure Kubernetes Service (AKS) cluster using Azure portal](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
-\
-[Create an unmanaged ingress controller](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)
-\
+Also see:    
+[Deploy an Azure Kubernetes Service (AKS) cluster using Azure portal](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)  
+[Create an unmanaged ingress controller](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)  
 [AKS ingress](https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/aks/ingress-basic.md)
----
 
 ### 2.1 Create an AKS Cluster 
 Default Spatial-Cloud-Native deployment will need 30 vCPUs + 15GB RAM.
@@ -94,7 +99,7 @@ At the home page of Azure portal, click on the Azure Cloud Shell icon (next to t
 
 >NOTE: in the Bash windows, you can use ctrl-c to copy and shift-insert
 to paste.
-\
+
 
 #### Set kubectl context to AKS cluster
 In Azure portal, go to
@@ -187,6 +192,7 @@ You can also load images one by one if there's no enough disk space available
 ./scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
 ```
 List images in the registry:
+\
 ``az acr repository list --name <azure_container_registry> --output table``
 
 There are six docker images which will be pushed to container registry:
