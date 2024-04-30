@@ -1,80 +1,60 @@
-# Precisely Geo-Addressing Service Setup on Local Docker Desktop
+# Precisely Cloudnative-Spatial-Analytics-helm Service Setup on Local Docker Desktop
 
-The geo-addressing application can be setup locally for test purpose.
+The Spatial-Analytics application can be setup locally for test purpose.
 
 ## Step 1: Download Reference Data and Required Docker Images
 
-To run the docker images locally, reference data and docker images should be downloaded from Precisely Data Experience.
-> For more information on downloading the docker images, follow [this section](../scripts/images-to-ecr-uploader/README.md#download-and-upload-docker-images-to-ecr).
-> 
-> For more information on reference data and downloading docker images, follow [this section](../docs/ReferenceData.md).
->
+The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
+see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
+access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
 
 ## Step 2: Running Service Locally
 
-> Note: addressing-express service should not be run locally.
+1. **Install Docker Desktop**
 
-Modify the below variables in ****.env**** file and run the mentioned command.
+2. **To setup a local image registry**
 
-_DATA_PATH -> path to the **extracted** data
+   use the following command:
+   ```
+   docker run -d -p 5000:5000 --restart=always --name registry registry:2.7
+   ```
 
-_SERVICE_PORT -> port at which service should be started (Example 8080)
+3. **configure environment file**
 
+   While building docker image locally, configure environment file to reference local image registry. Update _.env_ file in
+      `docker-compose` folder with environment variable referencing image registry. Otherwise, the default registry will
+      be our jfrog registry (jfrog.precisely.engineering):
+   ```properties
+   IMAGE_REGISTRY=localhost:5000
+   ```
 
-_GEOCODE_VERIFY_ENABLED -> Set to true to enable geocode and verify endpoints.
-_LOOKUP_ENABLED -> Set to true to enable lookup endpoint.
-_REVERSEGEOCODE_ENABLED -> Set to true to enable reverse geocode endpoint.
-_AUTOCOMPLETE_ENABLED -> Set to true to enable autocomplete endpoint.
+4. **Docker images pushed to a local image registry**
 
-```Note: Only enable those endpoints for which data is configured, else service startup will fail.```
+   There are six docker images which will be pushed to container registry:
+   1. feature-service
+   2. mapping-service
+   3. tiling-service
+   4. namedresource-service
+   5. spatialmanager-service
+   6. samples-data
 
-***Sample Values:***
+   After download, the docker images need to be pushed to a container registry. Then you can use a script [push-images](./push-images.sh) to push the docker images to local image registry.
 
-*below values will enable autocomplete API endpoints.*
+   > Note: You must provide the local path to the download tar file location of each images (with double back slashes)
 
- ```shell
- _DATA_PATH=/data/autocomplete/usa/202307
- _SERVICE_PORT=8080
- _GEOCODE_VERIFY_ENABLED=false
- _LOOKUP_ENABLED=false
- _REVERSEGEOCODE_ENABLED=false
- _AUTOCOMPLETE_ENABLED=true
- ```
+   Run the shell script to push images to Local Image Registry:
+   ```shell
+   cd docker-desktop
+   chmod a+x ./push-images.sh
+   ./push-images.sh localhost:5000
+   ```
 
-*below values will enable verify/geocode API endpoints.*
+5. **service to start using docker compose file**
 
- ```shell
- _DATA_PATH=/data/verify-geocode/usa/202307
- _SERVICE_PORT=8080
- _GEOCODE_VERIFY_ENABLED=true
- _LOOKUP_ENABLED=false
- _REVERSEGEOCODE_ENABLED=false
- _AUTOCOMPLETE_ENABLED=false
- ```
-
-    ```shell
-    docker compose -p [PROJECT_NAME] -f ./docker-compose.yml up -d
-    ```
-
-    *Example:*
-    ```shell
-    docker compose -p geo-addressing -f ./docker-compose.yml up -d
-    ```
-
-    After executing the above command the service will start at http://localhost:[_SERVICE_PORT]
-
-## Cleanup of local services
-
-    Regardless of any above method of running the services locally below cleanup command will be same.
-
-    ```shell
-    docker compose -p [PROJECT_NAME] down
-    ```
-
-    *Example:*
-    ```shell
-    docker compose -p geo-addressing down
-    ```
+   If you *always* want all the service to start you can run:
+   ```
+   docker compose up
+   ```
 
 ## References
 
