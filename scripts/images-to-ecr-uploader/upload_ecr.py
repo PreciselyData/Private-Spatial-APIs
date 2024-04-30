@@ -215,21 +215,21 @@ client = DataDeliveryClient(PDX_API_KEY, PDX_SECRET, "SDM_HELM_APP_1.0.0")
 spd_path = os.path.join(LOCAL_PATH, "docker_images")
 os.makedirs(spd_path, exist_ok=True)
 
-# try:
-#     product_name, product_url = get_product(DOCKER_PRODUCT_NAME)
-#     if not product_name and not product_url:
-#         raise Exception(
-#             f"No Deliveries available for product {DOCKER_PRODUCT_NAME}. "
-#             "To request access to the particular data, please visit https://data.precisely.com/")
-# except Exception as ex:
-#     raise Exception(f'Exception while getting download url for {DOCKER_PRODUCT_NAME}: {ex}', ex)
-#
-# try:
-#     file_path = download_spd_to_local(product_url, spd_path)
-#     if file_path and os.path.exists(file_path):
-#         unzip(spd_path, file_path)
-# except Exception as ex:
-#     raise Exception(f'Exception while downloading spds to local for {DOCKER_PRODUCT_NAME}: {ex}', ex)
+try:
+    product_name, product_url = get_product(DOCKER_PRODUCT_NAME)
+    if not product_name and not product_url:
+        raise Exception(
+            f"No Deliveries available for product {DOCKER_PRODUCT_NAME}. "
+            "To request access to the particular data, please visit https://data.precisely.com/")
+except Exception as ex:
+    raise Exception(f'Exception while getting download url for {DOCKER_PRODUCT_NAME}: {ex}', ex)
+
+try:
+    file_path = download_spd_to_local(product_url, spd_path)
+    if file_path and os.path.exists(file_path):
+        unzip(spd_path, file_path)
+except Exception as ex:
+    raise Exception(f'Exception while downloading spds to local for {DOCKER_PRODUCT_NAME}: {ex}', ex)
 
 try:
     sts_identity_str = subprocess.check_output(
@@ -255,7 +255,7 @@ try:
                 file_name = os.path.basename(file_path)
                 file_name_withour_ext = os.path.basename(file_path).split(".")[0]
                 createRepo = True
-                
+
                 try:
                     subprocess.check_output(
                     f'aws ecr describe-repositories --repository-names {file_name_withour_ext}',
@@ -274,7 +274,7 @@ try:
                 print(subprocess.check_output(
                     f'docker tag {file_name_withour_ext}:latest {ecr_url}/{file_name_withour_ext}:{image_tag}',
                     shell=True, stderr=subprocess.STDOUT, encoding="utf-8"))
-                
+
                 print(subprocess.check_output(
                     f'docker push {ecr_url}/{file_name_withour_ext}:{image_tag}',
                     shell=True, stderr=subprocess.STDOUT, encoding="utf-8"))
@@ -282,7 +282,7 @@ try:
 
             except Exception as ex:
                 print(f"Exception: {ex}, Output: {ex.output}, StdOut: {ex.stdout}, StdErr: {ex.stderr}")
-    
+
     if len(images) != 0:
         print(f"Precisely docker images successfully pushed into {ecr_url}")
         print(json.dumps(images, indent=4))
@@ -300,4 +300,3 @@ try:
 except Exception as e:
     print(
         f"Unable to delete {spd_path} -> Exception: {e}")
-
