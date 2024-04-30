@@ -80,7 +80,7 @@ Now click on **Create** → **Create a Kubernetes Cluster**
 Create a new Resource group `spatial-aks` for this AKS cluster
 
 Kubernetes cluster name -> `spatial32`\
-Kubernetes version -> `1.23.8`\
+Kubernetes version -> `1.29.2`\
 Node size -> Change size -> F32s_v2\
 Scale method -> `Manual`\
 Node count -> `1`
@@ -404,7 +404,7 @@ If you don't have a MongoDB replica set currently, for your convenience, you can
 
 Install MongoDB from helm chart
 ```
-helm install mongo ./charts/mongo-standalone -n mongo --create-namespace
+helm install mongo ~/cloudnative-spatial-analytics-helm/charts/mongo-standalone -n mongo --create-namespace
 ```
 ```
 kubectl get pod -n mongo

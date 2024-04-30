@@ -300,3 +300,4 @@ try:
 except Exception as e:
     print(
         f"Unable to delete {spd_path} -> Exception: {e}")
+
