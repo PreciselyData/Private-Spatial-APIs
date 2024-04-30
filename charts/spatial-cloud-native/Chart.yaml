@@ -7,7 +7,7 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 1.1.0
 
-appVersion: ${appVersion}
+appVersion: 1.1.0
 
 dependencies:
   - name: "namedresource-service"

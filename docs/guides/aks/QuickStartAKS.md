@@ -1,35 +1,73 @@
 # Installing Spatial Analytics Helm Chart on Azure AKS
 
+## **Before starting**
+
+Make sure you have the following items before starting:
+- Access tokens to Docker image registry.
+- A subscription that can use create Storage account, K8 cluster, file share. 
+
+It is recommended to use a single Azure subscription to complete this tutorial. To make it easier, this tutorial is based on Azure portal and
+Azure Cloud Shell (Bash). In order to achieve the best performance, try to create all resources in the same region.
+
 ## Step 1: Prepare your environment
-To deploy Spatial Analytics application in Azure AKS, install the following client tools:
-
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [helm3](https://helm.sh/docs/intro/install/)
+To deploy Spatial Analytics application in Azure AKS, install the following client tools on you machine:
 - [Docker](https://docs.docker.com/engine/install/)
-
-##### Azure Kubernetes Service (AKS)
-
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
+
+Above tools are required to push docker images to Azure Container Registry.
+
+### Setup Cloud Shell
+Login to [Microsoft Azure Portal](https://portal.azure.com/)
+\
+Open Cloud Shell by clicking on the icon on the toolbar.
+\
+Verify the following utilities,
+```
+az version 
+```
+```
+kubectl version 
+```
+```
+helm version 
+```
+
 
 ### Clone Spatial Analytics helm charts & resources
 ```
 git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
 ```
 
-## Step 2: Create K8s Cluster (EKS)
+## Step 2: Create K8s Cluster (AKS)
 
 You can create an AKS cluster or use an existing EKS cluster.
+-   [2.1 Create an AKS Cluster](#21-create-an-aks-cluster-)
+-   [2.2 Connect to AKS Cluster](#22-connect-to-aks-cluster)
+-   [2.3 Install Ingress-NGINX controller](#23-install-ingress-nginx-controller)
+
+---
+Also see
+\
+[ Deploy an Azure Kubernetes Service (AKS) cluster using Azure portal](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)
+\
+[Create an unmanaged ingress controller](https://docs.microsoft.com/en-us/azure/aks/ingress-basic)
+\
+[AKS ingress](https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/aks/ingress-basic.md)
+---
 
 ### 2.1 Create an AKS Cluster 
-Follow these steps to create AKS cluster by using Azure portal.
-![aks](images/kubernetes-service.PNG "aks")
-
 Default Spatial-Cloud-Native deployment will need 30 vCPUs + 15GB RAM.
 It is good to start from a single node AKS cluster with `F32s_v2` VM. It
 has 32 vCPUs + 64GB RAM.
 
-In Azure portal, Create → Create a Kubernetes Cluster
+In Azure portal, click on **Kubernetes services** 
+
+![aks](images/kubernetes-service.PNG "aks")
+
+Now click on **Create** → **Create a Kubernetes Cluster** 
+
 ![create aks](images/create-kubernetes-services-1.PNG "create aks")
+
 
 #### Specify information for cluster
 ![create aks-details](images/create-kubernetes-services-2.png "create aks-details")
@@ -42,16 +80,21 @@ Node size -> Change size -> F32s_v2\
 Scale method -> `Manual`\
 Node count -> `1`
 
----
-**NOTE** Create tag if you want to manage resource usage by application tag
+> NOTE: Create tag if you want to manage resource usage by application tag
 
----
-Create the AKS cluster (It may take some time to get provisioned).
+Click on **Create the AKS cluster** (It may take some time to get provisioned).
 
 ### 2.2 Connect to AKS Cluster
+
+We use Azure Cloud Shell (VM) as a bridge to manage the cluster and move data to the Fileshares. Alternatively, you can use [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) on your machine.
 \
-These steps assume that you have installed Azure CLI on your local PC. Alternatively, you can also use [Azure Cloud Shell](https://learn.microsoft.com/en-gb/azure/cloud-shell/get-started/classic?tabs=azurecli) as a bridge to manage the cluster and move
-data to the Fileshares.
+At the home page of Azure portal, click on the Azure Cloud Shell icon (next to the search field), following the instructions to enable the Bash (you may need to create a storage Fileshares if you are first time using the Cloud Shell).
+#### Open Cloud Shell
+![azure shell open](images/azure-shell-open.png "azure shell open")
+
+>NOTE: in the Bash windows, you can use ctrl-c to copy and shift-insert
+to paste.
+\
 
 #### Set kubectl context to AKS cluster
 In Azure portal, go to
@@ -92,21 +135,29 @@ aks-agentpool-39271417-vmss000000   Ready    agent   106s   v1.23.8
 ###  2.3 Install Ingress-NGINX controller
 > Note: If you would like to setup TLS for HTTPS traffic follow official azure docs: https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
 
-The Spatial Analytics services requires ingress controller setup. 
-
-Run the following command for setting up NGINX ingress controller:
+The Spatial Analytics services requires ingress controller setup. Run the following command in Cloud Shell for setting up NGINX ingress controller:
   ```shell
-  helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-  helm repo update
- helm upgrade --install ingress-nginx ingress-nginx  --repo https://kubernetes.github.io/ingress-nginx  --namespace ingress-nginx --create-namespace
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --create-namespace \
+  --namespace ingress-nginx \
+  --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-health-probe-request-path"=/healthz \
+  --set controller.service.externalTrafficPolicy=Local
   ```
   
   Once ingress controller setup is completed, you can verify the status and get the ingress URL by using the following command:
   ```shell
-  kubectl get services -o wide -w ingress-nginx-controller  -n ingress-nginx  
+  kubectl get svc -n ingress-nginx  
   ```
+```shell
+NAME                                 TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.0.5.175     23.96.127.58   80:31943/TCP,443:32142/TCP   45h
+ingress-nginx-controller-admission   ClusterIP      10.0.134.147   <none>         443/TCP                      45h
+```
 
-> Make a note of EXTERNAL-IP, it will be used for later steps.
+> Make a note of `EXTERNAL-IP=23.96.127.58`, it will be used for later steps.
 
 ## Step 3: Download Spatial Analytics Docker Images
 
@@ -116,7 +167,9 @@ access software, reference data and docker files available in [Precisely Data Ex
 
 After download, the docker images need to be pushed to a container registry. You can create Azure Container Registry by following [these](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-) steps if you don't have one. Then you can use a script [push-images](../../../scripts/aks/push-images.sh) to push the docker images to container registry.
 
->Note: This script requires **[Docker](https://docs.docker.com/engine/install/)** and **[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli)** to be installed in your system.
+>Note: Azure Cloud Shell doesn't support docker daemon required by the script, so you have to install **[Docker](https://docs.docker.com/engine/install/)** and **[Azure CLI](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli)** on your local system.  
+
+Open a shell on you local system and execute the following steps.
 
 Log in to your Azure Container Registry:
 ```shell
@@ -199,6 +252,8 @@ az provider register -n Microsoft.Storage
 
 ### 4.2 Create a Storage Account for Fileshares
 
+Click on [Azure Portal Home](https://portal.azure.com/#home) -> **Storage Accounts**
+
 ![azure storage](images/azure-storage.png "azure storage")
 
 Storage Account → Create\
@@ -246,6 +301,13 @@ capacity can be enlarged after creation. Select the NFS protocol
 Create the Fileshares.
 
 #### 4.5 Create PersistentVolume (PV) and PersistentVolumeClaim (PVC)
+In Cloud Shell, clone SpatialAnalytics repository.
+```shell
+git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm.git
+```
+```shell
+cd SpatialAnalytics/deploy/azure-aks
+```
 
 ##### Create PV from the Fileshares
 If you used different names of resource group and storage account, find
@@ -263,8 +325,7 @@ we need server information so we can update `fileshare-pv.yaml`.
 
 ![Fileshares connect from linux server info](images/file-shares-connect-string.png "Fileshares connect from linux  server info")
 
-Update the server and path in `fileshare-pv.yaml` if
-needed,
+In Cloud Shell, update the server and path in fileshare-pv.yaml if needed.
 
 **fileshare-pv.yaml**
 
@@ -288,8 +349,7 @@ spec:
     server: spatialstorage001.file.core.windows.net
     path: /spatialstorage001/fileshares
 ```
-create the PV from the template file (making sure your
-current directory is `cloudnative-spatial-analytics-helm/deploy/aks`)
+Create the PV from the template file.
 
 ```shell
 kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pv.yaml 
@@ -358,19 +418,27 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 
 There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
 
-Create a secret for pulling image from ECR repository
+Create a secret for pulling image from ACR:
+\
+Following command gets a token for current user to authenticate against ACR, if you want to use a service principal credentials, refer to [Use Service principal](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-auth-kubernetes).
 ```shell
-kubectl create secret docker-registry regcred --docker-server=spatialregistry.azurecr.io  --docker-username=AWS   --docker-password=$(aws ecr get-login-password --region [aws-reqion]) --namespace=spatial-analytics
+kubectl create secret docker-registry regcred \
+    --namespace spatial-analytics \
+    --docker-server=[acr_name].azurecr.io \
+    --docker-username=00000000-0000-0000-0000-000000000000\
+    --docker-password=$(az acr login --name [acr_name] --expose-token --output tsv --query accessToken)
 ```
 To install/upgrade the Spatial Analytics helm chart, use the following command:
 
 ```shell
-helm upgrade --install spatial-analytics  --version 1.1.0 \
+cd ~/cloudnative-spatial-analytics-helm/
+
+helm upgrade --install spatial-analytics \
  ./charts/spatial-cloud-native  --dependency-update  \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
- --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
- --set "global.registry.tag=1.1.0" \ 
+ --set "global.registry.url=[acr].azurecr.io" \
+ --set "global.registry.tag=latest" \ 
  --set "global.registry.secrets=regcred" \ 
  -f ./deploy/gitlab-deployment-values.yaml \
  --namespace spatial-analytics   
@@ -382,9 +450,9 @@ This should install Spatial Analytics APIs and set up a sample dataset that can 
 #### Mandatory Parameters
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
-* ``global.registry.url``: The ECR repository for Spatial Analytics docker image e.g. account_id.dkr.ecr.us-east-1.amazonaws.com
+* ``global.registry.url``: The ACR repository for Spatial Analytics docker image e.g. spatialregistry.azurecr.io
 * ``global.registry.tag``: The docker image tag value e.g. 1.1.0 or latest.
-* ``global.registry.secrets``: The name of the secret holding ECR credential information.
+* ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
 For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md#helm-values).
 
@@ -482,11 +550,11 @@ spring.security.oauth2.resourceserver.jwt.issuer-uri: "<ingress external ip>/aut
 
 Restart all services to pick up the configuration changes
 ```
-kubectl rollout restart deployment
+kubectl rollout restart deployment -n spatial-analytics
 ```
 Wait for all pods are ready
 ```
-kubectl get pod
+kubectl get pod -n spatial-analytics --watch
 ```
 
 Login to Spatial Manager when all services are ready. Initial password for `admin` is `Spatialadmin0`
