@@ -71,31 +71,31 @@ These are collectively known as “Named Resources”. The named resources are p
 ## Installing Spatial Analytics Helm Chart
 ### 1. Prepare your environment
 Install Client tools required for installation. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-1-prepare-your-environment) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-1-setup-cloud-shell) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-1-prepare-your-environment)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-1-prepare-your-environment) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-1-setup-cloud-shell) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-1-prepare-your-environment)
 
 ### 2. Create K8s cluster
 Create or use an existing K8s cluster. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-2-create-k8s-cluster-eks) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-2-create-k8s-cluster-gke) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-2-create-k8s-cluster-aks)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-2-create-k8s-cluster-eks) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-2-create-k8s-cluster-gke) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-2-create-k8s-cluster-aks)
 
 ### 3. Download Spatial Analytics Images
 Download docker images and upload to own container registry. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-3-download-spatial-analytics-docker-images) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-3-download-spatial-analytics-docker-images) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-3-download-spatial-analytics-docker-images)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-3-download-spatial-analytics-docker-images) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-3-download-spatial-analytics-docker-images) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-3-download-spatial-analytics-docker-images)
 
 ### 4. Create a Persistent Volume
 Create a  persistent volume for storing file based spatial data/various caches. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-4-create-a-persistent-volume) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-4-create-a-persistent-volume-and-persistent-volume-claim) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-4-create-a-persistent-volume)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-4-create-a-persistent-volume) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-4-create-a-persistent-volume-and-persistent-volume-claim) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-4-create-a-persistent-volume)
 
 ### 5. Prepare a database for repository
 Install a MongoDB databse or use an existing instance. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-5-prepare-a-database-for-repository) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-5-prepare-a-database-for-repository) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-5-prepare-a-database-for-repository)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-5-prepare-a-database-for-repository) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-5-prepare-a-database-for-repository) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-5-prepare-a-database-for-repository)
 
 ### 6. Install Spatial Analytics Helm Chart
 Deploy Spatial Analytics helm chart to K8s cluster. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-6-installation-of-spatial-analytics-helm-chart) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-6-installation-of-spatial-analytics-helm-chart) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-6-installation-of-spatial-analytics-helm-chart)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-6-installation-of-spatial-analytics-helm-chart) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-6-installation-of-spatial-analytics-helm-chart) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-6-installation-of-spatial-analytics-helm-chart)
 
 ### 7. Enable Security (optional)
 Install or use an existing Keycloak instance. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-7-enabling-security---authnauthz-optional) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-7-enabling-security---authnauthz-optional) | [AKS](./docs/guides/gke/QuickStartAKS.md#step-7-enabling-security---authnauthz-optional)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-7-enabling-security---authnauthz-optional) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-7-enabling-security---authnauthz-optional) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-7-enabling-security---authnauthz-optional)
 
 ### 8. Use Spatial Utilities
 There are various utilities for:

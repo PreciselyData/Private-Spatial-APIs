@@ -1,7 +1,7 @@
 # Installing Spatial Analytics Helm Chart on AWS EKS
 
 ### Before starting
-Make sure you have a AWS account with following permissions:  
+Make sure you have an AWS account with following permissions:  
   - create IAM roles  
   - create IAM policies  
   - create EKS clusters (EC2 based)  
@@ -75,7 +75,12 @@ You can create the EKS cluster or use an existing EKS cluster.
   kubectl get services -o wide -w nginx-ingress-ingress-nginx-controller    
   ```
 
-**NOTE**: EKS cluster must have the above addons and ingress for the ease of installation of spatial-analytics Helm Chart.
+EKS cluster must have the above addons and ingress for the ease of installation of spatial-analytics Helm Chart.
+
+
+> Note: You should run this command in your shell to connect to EKS cluster:
+> `` aws eks --region [aws-region] update-kubeconfig --name [cluster-name] ``.
+> This will update your local copy EKS cluster configuration. 
 
 ## Step 3: Download Spatial Analytics Docker Images
 
@@ -93,7 +98,7 @@ and push it to your Elastic Container Registry.
 ```shell
 cd ./scripts/images-to-ecr-uploader
 pip install -r requirements.txt
-python upload_ecr.py --pdx-api-key [pdx-api-key] --pdx-api-secret [pdx-secret] --aws-access-key [aws-access-key] --aws-secret [aws-secret] --aws-region [aws-region]
+python upload_ecr.py --pdx-api-key [pdx-api-key] --pdx-api-secret [pdx-secret] --aws-region [aws-region]
 ```
 
 There are six docker images which will be pushed to ECR with the tag of helm chart version.
@@ -188,7 +193,7 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 ```
 ## Step 6: Installation of Spatial Analytics Helm Chart
 
-> NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
+> NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-spatial-analytics-docker-images) for uploading the docker images with the newest tag.
 
 There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
 
@@ -220,7 +225,7 @@ This should install Spatial Analytics APIs and set up a sample dataset that can 
 * ``global.registry.tag``: The docker image tag value e.g. 1.1.0 or latest.
 * ``global.registry.secrets``: The name of the secret holding ECR credential information.
 
-For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md#helm-values).  
+For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md).  
 
 Once you run Spatial Analytics helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
@@ -233,7 +238,7 @@ kubectl get services -o wide  nginx-ingress-ingress-nginx-controller
 ```
 
 
-After all the pods in namespace 'spatial-analytics' are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps. The link to Spatial Manager: `https://<your external ip>/SpatialServerManager`
+After all the pods in namespace 'spatial-analytics' are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can log in with any username/password. You should be able to browser named resources and pre-view maps. The link to Spatial Manager: `https://<your external ip>/SpatialServerManager`
 
 
 You can check HPA status while services are running
@@ -300,7 +305,7 @@ also see Keycloak document about the [Management Console](https://www.keycloak.o
 
 ### Update service config to use your realm in the keycloak
 ```
-kubectl edit cm spatial-config
+kubectl edit cm spatial-config -n spatial-analytics
 ```
 Update the following properties with the values below,
 ```
@@ -309,18 +314,18 @@ oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
 oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
-spring.security.oauth2.resourceserver.jwt.issuer-uri: "<ingress external ip>/auth/realms/<your realm name>"
+spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
 > NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
 
 Restart all services to pick up the configuration changes
 ```
-kubectl rollout restart deployment
+kubectl rollout restart deployment -n spatial-analytics 
 ```
 Wait for all pods are ready
 ```
-kubectl get pod
+kubectl get pod -n spatial-analytics 
 ```
 
 Login to Spatial Manager when all services are ready. Initial password for `admin` is `Spatialadmin0`
@@ -344,7 +349,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
+- [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
 - [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
 - [FAQs](../../faq/FAQs.md)
 
