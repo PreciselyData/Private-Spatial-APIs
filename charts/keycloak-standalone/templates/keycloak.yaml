@@ -77,4 +77,4 @@ spec:
             port:
               number: 8080
 
-    host: {{ .Values.hostname | quote }}
+
