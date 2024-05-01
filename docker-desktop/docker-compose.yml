@@ -5,7 +5,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 4096M
         reservations:
           cpus: '0.25'
@@ -24,13 +24,13 @@ services:
     restart: always
 
   spatialmanager-service:
-    image: ${IMAGE_REGISTRY:-jfrog.precisely.engineering/spatial-docker}/spatialmanager-service
+    image: ${IMAGE_REGISTRY}/spatialmanager-service
     depends_on:
       - namedresource-service
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 512M
         reservations:
           cpus: '0.25'
@@ -47,13 +47,13 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 
   samples-data:
-    image: ${IMAGE_REGISTRY:-jfrog.precisely.engineering/spatial-docker}/samples-data
+    image: ${IMAGE_REGISTRY}/samples-data
     depends_on:
       - mongo1
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 512M
         reservations:
           cpus: '0.25'
@@ -66,17 +66,17 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
-        source: "C:/spatial"
+        source: ${SPATIAL_PATH}
         target: "/opt/data"
 
   namedresource-service:
-    image: ${IMAGE_REGISTRY:-jfrog.precisely.engineering/spatial-docker}/namedresource-service
+    image: ${IMAGE_REGISTRY}/namedresource-service
     depends_on:
       - mongo1
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 1024M
         reservations:
           cpus: '0.25'
@@ -94,18 +94,18 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
-        source: "C:/spatial"
+        source: ${SPATIAL_PATH}
         target: "/opt/data"
 
   feature-service:
-    image: ${IMAGE_REGISTRY:-jfrog.precisely.engineering/spatial-docker}/feature-service
+    image: ${IMAGE_REGISTRY}/feature-service
     profiles: ["all"]
     depends_on:
       - mongo1
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 2048M
         reservations:
           cpus: '0.25'
@@ -123,17 +123,17 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
-        source: "C:/spatial"
+        source: ${SPATIAL_PATH}
         target: "/opt/data"
 
   mapping-service:
-    image: ${IMAGE_REGISTRY:-jfrog.precisely.engineering/spatial-docker}/mapping-service
+    image: ${IMAGE_REGISTRY}/mapping-service
     depends_on:
       - mongo1
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 1024M
         reservations:
           cpus: '0.25'
@@ -151,17 +151,17 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
-        source: "C:/spatial"
+        source: ${SPATIAL_PATH}
         target: "/opt/data"
   tiling-service:
-    image: ${IMAGE_REGISTRY:-jfrog.precisely.engineering/spatial-docker}/tiling-service
+    image: ${IMAGE_REGISTRY}/tiling-service
     profiles: ["all"]
     depends_on:
       - mongo1
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '4.00'
           memory: 1024M
         reservations:
           cpus: '0.25'
@@ -179,7 +179,7 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
-        source: "C:/spatial"
+        source: ${SPATIAL_PATH}
         target: "/opt/data"
 volumes:
   mongo1_data:

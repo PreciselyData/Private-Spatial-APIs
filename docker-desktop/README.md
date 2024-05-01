@@ -12,14 +12,14 @@ access software, reference data and docker files available in [Precisely Data Ex
 
 1. **Install Docker Desktop**
 
-2. **To setup a local image registry**
+   Docker installation instruction [Docker instruction](https://docs.docker.com/engine/install/)
 
-   use the following command:
+   > Note : If you don't have a local registry, you can use the following command:
    ```
    docker run -d -p 5000:5000 --restart=always --name registry registry:2.7
    ```
 
-3. **configure environment file**
+2. **Configure environment file**
 
    While building docker image locally, configure environment file to reference local image registry. Update _.env_ file in
       `docker-compose` folder with environment variable referencing image registry. Otherwise, the default registry will
@@ -28,7 +28,7 @@ access software, reference data and docker files available in [Precisely Data Ex
    IMAGE_REGISTRY=localhost:5000
    ```
 
-4. **Docker images pushed to a local image registry**
+3. **Docker images pushed to a local image registry**
 
    There are six docker images which will be pushed to container registry:
    1. feature-service
@@ -38,26 +38,38 @@ access software, reference data and docker files available in [Precisely Data Ex
    5. spatialmanager-service
    6. samples-data
 
-   After download, the docker images need to be pushed to a container registry. Then you can use a script [push-images](./push-images.sh) to push the docker images to local image registry.
+   After download, the docker images need to be pushed to a container registry. Then you can use a script [push-images](../scripts/aks/push-images.sh) to push the docker images to local image registry.
 
    > Note: You must provide the local path to the download tar file location of each images (with double back slashes)
 
    Run the shell script to push images to Local Image Registry:
    ```shell
-   cd docker-desktop
-   chmod a+x ./push-images.sh
+   chmod a+x ../scripts/aks/push-images.sh
+   cd <GIVE_THE_PATH_OF_DOWNLOADED_IMAGES> 
+   <GIVE_THE_PATH_OF_push-images.sh_FILE>
    ./push-images.sh localhost:5000
    ```
 
-5. **service to start using docker compose file**
+4. **service to start using docker compose file**
 
    If you *always* want all the service to start you can run:
    ```
    docker compose up
    ```
+5. **Cleanup of local services**
 
+   Regardless of any above method of running the services locally below cleanup command will be same.
+
+   ```shell
+   docker compose down
+   ```
+
+   *Example:*
+   ```shell
+   docker compose down
+   ```
 ## References
 
-- [Sample API Usage](../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
+- [Sample API Usage](../charts/spatial-cloud-native/README.md)
 
 [🔗 Return to `Table of Contents` 🔗](../README.md#setup)
