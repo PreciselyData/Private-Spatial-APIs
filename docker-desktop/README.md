@@ -12,9 +12,9 @@ access software, reference data and docker files available in [Precisely Data Ex
 
 1. **Install Docker Desktop**
 
-   Docker installation instruction [Docker instruction](https://docs.docker.com/engine/install/)
+   Install docker you your machine by following the instructions: [Docker instruction](https://docs.docker.com/engine/install/)
 
-   > Note : If you don't have a local registry, you can use the following command:
+   > Note : If you don't have a container registry, you can create one for testing as shown below:
    ```
    docker run -d -p 5000:5000 --restart=always --name registry registry:2.7
    ```
@@ -22,10 +22,9 @@ access software, reference data and docker files available in [Precisely Data Ex
 2. **Configure environment file**
 
    While building docker image locally, configure environment file to reference local image registry. Update _.env_ file in
-      `docker-compose` folder with environment variable referencing image registry. Otherwise, the default registry will
-      be our jfrog registry (jfrog.precisely.engineering):
+      `docker-compose` folder with environment variable referencing image registry.
    ```properties
-   IMAGE_REGISTRY=localhost:5000
+   IMAGE_REGISTRY=<container_registry_url>
    ```
 
 3. **Docker images pushed to a local image registry**
@@ -44,10 +43,10 @@ access software, reference data and docker files available in [Precisely Data Ex
 
    Run the shell script to push images to Local Image Registry:
    ```shell
-   chmod a+x ../scripts/aks/push-images.sh
+   chmod a+x ~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh
    cd <GIVE_THE_PATH_OF_DOWNLOADED_IMAGES> 
-   <GIVE_THE_PATH_OF_push-images.sh_FILE>
-   ./push-images.sh localhost:5000
+   ~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh
+   ./push-images.sh <container_registry_url>
    ```
 
 4. **service to start using docker compose file**
