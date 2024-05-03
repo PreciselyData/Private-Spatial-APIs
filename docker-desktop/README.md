@@ -7,7 +7,9 @@ The Spatial-Analytics application can be setup locally for test purpose.
 The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
 access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
-For more information on downloading the docker images, follow [this section](../README.md#3-download-spatial-analytics-images).
+
+For more information on downloading the docker images, follow [this section](../docs/guides/aks/README.md#3-download-spatial-analytics-images).
+
 > Note : If you don't have a container registry, you can create one for testing as shown below:
    ```
    docker run -d -p 5000:5000 --restart=always --name registry registry:2.7
@@ -23,7 +25,7 @@ For more information on downloading the docker images, follow [this section](../
    IMAGE_REGISTRY=<container_registry_url>
    ```
 
-   If customizing the sample data location on the system, please provide your desired path for the `SPATIAL_PATH` variable in the .env file. Otherwise, it will default to the path specified in the .env file.
+   If customizing the copy sample data location on the system, please provide your desired path for the `SPATIAL_PATH` variable in the .env file. Otherwise, it will default to the path specified in the .env file.
 
 2. **service to start using docker compose file**
 
