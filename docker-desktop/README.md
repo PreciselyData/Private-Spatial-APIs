@@ -8,7 +8,7 @@ The docker files can be downloaded from either Precisely's Data Portfolio or [Da
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
 access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
 
-For more information on downloading the docker images, follow [this section](../docs/guides/aks/README.md#3-download-spatial-analytics-images).
+For more information on downloading the docker images, follow [this section](../docs/guides/aks/QuickStartAKS.md#step-3-download-spatial-analytics-docker-images).
 
 > Note : If you don't have a container registry, you can create one for testing as shown below:
    ```
