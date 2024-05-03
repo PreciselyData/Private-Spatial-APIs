@@ -1,83 +1,48 @@
-# Precisely Geo-Addressing Service Setup on Local Docker Desktop
+# Precisely Cloudnative-Spatial-Analytics-helm Service Setup on Local Docker Desktop
 
-The geo-addressing application can be setup locally for test purpose.
+The Spatial-Analytics application can be setup locally for test purpose.
 
 ## Step 1: Download Reference Data and Required Docker Images
 
-To run the docker images locally, reference data and docker images should be downloaded from Precisely Data Experience.
-> For more information on downloading the docker images, follow [this section](../scripts/images-to-ecr-uploader/README.md#download-and-upload-docker-images-to-ecr).
-> 
-> For more information on reference data and downloading docker images, follow [this section](../docs/ReferenceData.md).
->
+The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
+see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
+access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
+
+For more information on downloading the docker images, follow [this section](../docs/guides/aks/QuickStartAKS.md#step-3-download-spatial-analytics-docker-images).
+
+> Note : If you don't have a container registry, you can create one for testing as shown below:
+   ```
+   docker run -d -p 5000:5000 --restart=always --name registry registry:2.7
+   ```
 
 ## Step 2: Running Service Locally
 
-> Note: addressing-express service should not be run locally.
+1. **Configure environment file**
 
-Modify the below variables in ****.env**** file and run the mentioned command.
+   While building docker image locally, configure environment file to reference local image registry. Update _.env_ file in
+      `docker-compose` folder with environment variable referencing image registry.
+   ```properties
+   IMAGE_REGISTRY=<container_registry_url>
+   ```
 
-_DATA_PATH -> path to the **extracted** data
+   If customizing the copy sample data location on the system, please provide your desired path for the `SPATIAL_PATH` variable in the .env file. Otherwise, it will default to the path specified in the .env file.
 
-_SERVICE_PORT -> port at which service should be started (Example 8080)
+2. **service to start using docker compose file**
 
+   If you *always* want all the service to start you can run:
+   ```
+   docker compose up
+   ```
+3. **Cleanup of local services**
 
-_GEOCODE_VERIFY_ENABLED -> Set to true to enable geocode and verify endpoints.
-_LOOKUP_ENABLED -> Set to true to enable lookup endpoint.
-_REVERSEGEOCODE_ENABLED -> Set to true to enable reverse geocode endpoint.
-_AUTOCOMPLETE_ENABLED -> Set to true to enable autocomplete endpoint.
+   Regardless of any above method of running the services locally below cleanup command will be same.
 
-```Note: Only enable those endpoints for which data is configured, else service startup will fail.```
-
-***Sample Values:***
-
-*below values will enable autocomplete API endpoints.*
-
- ```shell
- _DATA_PATH=/data/autocomplete/usa/202307
- _SERVICE_PORT=8080
- _GEOCODE_VERIFY_ENABLED=false
- _LOOKUP_ENABLED=false
- _REVERSEGEOCODE_ENABLED=false
- _AUTOCOMPLETE_ENABLED=true
- ```
-
-*below values will enable verify/geocode API endpoints.*
-
- ```shell
- _DATA_PATH=/data/verify-geocode/usa/202307
- _SERVICE_PORT=8080
- _GEOCODE_VERIFY_ENABLED=true
- _LOOKUP_ENABLED=false
- _REVERSEGEOCODE_ENABLED=false
- _AUTOCOMPLETE_ENABLED=false
- ```
-
-    ```shell
-    docker compose -p [PROJECT_NAME] -f ./docker-compose.yml up -d
-    ```
-
-    *Example:*
-    ```shell
-    docker compose -p geo-addressing -f ./docker-compose.yml up -d
-    ```
-
-    After executing the above command the service will start at http://localhost:[_SERVICE_PORT]
-
-## Cleanup of local services
-
-    Regardless of any above method of running the services locally below cleanup command will be same.
-
-    ```shell
-    docker compose -p [PROJECT_NAME] down
-    ```
-
-    *Example:*
-    ```shell
-    docker compose -p geo-addressing down
-    ```
+   ```shell
+   docker compose down
+   ```
 
 ## References
 
-- [Sample API Usage](../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
+- [Sample API Usage](../charts/spatial-cloud-native/README.md)
 
-[🔗 Return to `Table of Contents` 🔗](../README.md#setup)
+[🔗 Return to `Table of Contents` 🔗](../README.md##)
