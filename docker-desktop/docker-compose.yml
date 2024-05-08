@@ -1,55 +1,186 @@
-version: "3.9"
 services:
-  precisely-regional-addressing:
-    image: ${_REGIONAL_IMAGE:-regional-addressing-service:latest}
-    platform: linux/amd64
+  mongo1:
+    image: mongo:6.0.12
+    command: ["--replSet", "spatial-repo", "--bind_ip_all", "--port", "27017"]
     deploy:
       resources:
+        limits:
+          cpus: '4.00'
+          memory: 4096M
         reservations:
-          cpus: '1'
-          memory: 1500M
+          cpus: '0.25'
+          memory: 2048M
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'spatial-repo',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 40s
     ports:
-      - "${_SERVICE_PORT:-8080}:8080"
-    environment:
-      - ADDRESSING_BASE_URL=http://precisely-addressing-svc:8080
-      - LOOKUP_BASE_URL=http://precisely-addressing-svc:8080
-      - AUTOCOMPLETE_BASE_URL=http://precisely-addressing-svc:8080
-      - REVERSE_GEOCODE_BASE_URL=http://precisely-addressing-svc:8080
-      - SUPPORTED_COUNTRIES_GEOCODE=usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world
-      - SUPPORTED_REGIONS_GEOCODE=""
-      - SUPPORTED_COUNTRIES_VERIFY=usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world
-      - SUPPORTED_REGIONS_VERIFY=""
-      - SUPPORTED_COUNTRIES_LOOKUP=usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world
-      - SUPPORTED_COUNTRIES_AUTOCOMPLETE=usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world
-      - SUPPORTED_REGIONS_AUTOCOMPLETE=""
-      - SUPPORTED_COUNTRIES_REVERSE_GEOCODE=usa,gbr,deu,aus,fra,can,mex,bra,arg,rus,ind,sgp,nzl,jpn,world
-      - AUTH_ENABLED=false
-      - IS_HELM_SOLUTION=true
-      - OTEL_TRACES_EXPORTER=none
-    networks:
-      - preciselyaddressing
+      - "27017:27017"
+    volumes:
+      - "mongo1_data:/data/db"
+      - "mongo1_config:/data/configdb"
     restart: always
-  precisely-addressing-svc:
-    image: ${_ADDRESSING_IMAGE:-addressing-service:latest}
-    platform: linux/amd64
+
+  spatialmanager-service:
+    image: ${IMAGE_REGISTRY}/spatialmanager-service
+    depends_on:
+      - namedresource-service
     deploy:
       resources:
+        limits:
+          cpus: '4.00'
+          memory: 512M
         reservations:
-          cpus: '1'
-          memory: 4G
-    volumes:
-      - ${_DATA_PATH:-/data/extracted}:/mnt/data/extracted
+          cpus: '0.25'
+          memory: 256M
+    ports:
+      - "8010:8080"
+      - "8011:8081"
+      - "8015:5005"
     environment:
-      - DATA_PATH=/mnt/data/extracted
-      - GEOCODE_VERIFY_ENABLED=${_GEOCODE_VERIFY_ENABLED:-true}
-      - LOOKUP_ENABLED=${_LOOKUP_ENABLED:-false}
-      - REVERSEGEOCODE_ENABLED=${_REVERSEGEOCODE_ENABLED:-false}
-      - AUTOCOMPLETE_ENABLED=${_AUTOCOMPLETE_ENABLED:-false}
-      - OTEL_TRACES_EXPORTER=none
-      - AUTH_ENABLED=false
-    networks:
-      - preciselyaddressing
-    restart: always
-networks:
-  preciselyaddressing:
-    name: geo-addressing
+      - OAUTH2.ENABLED=FALSE
+      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.CLIENTID=spatial
+      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+
+  samples-data:
+    image: ${IMAGE_REGISTRY}/samples-data
+    depends_on:
+      - mongo1
+    deploy:
+      resources:
+        limits:
+          cpus: '4.00'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    ports:
+      - "8075:5005"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - samples.force.update=false
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    volumes:
+      - type: bind
+        source: ${SPATIAL_PATH}
+        target: "/opt/data"
+
+  namedresource-service:
+    image: ${IMAGE_REGISTRY}/namedresource-service
+    depends_on:
+      - mongo1
+    deploy:
+      resources:
+        limits:
+          cpus: '4.00'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    ports:
+      - "8050:8080"
+      - "8051:8081"
+      - "8055:5005"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - OAUTH2.ENABLED=FALSE
+      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.CLIENTID=spatial
+      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    volumes:
+      - type: bind
+        source: ${SPATIAL_PATH}
+        target: "/opt/data"
+
+  feature-service:
+    image: ${IMAGE_REGISTRY}/feature-service
+    profiles: ["all"]
+    depends_on:
+      - mongo1
+    deploy:
+      resources:
+        limits:
+          cpus: '4.00'
+          memory: 2048M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    ports:
+      - "8040:8080"
+      - "8041:8081"
+      - "8045:5005"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - OAUTH2.ENABLED=FALSE
+      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.CLIENTID=spatial
+      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    volumes:
+      - type: bind
+        source: ${SPATIAL_PATH}
+        target: "/opt/data"
+
+  mapping-service:
+    image: ${IMAGE_REGISTRY}/mapping-service
+    depends_on:
+      - mongo1
+    deploy:
+      resources:
+        limits:
+          cpus: '4.00'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    ports:
+      - "8032:8080"
+      - "8031:8081"
+      - "8035:5005"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - OAUTH2.ENABLED=FALSE
+      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.CLIENTID=spatial
+      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    volumes:
+      - type: bind
+        source: ${SPATIAL_PATH}
+        target: "/opt/data"
+  tiling-service:
+    image: ${IMAGE_REGISTRY}/tiling-service
+    profiles: ["all"]
+    depends_on:
+      - mongo1
+    deploy:
+      resources:
+        limits:
+          cpus: '4.00'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    ports:
+      - "8060:8080"
+      - "8061:8081"
+      - "8065:5005"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - OAUTH2.ENABLED=FALSE
+      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.CLIENTID=spatial
+      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    volumes:
+      - type: bind
+        source: ${SPATIAL_PATH}
+        target: "/opt/data"
+volumes:
+  mongo1_data:
+  mongo1_config:
