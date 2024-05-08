@@ -78,9 +78,9 @@ You can create the EKS cluster or use an existing EKS cluster.
 EKS cluster must have the above addons and ingress for the ease of installation of spatial-analytics Helm Chart.
 
 
-> Note: You should run this command in your shell to connect to EKS cluster:
-> `` aws eks --region [aws-region] update-kubeconfig --name [cluster-name] ``.
-> This will update your local copy EKS cluster configuration. 
+> Note: You should run this command in your shell to connect to EKS cluster:  
+> `` aws eks --region [aws-region] update-kubeconfig --name [cluster-name] ``  
+> This will update your local copy of EKS cluster configuration. 
 
 ## Step 3: Download Spatial Analytics Docker Images
 
