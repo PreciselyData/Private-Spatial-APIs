@@ -51,8 +51,9 @@ data:
   system.pool.database.jdbcInterceptors: {{ .Values.property.poolDatabaseJdbcInterceptors | quote }}
   system.pool.database.autoRegisterMBean: {{ .Values.property.poolDatabaseAutoRegisterMBean | quote }}
   system.search.tab.case-insensitive: {{ .Values.property.searchTabCaseInsensitive | quote }}
-  system.java.rmi.server.useCodebaseOnly: "true"
   system.list.file.restricted.path: {{ .Values.property.restrictedPath | quote }}
+  system.spatial.security.subadmin.connections.enable: {{ .Values.property.subadminConnectionsEnable | quote }}
+  system.java.rmi.server.useCodebaseOnly: "true"
   system.com.mapinfo.midev.repository.factory: "com.precisely.swp.repository.mongodb.MongoRepositoryFactory"
   system.javax.xml.stream.XMLInputFactory: "com.ctc.wstx.stax.WstxInputFactory"
   ################################################################################
@@ -69,6 +70,20 @@ data:
   server.tomcat.relaxed-query-chars: "[,],{,}"
   spring.data.mongodb.auto-index-creation: "true"
   spring.data.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
+  help.link.topics: |-
+    {'100':  'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Spatial-Cloud-Native-Guide',
+     '3000': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager', 
+     '3004': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Managing-WMS-Layers-and-Configuration/WMS-Settings',
+     '3005': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Data-Source-Volatility',
+     '3006': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table',
+     '3007': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Details-Page',
+     '3008': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Properties',
+     '3015': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/REST-Services/Map-Tiling-Service/Managing-Map-Tiling-Resources-and-Configuration/Parameters-for-Named-Tiles/What-Is-Tile-Level',
+     '3016': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Development/Map-Tiling/Vector-Tiles',
+     '3017': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Types-of-Named-Resources/Named-Tables/Generic-JDBC-X/Y-Database-Table',
+     '3018': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Supported-Data-Sources/MapInfo-TAB/MapInfo-Native-TAB',
+     '3019': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table/Creating-a-View-Table-with-Parameters'
+    }
   ################################################################################
   samples.force.update: {{.Values.samplesForceUpdate | default false | quote}}
   ################################################################################
