@@ -53,6 +53,7 @@ data:
   system.search.tab.case-insensitive: {{ .Values.property.searchTabCaseInsensitive | quote }}
   system.list.file.restricted.path: {{ .Values.property.restrictedPath | quote }}
   system.spatial.security.subadmin.connections.enable: {{ .Values.property.subadminConnectionsEnable | quote }}
+  system.com.precisely.miraster.cache.size: {{ .Values.property.miRasterCacheSize | quote }}
   system.java.rmi.server.useCodebaseOnly: "true"
   system.com.mapinfo.midev.repository.factory: "com.precisely.swp.repository.mongodb.MongoRepositoryFactory"
   system.javax.xml.stream.XMLInputFactory: "com.ctc.wstx.stax.WstxInputFactory"
@@ -80,7 +81,7 @@ data:
      '3008': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Properties',
      '3015': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/REST-Services/Map-Tiling-Service/Managing-Map-Tiling-Resources-and-Configuration/Parameters-for-Named-Tiles/What-Is-Tile-Level',
      '3016': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Development/Map-Tiling/Vector-Tiles',
-     '3017': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Types-of-Named-Resources/Named-Tables/Generic-JDBC-X/Y-Database-Table',
+     '3017': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Support-for-Spatial-Aggregation',
      '3018': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Supported-Data-Sources/MapInfo-TAB/MapInfo-Native-TAB',
      '3019': 'https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table/Creating-a-View-Table-with-Parameters'
     }
