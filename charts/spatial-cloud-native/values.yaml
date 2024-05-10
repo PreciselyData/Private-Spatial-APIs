@@ -69,4 +69,6 @@ property:
   poolDatabaseAutoRegisterMBean: "false"
   searchTabCaseInsensitive: "false"
   restrictedPath: "/opt/data"
+  subadminConnectionsEnable: "false"
+  miRasterCacheSize: "200"
 # The END

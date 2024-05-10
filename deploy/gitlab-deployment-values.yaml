@@ -62,6 +62,7 @@ spatialmanager-service:
   limitCPU: "4"
   limitMemory: "2G"
   initReplicaCount: 1
+  maxReplicaCount: 2
   hpaEnabled: true
   hpaCpuAverageUtilization: 80
 
