@@ -46,8 +46,7 @@ Please wait for all the service pods to be in the running stage:
    ```
 3. How to clean up the resources if the helm-chart installation is unsuccessful?
    <br><br>
-   Helm chart installation may fail if mandatory parameters are not specified or not overriding few of the default
-   parameters. Apart from mandatory parameters, you can always override the default values in
+   Helm chart installation may fail if mandatory parameters are not specified. Apart from mandatory parameters, you can always override the default values in
    the [values.yaml](../../charts/spatial-cloud-native/values.yaml) file by using the --set parameter.
 
    However, you can view the logs and fix those issues by cleaning up and rerunning the helm command.  
