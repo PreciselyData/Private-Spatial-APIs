@@ -76,6 +76,7 @@ Now click on **Create** → **Create a Kubernetes Cluster**
 
 #### Specify information for cluster
 ![create aks-details](images/create-kubernetes-services-2.png "create aks-details")
+![create aks-details-1](images/create-kubernetes-services-3.png "create aks-details")
 
 Create a new Resource group `spatial-aks` for this AKS cluster
 
@@ -134,7 +135,7 @@ kubectl get nodes
 ```
 ```shell
 NAME                                STATUS   ROLES   AGE    VERSION
-aks-agentpool-39271417-vmss000000   Ready    agent   106s   v1.23.8
+aks-agentpool-39271417-vmss000000   Ready    <none>  106s   v1.29.2
 ```
 
 ###  2.3 Install Ingress-NGINX controller
@@ -377,7 +378,8 @@ data-volume   100Gi      RWX            Retain           Available              
 In Cloud Shell, create the PVC from the template file **fileshare-pvc.yaml**
 
 ```shell
-kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pvc.yaml -n spatial-analytics
+kubectl create namespace spatial-analytics
+kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pvc.yaml -n spatial-analytics 
 ```
 
 To verify
@@ -420,7 +422,7 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 ```
 ## Step 6: Installation of Spatial Analytics Helm Chart
 
-> NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
+> NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-spatial-analytics-docker-images) for uploading the docker images with the newest tag.
 
 There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
 
@@ -449,6 +451,9 @@ helm upgrade --install spatial-analytics \
  -f ./deploy/gitlab-deployment-values.yaml \
  --namespace spatial-analytics   
 ```
+
+> Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use a domain name for `global.ingress.hos`. 
+> You can skip specifying the `global.ingress.host` parameter altogether to install the chart successfully but that is not recommended for production.   
 
 This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.
 
@@ -513,8 +518,12 @@ kubectl get svc -n ingress-nginx
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
 ```
-helm install keycloak ~/cloudnative-spatial-analytics-helm/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
+helm install keycloak ~/cloudnative-spatial-analytics-helm/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress_host_name > 
 ```
+> Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use the domain name for `hostname`.
+> You can skip specifying the `hostname` parameter altogether to install the chart successfully but that is not recommended for production.
+
+
 Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It may take some time for Ingress to be deployed.
 
 Open a browser and login to keycloak console with the admin credentials (default to admin/admin) at
@@ -540,7 +549,7 @@ also see Keycloak document about the [Management Console](https://www.keycloak.o
 
 ### Update service config to use your realm in the keycloak
 ```
-kubectl edit cm spatial-config
+kubectl edit cm spatial-config -n spatial-analytics
 ```
 Update the following properties with the values below,
 ```
@@ -549,7 +558,7 @@ oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
 oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
-spring.security.oauth2.resourceserver.jwt.issuer-uri: "<ingress external ip>/auth/realms/<your realm name>"
+spring.security.oauth2.resourceserver.jwt.issuer-uri: "<http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
 > NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
@@ -584,8 +593,8 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
-- [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
+- [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
+- [Metrics](docs/Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
 

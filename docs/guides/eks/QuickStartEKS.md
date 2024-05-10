@@ -350,7 +350,7 @@ More details on Spatial Utilities can be found [here](../../guides/spatial-utili
 
 ## Next Sections
 - [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
-- [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
+- [Metrics](docs/Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
 

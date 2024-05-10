@@ -343,8 +343,8 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/geo-addressing/README.md#geo-addressing-service-api-usage)
-- [Metrics, Traces and Dashboard](../../MetricsAndTraces.md)
+- [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
+- [Metrics](docs/Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
 
