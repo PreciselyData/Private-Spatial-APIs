@@ -64,12 +64,7 @@ Following are the metrics exposed by Feature-Service Application:
 | system.cpu.count                 | Gauge   | The number of processors available to the Java virtual machine.                                                                 | 
 | system.cpu.usage                 | Gauge   | The "recent cpu usage" of the system the application is running in.                                                                 | 
 | system.load.average.1m           | Gauge   | The sum of the number of runnable entities queued to available processors and the number of runnable entities running on the available processors averaged over a period of time.                                                                 | 
-| tomcat.sessions.active.current   | Gauge   |                                                                 | 
-| tomcat.sessions.active.max       | Gauge   |                                                                  | 
-| tomcat.sessions.alive.max        | Gauge   |                                                                  | 
-| tomcat.sessions.created          | Counter |                                                                  | 
-| tomcat.sessions.expired          | Counter |                                                                 | 
-| tomcat.sessions.rejected         | Counter |                                                                  | 
+
 
 <hr>
 </details>
