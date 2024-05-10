@@ -120,9 +120,7 @@ Following is the helm version chart against Spatial Analytics PDX docker image v
 
 ## Miscellaneous
 
-- [Metrics](docs/MetricsAndTraces.md#generating-insights-from-metrics)
-- [Application Tracing](docs/MetricsAndTraces.md#generating-insights-from-metrics)
-- [Logs and Monitoring](docs/MetricsAndTraces.md#generating-insights-from-metrics)
+- [Metrics](docs/Metrics.md#generating-insights-from-metrics)
 - [FAQs](docs/faq/FAQs.md)
 
 ## References
