@@ -110,13 +110,13 @@ More details on Spatial Utilities can be found [here](./docs/guides/spatial-util
 
 Following is the helm version chart against Spatial Analytics PDX docker image version.
 
-| Docker Image PDX Version     | Helm Chart Version |
-|------------------------------|--------------------|
-| `1.0.0/2024.0/April 30,2024` | `0.1.1`️ |
+| Docker Image PDX Version  | Helm Chart Version |
+|---------------------------|--------------------|
+| `1.1.0/2024.5/May 8,2024` | `1.1.0`️         |
 
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
-> Refer [Downloading Spatial Analytics Docker Images](docs/guides/eks/QuickStartEKS.md#step-3-download-docker-images) for more information.
+> Refer [Downloading Spatial Analytics Docker Images](#3-download-spatial-analytics-images) for more information.
 
 ## Miscellaneous
 
@@ -127,11 +127,9 @@ Following is the helm version chart against Spatial Analytics PDX docker image v
 
 - [Releases](https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/releases)
 - [Helm Values](charts/spatial-cloud-native/README.md#helm-values)
-- [Environment Variables](charts/spatial-cloud-native/README.md#environment-variables)
-- [Memory Recommendations](charts/spatial-cloud-native/README.md#memory-recommendations)
 
 ## Links
 
-- [Spatial Analytics API Guide](.)
+- [Spatial Analytics API Guide](https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/Working-With-Spatial-Services)
 - [Helm Chart Tricks](https://helm.sh/docs/howto/charts_tips_and_tricks/)
 - [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/)
