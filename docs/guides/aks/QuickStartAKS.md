@@ -378,7 +378,8 @@ data-volume   100Gi      RWX            Retain           Available              
 In Cloud Shell, create the PVC from the template file **fileshare-pvc.yaml**
 
 ```shell
-kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pvc.yaml -n spatial-analytics --create-namespace
+kubectl create namespace spatial-analytics
+kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pvc.yaml -n spatial-analytics 
 ```
 
 To verify
