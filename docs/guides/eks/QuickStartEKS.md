@@ -204,15 +204,14 @@ kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.e
 To install/upgrade the Spatial Analytics helm chart, use the following command:
 
 ```shell
-helm upgrade --install spatial-analytics  --version 1.1.0 \
- ./charts/spatial-cloud-native  --dependency-update  \
+helm install spatial-analytics ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
+ -f ~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
  --set "global.registry.tag=1.1.0" \ 
  --set "global.registry.secrets=regcred" \ 
- -f ./deploy/gitlab-deployment-values.yaml \
- --namespace spatial-analytics   
+  --namespace spatial-analytics   
 ```
 
 This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.
@@ -350,7 +349,7 @@ More details on Spatial Utilities can be found [here](../../guides/spatial-utili
 
 ## Next Sections
 - [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
-- [Metrics](docs/Metrics.md#generating-insights-from-metrics)
+- [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
 
