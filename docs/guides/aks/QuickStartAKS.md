@@ -182,15 +182,18 @@ Log in to your Azure Container Registry:
 az login
 az acr login --name <azure_container_registry>
 ```
+
+> Note: Unzip the downloaded docker images to a directory <spatial_analytics_docker_images_dir> so that it contains tar files.
+
 Run the shell script to push images to Azure Container Registry:
 ```shell
-cd cloudnative-spatial-analytics-helm
-chmod a+x ./scripts/aks/push-images.sh
-./scripts/aks/push-images.sh <azure_container_registry>.azurecr.io
+cd <spatial_analytics_docker_images_dir>
+chmod a+x ~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh
+~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io
 ```
 You can also load images one by one if there's no enough disk space available
 ```shell
-./scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
+~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
 ```
 List images in the registry:
 \
@@ -441,14 +444,13 @@ To install/upgrade the Spatial Analytics helm chart, use the following command:
 ```shell
 cd ~/cloudnative-spatial-analytics-helm/
 
-helm upgrade --install spatial-analytics \
- ./charts/spatial-cloud-native  --dependency-update  \
+helm install spatial-analytics ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
+ -f ~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[acr].azurecr.io" \
  --set "global.registry.tag=latest" \ 
- --set "global.registry.secrets=regcred" \ 
- -f ./deploy/gitlab-deployment-values.yaml \
+ --set "global.registry.secrets=regcred" \  
  --namespace spatial-analytics   
 ```
 
@@ -594,7 +596,7 @@ More details on Spatial Utilities can be found [here](../../guides/spatial-utili
 
 ## Next Sections
 - [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
-- [Metrics](docs/Metrics.md#generating-insights-from-metrics)
+- [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
 

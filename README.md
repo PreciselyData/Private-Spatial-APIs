@@ -65,8 +65,8 @@ These are collectively known as “Named Resources”. The named resources are p
 
 ## Guides
 - Quickstart Guide: [EKS](./docs/guides/eks/QuickStartEKS.md) | [GKE](./docs/guides/gke/QuickStartGKE.md) | [AKS](./docs/guides/aks/QuickStartAKS.md)
-- Upgrade Guide: [EKS](./docs/guides/eks/UninstallGuide.md) | [GKE](./docs/guides/gke/UpgradeGuide.md) | [AKS](./docs/guides/aks/UpgradeGuide.md) 
-- Uninstall Guide: [EKS](./docs/guides/eks/UpgradeGuide.md) | [GKE](./docs/guides/gke/UninstallGuide.md) | [AKS](./docs/guides/aks/UninstallGuide.md) 
+- Upgrade Guide: [EKS](./docs/guides/eks/UpgradeGuide.md) | [GKE](./docs/guides/gke/UpgradeGuide.md) | [AKS](./docs/guides/aks/UpgradeGuide.md) 
+- Uninstall Guide: [EKS](./docs/guides/eks/UninstallGuide.md) | [GKE](./docs/guides/gke/UninstallGuide.md) | [AKS](./docs/guides/aks/UninstallGuide.md) 
 
 ## Installing Spatial Analytics Helm Chart
 ### 1. Prepare your environment
