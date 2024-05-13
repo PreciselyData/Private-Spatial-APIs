@@ -64,6 +64,17 @@ Following are the metrics exposed by Feature-Service Application:
 | system.cpu.count                 | Gauge   | The number of processors available to the Java virtual machine.                                                                 | 
 | system.cpu.usage                 | Gauge   | The "recent cpu usage" of the system the application is running in.                                                                 | 
 | system.load.average.1m           | Gauge   | The sum of the number of runnable entities queued to available processors and the number of runnable entities running on the available processors averaged over a period of time.                                                                 | 
+| http.server.requests.seconds.count| Counter | This metric represents the total number of HTTP requests your Spring Boot application received at a specific endpoint.                                                                 |
+| http.server.requests.seconds.max  | Gauge   | This metric indicates the maximum request duration during a specific time window.                                                                 |
+| http.server.requests.seconds.sum  | Summary | This metric provides the sum of request durations over a specific time period.                                                                 |
+| mongodb.driver.commands.seconds.count| Counter | tracks the count of MongoDB driver commands executed by your application.                                                                 |
+| mongodb.driver.commands.seconds.max  | Gauge   | Represents the maximum execution time for MongoDB driver commands.                                                                 |
+| mongodb.driver.commands.seconds.sum  | Summary | Sum of execution times for MongoDB driver commands.                                                                 |
+| spring.data.repository.invocations.seconds.count| Counter | Related to invocations of Spring Data repository methods.                                                                 |
+| spring.data.repository.invocations.seconds.max| Gauge   | Maximum execution time for Spring Data repository invocations.                                                                 |
+| spring.data.repository.invocations.seconds.sum| Summary | Sum of execution times for Spring Data repository invocations.                                                                 |
+
+ 
 
 
 <hr>
