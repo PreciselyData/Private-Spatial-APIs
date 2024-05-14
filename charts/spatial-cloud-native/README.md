@@ -16,3 +16,5 @@ MongoDB is configured with this Helm variables:
 | Value                                  | Description                 |
 |----------------------------------------|-----------------------------|
 | `repository.mongodb.url`               | A connection string         |
+
+More details on Spatial Analytics API usage can be found [here](https://precisely-qa.fluidtopics.net/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/REST-Services).
