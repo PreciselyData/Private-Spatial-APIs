@@ -24,7 +24,7 @@ services:
     restart: always
 
   spatialmanager-service:
-    image: ${IMAGE_REGISTRY}/spatialmanager-service
+    image: ${IMAGE_REGISTRY}/spatialmanager-service:${TAG}
     depends_on:
       - namedresource-service
     deploy:
@@ -47,7 +47,7 @@ services:
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 
   samples-data:
-    image: ${IMAGE_REGISTRY}/samples-data
+    image: ${IMAGE_REGISTRY}/samples-data:${TAG}
     depends_on:
       - mongo1
     deploy:
@@ -70,7 +70,7 @@ services:
         target: "/opt/data"
 
   namedresource-service:
-    image: ${IMAGE_REGISTRY}/namedresource-service
+    image: ${IMAGE_REGISTRY}/namedresource-service:${TAG}
     depends_on:
       - mongo1
     deploy:
@@ -98,7 +98,7 @@ services:
         target: "/opt/data"
 
   feature-service:
-    image: ${IMAGE_REGISTRY}/feature-service
+    image: ${IMAGE_REGISTRY}/feature-service:${TAG}
     profiles: ["all"]
     depends_on:
       - mongo1
@@ -127,7 +127,7 @@ services:
         target: "/opt/data"
 
   mapping-service:
-    image: ${IMAGE_REGISTRY}/mapping-service
+    image: ${IMAGE_REGISTRY}/mapping-service:${TAG}
     depends_on:
       - mongo1
     deploy:
@@ -154,7 +154,7 @@ services:
         source: ${SPATIAL_PATH}
         target: "/opt/data"
   tiling-service:
-    image: ${IMAGE_REGISTRY}/tiling-service
+    image: ${IMAGE_REGISTRY}/tiling-service:${TAG}
     profiles: ["all"]
     depends_on:
       - mongo1

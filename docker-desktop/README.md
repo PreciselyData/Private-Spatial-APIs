@@ -8,12 +8,34 @@ The docker files can be downloaded from either Precisely's Data Portfolio or [Da
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
 access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
 
-For more information on downloading the docker images, follow [this section](../docs/guides/aks/QuickStartAKS.md#step-3-download-spatial-analytics-docker-images).
-
-> Note : If you don't have a container registry, you can create one for testing as shown below:
+After download, the docker images need to be pushed to a container registry. If you don't have a container registry, you can create one for testing as shown below:
    ```
    docker run -d -p 5000:5000 --restart=always --name registry registry:2.7
    ```
+Then you can use a script [push-images](../scripts/aks/push-images.sh) to push the docker images to container registry.
+> Note: Unzip the downloaded docker images to a directory <spatial_analytics_docker_images_dir> so that it contains tar files.
+
+Open a shell on you local system and execute the following steps.
+Run the shell script to push images to Azure Container Registry:
+```shell
+cd <spatial_analytics_docker_images_dir>
+chmod a+x ~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh
+~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <container_registry_url>
+```
+You can also load images one by one if there's no enough disk space available.
+There are six docker images which will be pushed to container registry:
+1. feature-service
+2. mapping-service
+3. tiling-service
+4. namedresource-service
+5. spatialmanager-service
+6. samples-data
+
+Upload images one by one:
+```shell
+~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <container_registry_url>  <tar file name without ext>
+```
+
 
 ## Step 2: Running Service Locally
 
