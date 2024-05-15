@@ -130,6 +130,6 @@ Following is the helm version chart against Spatial Analytics PDX docker image v
 
 ## Links
 
-- [Spatial Analytics API Guide](https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/Working-With-Spatial-Services){:target="_blank"}
+- [Spatial Analytics API Guide](https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/Working-With-Spatial-Services){:target="_blank" rel="noopener"}
 - [Helm Chart Tricks](https://helm.sh/docs/howto/charts_tips_and_tricks/)
 - [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/)
