@@ -35,7 +35,7 @@
 
 ## Architecture
 TODO
-![architecture.png](images/geoaddressing_architecture.png)
+![architecture.png](../images/spatial_cloud_native_architecture.png)
 
 
 ### Components

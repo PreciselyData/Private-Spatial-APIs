@@ -72,18 +72,18 @@ data:
   spring.data.mongodb.auto-index-creation: "true"
   spring.data.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
   help.link.topics: |-
-    {'100':  'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Spatial-Cloud-Native-Guide'{:target="_blank"},
-     '3000': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager'{:target="_blank"}, 
-     '3004': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Managing-WMS-Layers-and-Configuration/WMS-Settings'{:target="_blank"},
-     '3005': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Data-Source-Volatility'{:target="_blank"},
-     '3006': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table'{:target="_blank"},
-     '3007': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Details-Page'{:target="_blank"},
-     '3008': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Properties'{:target="_blank"},
-     '3015': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/REST-Services/Map-Tiling-Service/Managing-Map-Tiling-Resources-and-Configuration/Parameters-for-Named-Tiles/What-Is-Tile-Level'{:target="_blank"},
-     '3016': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Development/Map-Tiling/Vector-Tiles'{:target="_blank"},
-     '3017': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Support-for-Spatial-Aggregation'{:target="_blank"},
-     '3018': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Supported-Data-Sources/MapInfo-TAB/MapInfo-Native-TAB'{:target="_blank"},
-     '3019': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table/Creating-a-View-Table-with-Parameters'{:target="_blank"}
+    {'100':  'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Spatial-Cloud-Native-Guide',
+     '3000': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager', 
+     '3004': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Managing-WMS-Layers-and-Configuration/WMS-Settings',
+     '3005': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Data-Source-Volatility',
+     '3006': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table',
+     '3007': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Details-Page',
+     '3008': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tiles/Tile-Properties',
+     '3015': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/REST-Services/Map-Tiling-Service/Managing-Map-Tiling-Resources-and-Configuration/Parameters-for-Named-Tiles/What-Is-Tile-Level',
+     '3016': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Development/Map-Tiling/Vector-Tiles',
+     '3017': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Support-for-Spatial-Aggregation',
+     '3018': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Resouces-and-Data/Named-Resources-and-Data/Data-Access/Supported-Data-Sources/MapInfo-TAB/MapInfo-Native-TAB',
+     '3019': 'https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table/Creating-a-View-Table-with-Parameters'
     }
   ################################################################################
   samples.force.update: {{.Values.samplesForceUpdate | default false | quote}}
