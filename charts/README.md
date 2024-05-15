@@ -34,8 +34,9 @@
 > Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
 
 ## Architecture
-TODO
-![architecture.png](images/geoaddressing_architecture.png)
+The following diagram shows an overview of Spatial Cloud Native.
+
+![architecture.png](../images/spatial_cloud_native_architecture.png)
 
 
 ### Components

@@ -454,7 +454,7 @@ helm install spatial-analytics ~/cloudnative-spatial-analytics-helm/charts/spati
  --namespace spatial-analytics   
 ```
 
-> Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use a domain name for `global.ingress.hos`. 
+> Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use a domain name for `global.ingress.host`. 
 > You can skip specifying the `global.ingress.host` parameter altogether to install the chart successfully but that is not recommended for production.   
 
 This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.

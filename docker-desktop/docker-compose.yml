@@ -41,7 +41,7 @@ services:
       - "8015:5005"
     environment:
       - OAUTH2.ENABLED=FALSE
-      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
       - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -88,7 +88,7 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
-      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
       - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -117,7 +117,7 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
-      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
       - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -145,7 +145,7 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
-      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
       - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -173,7 +173,7 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
-      - OAUTH2.ISSUERURI=https://keycloak.apps.spatial.precisely.engineering
+      - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
       - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
