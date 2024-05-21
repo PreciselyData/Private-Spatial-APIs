@@ -1,6 +1,6 @@
 # Spatial Utilities
 
-Latest version of the Spatial Utilities can be downloaded from the [release](https://github.com/PreciselyData/SpatialAnalytics/releases) section of the github repository.
+Latest version of the Spatial Utilities can be downloaded from the [release](https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/releases) section of the github repository.
 
 
 ## Utilities
