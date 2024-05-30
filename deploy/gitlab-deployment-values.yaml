@@ -22,7 +22,7 @@ feature-service:
   limitCPU: "4"
   limitMemory: "2G"
   initReplicaCount: 1
-  maxReplicaCount: 2
+  maxReplicaCount: 16
   hpaEnabled: true
   hpaCpuAverageUtilization: 80
 
@@ -32,9 +32,9 @@ mapping-service:
   limitCPU: "4"
   limitMemory: "2G"
   initReplicaCount: 1
-  maxReplicaCount: 2
+  maxReplicaCount: 16
   hpaEnabled: true
-  hpaCpuAverageUtilization: 80
+  hpaCpuAverageUtilization: 70
   
 namedresource-service:
   requestCPU: "4"
@@ -50,11 +50,11 @@ tiling-service:
   requestCPU: "4"
   requestMemory: "2G"
   limitCPU: "4"
-  limitMemory: "2G"
+  limitMemory: "4G"
   initReplicaCount: 1
-  maxReplicaCount: 2
+  maxReplicaCount: 16
   hpaEnabled: true
-  hpaCpuAverageUtilization: 80
+  hpaCpuAverageUtilization: 70
 
 spatialmanager-service:
   requestCPU: "4"
