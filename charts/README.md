@@ -34,9 +34,9 @@
 > Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
 
 ## Architecture
-The following diagram shows an overview of Spatial Cloud Native.
+The following diagram shows an overview of Private-Spatial-APIs.
 
-![architecture.png](../images/spatial_cloud_native_architecture.png)
+![architecture.png](../images/private_spatial_apis_architecture.png)
 
 
 ### Components
