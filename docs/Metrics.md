@@ -2,8 +2,8 @@
 
 ## Generating Insights from Metrics
 
-The Spatial Analytics application microservices expose metrics which can be used for monitoring and troubleshooting the
-performance and behavior of the Spatial Analytics application.
+The Private-Spatial-APIs application microservices expose metrics which can be used for monitoring and troubleshooting the
+performance and behavior of the Private-Spatial-APIs application.
 
 Depending on your alerting setup, you can set up alerts based on these metrics to proactively respond to the issues in
 your application.

@@ -116,7 +116,7 @@ Following is the helm version chart against Private-Spatial-APIs PDX docker imag
 
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
-> Refer [Downloading Private-Spatial-APIs Docker Images](#3-download-spatial-analytics-images) for more information.
+> Refer [Downloading Private Spatial APIs Docker Images](#3-download-spatial-private-spatial-apis-images) for more information.
 
 ## Miscellaneous
 
@@ -126,7 +126,7 @@ Following is the helm version chart against Private-Spatial-APIs PDX docker imag
 ## References
 
 - [Releases](https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/releases)
-- [Helm Values](charts/spatial-cloud-native/README.md#helm-values)
+- [Helm Values](charts/private-spatial-apis/README.md#helm-values)
 
 ## Links
 
