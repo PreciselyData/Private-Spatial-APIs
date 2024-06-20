@@ -1,4 +1,4 @@
-# Private-Spatial-APIs
+# Private Spatial APIs
 This Helm chart is an umbrella Helm chart for installing as many of the services as possible at once.
 
 The following Kubernetes objects are created:

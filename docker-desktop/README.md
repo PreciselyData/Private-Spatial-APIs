@@ -1,6 +1,6 @@
 # Precisely Private-Spatial-APIs-helm Service Setup on Local Docker Desktop
 
-The Private-Spatial-APIs application can be setup locally for test purpose.
+The Private Spatial APIs application can be setup locally for test purpose.
 
 ## Step 1: Download Reference Data and Required Docker Images
 

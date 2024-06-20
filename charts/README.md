@@ -1,4 +1,4 @@
-# Private-Spatial-APIs Helm Charts
+# Private Spatial APIs Helm Charts
 
 ## Motivation
 
@@ -29,12 +29,12 @@
 
     Can be deployed on premise or to a cloud provider. Portability and flexibility in multi-cloud environments.
 
-> This solution is specifically for users who are looking for a REST Private-Spatial-APIs API and Kubernetes based deployments.
+> This solution is specifically for users who are looking for a REST Private Spatial APIs API and Kubernetes based deployments.
 > [!IMPORTANT]
 > Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
 
 ## Architecture
-The following diagram shows an overview of Private-Spatial-APIs.
+The following diagram shows an overview of Private Spatial APIs.
 
 ![architecture.png](../images/private_spatial_apis_architecture.png)
 
@@ -56,9 +56,9 @@ The following diagram shows an overview of Private-Spatial-APIs.
 - [Uninstall Guide AKS](./docs/guides/gke/UpgradeGuide.md)
 - [Upgrade Guide AKS](./docs/guides/aks/UninstallGuide.md)
 
-## Private-Spatial-APIs Helm Version Chart
+## Private Spatial APIs Helm Version Chart
 
-Following is the helm version chart against Private-Spatial-APIs PDX docker image version.
+Following is the helm version chart against Private Spatial APIs PDX docker image version.
 
 | Docker Image PDX Version     | Helm Chart Version |
 |------------------------------|--------------------|
@@ -66,7 +66,7 @@ Following is the helm version chart against Private-Spatial-APIs PDX docker imag
 
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
-> Refer [Downloading Private-Spatial-APIs Docker Images](docs/guides/eks/QuickStartEKS.md#step-3-download-docker-images) for more information.
+> Refer [Downloading Private Spatial APIs Docker Images](docs/guides/eks/QuickStartEKS.md#step-3-download-docker-images) for more information.
 
 ## Miscellaneous
 
@@ -84,6 +84,6 @@ Following is the helm version chart against Private-Spatial-APIs PDX docker imag
 
 ## Links
 
-- [Private-Spatial-APIs API Guide](.)
+- [Private Spatial APIs API Guide](.)
 - [Helm Chart Tricks](https://helm.sh/docs/howto/charts_tips_and_tricks/)
 - [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/)
