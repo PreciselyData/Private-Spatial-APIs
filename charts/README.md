@@ -29,7 +29,7 @@
 
     Can be deployed on premise or to a cloud provider. Portability and flexibility in multi-cloud environments.
 
-> This solution is specifically for users who are looking for a Private REST Spatial APIs API and Kubernetes based deployments.
+> This solution is specifically for users who are looking for a REST Spatial API and Kubernetes based deployments.
 > [!IMPORTANT]
 > Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
 

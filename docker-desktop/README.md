@@ -1,6 +1,6 @@
-# Precisely Private-Spatial-APIs-helm Service Setup on Local Docker Desktop
+# Precisely Private Spatial APIs Setup on Local Docker Desktop
 
-The Private Spatial APIs application can be setup locally for test purpose.
+The Private Spatial APIs can be setup locally for test purpose.
 
 ## Step 1: Download Reference Data and Required Docker Images
 
@@ -19,8 +19,8 @@ Open a shell on you local system and execute the following steps.
 Run the shell script to push images to Azure Container Registry:
 ```shell
 cd <spatial_analytics_docker_images_dir>
-chmod a+x ~/private-spatial-apis-helm/scripts/aks/push-images.sh
-~/private-spatial-apis-helm/scripts/aks/push-images.sh <container_registry_url>
+chmod a+x ~/private-spatial-apis/scripts/aks/push-images.sh
+~/private-spatial-apis/scripts/aks/push-images.sh <container_registry_url>
 ```
 You can also load images one by one if there's no enough disk space available.
 There are six docker images which will be pushed to container registry:
@@ -33,7 +33,7 @@ There are six docker images which will be pushed to container registry:
 
 Upload images one by one:
 ```shell
-~/private-spatial-apis-helm/scripts/aks/push-images.sh <container_registry_url>  <tar file name without ext>
+~/private-spatial-apis/scripts/aks/push-images.sh <container_registry_url>  <tar file name without ext>
 ```
 
 

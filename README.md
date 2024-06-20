@@ -4,7 +4,7 @@
 
 1. **Flexibility of deployment**
 
-   Private Spatial APIs services are delivered as separate microservices in multiple Kubernetes pods using container-based delivery.
+   Private Spatial APIs are delivered as separate microservices in multiple Kubernetes pods using container-based delivery.
    Containers are orchestrated by Kubernetes with efficient distribution of workloads across a cluster of computers.
 
 2. **Elastic scaling and clusterings**
@@ -29,7 +29,7 @@
 
    Can be deployed on premise or to a cloud provider. Portability and flexibility in multi-cloud environments.
 
-> This solution is specifically for users who are looking for a REST Private Spatial APIs and Kubernetes based deployments.
+> This solution is specifically for users who are looking for a REST Spatial API and Kubernetes based deployments.
 
 > [!IMPORTANT]  
 > Please consider these helm charts as recommendations only. They come with predefined configurations that may not be the best fit for your needs. Configurations can be tweaked based on the use case and requirements.
@@ -41,7 +41,7 @@ The following diagram shows an overview of Private Spatial APIs
 
 Private Spatial APIs enables an organization to rapidly integrate location information into business applications and processes. This enables organizations to create and embed maps, understand spatial relationships, and carry out spatial calculations.
 
-The deployment is available as Micro Services architecture which can be deployed into Private Spatial APIs Kubernetes environments such as Microsoft Azure (AKS), Amazon Web Services (EKS) and Google Cloud Platform (GKS) and scaled as needed.
+The deployment is available as Micro Services architecture which can be deployed into cloud native Kubernetes environments such as Microsoft Azure (AKS), Amazon Web Services (EKS) and Google Cloud Platform (GKS) and scaled as needed.
 
 ### Capabilities
 Following are the main components of architecture:
@@ -89,7 +89,7 @@ Create a  persistent volume for storing file based spatial data/various caches. 
 Install a MongoDB databse or use an existing instance. Click on the link to get steps for specific cloud platform:
 [EKS](./docs/guides/eks/QuickStartEKS.md#step-5-prepare-a-database-for-repository) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-5-prepare-a-database-for-repository) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-5-prepare-a-database-for-repository)
 
-### 6. Install Private Spatial APIs Chart
+### 6. Install Private Spatial APIs Helm Chart
 Deploy Private Spatial APIs chart to K8s cluster. Click on the link to get steps for specific cloud platform:
 [EKS](./docs/guides/eks/QuickStartEKS.md#step-6-installation-of-spatial-analytics-helm-chart) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-6-installation-of-spatial-analytics-helm-chart) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-6-installation-of-spatial-analytics-helm-chart)
 
@@ -106,7 +106,7 @@ There are various utilities for:
 
 More details on Spatial Utilities can be found [here](./docs/guides/spatial-utilities.md).
 
-## Private Spatial APIs Version Chart
+## Private Spatial APIs Version Helm Chart
 
 Following is the helm version chart against Private Spatial APIs PDX docker image version.
 
