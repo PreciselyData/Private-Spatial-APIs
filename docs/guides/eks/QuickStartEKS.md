@@ -204,7 +204,7 @@ kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.e
 To install/upgrade the Private Spatial APIs helm chart, use the following command:
 
 ```shell
-helm install spatial-analytics ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-apis \
  -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
