@@ -444,7 +444,7 @@ To install/upgrade the Spatial Analytics helm chart, use the following command:
 ```shell
 cd ~/Private-Spatial-APIs/
 
-helm install spatial-analytics ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-apis \
  -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
