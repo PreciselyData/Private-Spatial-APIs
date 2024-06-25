@@ -1,4 +1,4 @@
-# Installing Spatial Analytics Helm Chart on Azure AKS
+# Installing Private Spatial APIs Helm Chart on Azure AKS
 
 ## **Before starting**
 
@@ -12,15 +12,15 @@ Azure Cloud Shell (Bash). In order to achieve the best performance, create all r
 ## Preview
 - [Step 1: Prepare your environment](#step-1-prepare-your-environment)
 - [Step 2: Create a AKS Cluster ](#step-2-create-k8s-cluster-aks)
-- [Step 3: Download Spatial Analytics Docker Images](#step-3-download-spatial-analytics-docker-images)
+- [Step 3: Download Private Spatial APIs Docker Images](#step-3-download-private-spatial-apis-docker-images)
 - [Step 4: Create a Persistent Volume](#step-4-create-a-persistent-volume)
 - [Step 5: Prepare a database for repository](#step-5-prepare-a-database-for-repository)
-- [Step 6: Installation of Spatial Analytics Helm Chart](#step-6-installation-of-spatial-analytics-helm-chart)
+- [Step 6: Installation of Private Spatial APIs Helm Chart](#step-6-installation-of-private-spatial-apis-helm-chart)
 - [Step 7: Enabling security - AuthN/AuthZ (Optional)](#step-7-enabling-security---authnauthz-optional)
 - [Step 8: Use Spatial Utilities](#step-8-use-spatial-utilities)
 
 ## Step 1: Prepare your environment
-To deploy Spatial Analytics application in Azure AKS, install the following client tools on you machine:
+To deploy Private Spatial APIs application in Azure AKS, install the following client tools on you machine:
 - [Docker](https://docs.docker.com/engine/install/)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
 
@@ -43,9 +43,9 @@ helm version
 ```
 
 
-### Clone Spatial Analytics helm charts & resources
+### Clone Private Spatial APIs helm charts & resources
 ```
-git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
+git clone https://github.com/PreciselyData/Private-Spatial-APIs
 ```
 
 ## Step 2: Create K8s Cluster (AKS)
@@ -61,7 +61,7 @@ Also see:
 [AKS ingress](https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/aks/ingress-basic.md)
 
 ### 2.1 Create an AKS Cluster 
-Default Spatial-Cloud-Native deployment will need 30 vCPUs + 15GB RAM.
+Default Private Spatial APIs deployment will need 30 vCPUs + 15GB RAM.
 It is good to start from a single node AKS cluster with `F32s_v2` VM. It
 has 32 vCPUs + 64GB RAM.
 
@@ -141,7 +141,7 @@ aks-agentpool-39271417-vmss000000   Ready    <none>  106s   v1.29.2
 ###  2.3 Install Ingress-NGINX controller
 > Note: If you would like to setup TLS for HTTPS traffic follow official azure docs: https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
 
-The Spatial Analytics services requires ingress controller setup. Run the following command in Cloud Shell for setting up NGINX ingress controller:
+The Private Spatial APIs services requires ingress controller setup. Run the following command in Cloud Shell for setting up NGINX ingress controller:
   ```shell
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
@@ -165,7 +165,7 @@ ingress-nginx-controller-admission   ClusterIP      10.0.134.147   <none>       
 
 > Make a note of `EXTERNAL-IP=23.96.127.58`, it will be used for later steps.
 
-## Step 3: Download Spatial Analytics Docker Images
+## Step 3: Download Private Spatial APIs Docker Images
 
 The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
@@ -188,12 +188,12 @@ az acr login --name <azure_container_registry>
 Run the shell script to push images to Azure Container Registry:
 ```shell
 cd <spatial_analytics_docker_images_dir>
-chmod a+x ~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh
-~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io
+chmod a+x ~/Private-Spatial-APIs/scripts/aks/push-images.sh
+~/Private-Spatial-APIs/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io
 ```
 You can also load images one by one if there's no enough disk space available
 ```shell
-~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
+~/Private-Spatial-APIs/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
 ```
 List images in the registry:
 \
@@ -222,7 +222,7 @@ volume is mounted to the pods.
 \
 \
 By default, Azure File shares use SMB protocol that doesn't perform
-well with Spatial-Cloud-Native deployment. We recommend the NFS protocol.
+well with Private Spatial APIs deployment. We recommend the NFS protocol.
 Also, see:\
 [https://docs.microsoft.com/en-us/azure/aks/azure-files-volume](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)\
 [https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-files](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-files)\
@@ -311,9 +311,9 @@ capacity can be enlarged after creation. Select the NFS protocol
 Create the Fileshares.
 
 #### 4.5 Create PersistentVolume (PV) and PersistentVolumeClaim (PVC)
-In Cloud Shell, clone SpatialAnalytics repository.
+In Cloud Shell, clone Private Spatial APIs repository.
 ```shell
-git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm.git
+git clone https://github.com/PreciselyData/Private-Spatial-APIs.git
 ```
 ```shell
 cd SpatialAnalytics/deploy/azure-aks
@@ -362,7 +362,7 @@ spec:
 Create the PV from the template file.
 
 ```shell
-kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pv.yaml 
+kubectl apply -f ~/Private-Spatial-APIs/deploy/aks/fileshare-pv.yaml 
 ```
 
 To verify
@@ -382,7 +382,7 @@ In Cloud Shell, create the PVC from the template file **fileshare-pvc.yaml**
 
 ```shell
 kubectl create namespace spatial-analytics
-kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/aks/fileshare-pvc.yaml -n spatial-analytics 
+kubectl apply -f ~/Private-Spatial-APIs/deploy/aks/fileshare-pvc.yaml -n spatial-analytics 
 ```
 
 To verify
@@ -409,7 +409,7 @@ If you don't have a MongoDB replica set currently, for your convenience, you can
 
 Install MongoDB from helm chart
 ```
-helm install mongo ~/cloudnative-spatial-analytics-helm/charts/mongo-standalone -n mongo --create-namespace
+helm install mongo ~/Private-Spatial-APIs/charts/mongo-standalone -n mongo --create-namespace
 ```
 ```
 kubectl get pod -n mongo
@@ -423,11 +423,11 @@ This will install a single node replica set instance without authentication
 ```
 connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
-## Step 6: Installation of Spatial Analytics Helm Chart
+## Step 6: Installation of Private Spatial APIs Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-spatial-analytics-docker-images) for uploading the docker images with the newest tag.
 
-There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
+There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml`.
 
 Create a secret for pulling image from ACR:
 \
@@ -442,10 +442,10 @@ kubectl create secret docker-registry regcred \
 To install/upgrade the Spatial Analytics helm chart, use the following command:
 
 ```shell
-cd ~/cloudnative-spatial-analytics-helm/
+cd ~/Private-Spatial-APIs/
 
-helm install spatial-analytics ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
- -f ~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml \
+helm install spatial-analytics ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+ -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[acr].azurecr.io" \
@@ -459,7 +459,7 @@ helm install spatial-analytics ~/cloudnative-spatial-analytics-helm/charts/spati
 
 This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.
 
-> Also, for more information, refer to the comments in [values.yaml](../../../charts/spatial-cloud-native/values.yaml)
+> Also, for more information, refer to the comments in [values.yaml](../../../charts/private-spatial-apis/values.yaml)
 #### Mandatory Parameters
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
@@ -467,7 +467,7 @@ This should install Spatial Analytics APIs and set up a sample dataset that can 
 * ``global.registry.tag``: The docker image tag value e.g. 1.1.0 or latest.
 * ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
-For more information on helm values, follow [this link](../../../charts/spatial-cloud-native/README.md#helm-values).
+For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md#helm-values).
 
 Once you run Spatial Analytics helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
@@ -520,7 +520,7 @@ kubectl get svc -n ingress-nginx
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
 ```
-helm install keycloak ~/cloudnative-spatial-analytics-helm/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress_host_name > 
+helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress_host_name > 
 ```
 > Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use the domain name for `hostname`.
 > You can skip specifying the `hostname` parameter altogether to install the chart successfully but that is not recommended for production.
@@ -537,7 +537,7 @@ Open a browser and login to keycloak console with the admin credentials (default
 
 Spatial Analytics has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Spatial Analytics authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
 
-Download `cloudnative-spatial-analytics-helm/deploy/realm-spatial.json` to your local system.
+Download `Private-Spatial-APIs/deploy/realm-spatial.json` to your local system.
 In the administration console, click on realm pulldown menu and select `Create realm`
 
 Click on `Browse...` button, select the realm file `realm-spatial.json`, give a name to the new realm (use all lowercase name, e.g. `development`) and click the `Create` (do not double clicks).
@@ -595,7 +595,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
+- [Spatial Analytics API Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 

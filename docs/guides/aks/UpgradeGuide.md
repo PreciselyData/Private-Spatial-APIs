@@ -7,7 +7,7 @@
 This guide is applicable in the following situations:
 
 1. Upgrading to newer versions of the chart.
-3. Upgrading to the newer version of Spatial Analytics releases.
+3. Upgrading to the newer version of Private Spatial APIs releases.
 4. Applying changes to `values.yaml` file.
 
 ## Step 2 - Apply your changes
@@ -17,7 +17,7 @@ This guide is applicable in the following situations:
 helm repo update
 
 ## apply the changes values.yaml file AND upgrade the chart to newer version
-helm upgrade --install spatial-analytics ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
+helm upgrade --install spatial-analytics ~/Private-Spatial-APIs/charts/spatial-cloud-native \
 --dependency-update \
 --namespace spatial-analytics --create-namespace \
 --version [updated-version]

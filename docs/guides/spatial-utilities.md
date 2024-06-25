@@ -1,6 +1,6 @@
 # Spatial Utilities
 
-Latest version of the Spatial Utilities can be downloaded from the [release](https://github.com/PreciselyData/private-spatial-apis-helm/releases) section of the github repository.
+Latest version of the Spatial Utilities can be downloaded from the [release](https://github.com/PreciselyData/Private-Spatial-APIs/releases) section of the github repository.
 
 
 ## Utilities

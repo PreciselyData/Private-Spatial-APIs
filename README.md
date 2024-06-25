@@ -125,7 +125,7 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 
 ## References
 
-- [Releases](https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/releases)
+- [Releases](https://github.com/PreciselyData/Private-Spatial-APIs/releases)
 - [Helm Values](charts/private-spatial-apis/README.md#helm-values)
 
 ## Links

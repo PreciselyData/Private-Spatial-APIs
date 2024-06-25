@@ -41,20 +41,14 @@ The following diagram shows an overview of Private Spatial APIs.
 
 ### Components
 
-- [Docker Images](scripts/images-to-ecr-uploader/README.md#description)
-- [Helm Charts](charts/README.md)  
+- [Docker Images](../scripts/images-to-ecr-uploader/README.md#description)
+- [Helm Charts](../charts/README.md)  
 
 ## Guides
 
-- [Quickstart Guide EKS](./docs/guides/eks/QuickStartEKS.md)
-- [Upgrade Guide EKS](./docs/guides/eks/UninstallGuide.md)
-- [Uninstall Guide EKS](./docs/guides/eks/UpgradeGuide.md)
-- [Quickstart Guide GKE](./docs/guides/gke/QuickStartGKE.md)
-- [Uninstall Guide GKE](./docs/guides/gke/UpgradeGuide.md)
-- [Upgrade Guide GKE](./docs/guides/gke/UninstallGuide.md)
-- [Quickstart Guide AKS](./docs/guides/aks/QuickStartAKS.md)
-- [Uninstall Guide AKS](./docs/guides/gke/UpgradeGuide.md)
-- [Upgrade Guide AKS](./docs/guides/aks/UninstallGuide.md)
+- Quickstart Guide: [EKS](../docs/guides/eks/QuickStartEKS.md) | [GKE](../docs/guides/gke/QuickStartGKE.md) | [AKS](../docs/guides/aks/QuickStartAKS.md)
+- Upgrade Guide: [EKS](../docs/guides/eks/UpgradeGuide.md) | [GKE](../docs/guides/gke/UpgradeGuide.md) | [AKS](../docs/guides/aks/UpgradeGuide.md) 
+- Uninstall Guide: [EKS](../docs/guides/eks/UninstallGuide.md) | [GKE](../docs/guides/gke/UninstallGuide.md) | [AKS](../docs/guides/aks/UninstallGuide.md) 
 
 ## Private Spatial APIs Helm Version Chart
 
@@ -66,21 +60,21 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
-> Refer [Downloading Private Spatial APIs Docker Images](docs/guides/eks/QuickStartEKS.md#step-3-download-docker-images) for more information.
+> Refer [Downloading Private Spatial APIs Docker Images](../docs/guides/eks/QuickStartEKS.md#step-3-download-docker-images) for more information.
 
 ## Miscellaneous
 
-- [Metrics](docs/MetricsAndTraces.md#generating-insights-from-metrics)
-- [Application Tracing](docs/MetricsAndTraces.md#generating-insights-from-metrics)
-- [Logs and Monitoring](docs/MetricsAndTraces.md#generating-insights-from-metrics)
-- [FAQs](docs/faq/FAQs.md)
+- [Metrics](../docs/MetricsAndTraces.md#generating-insights-from-metrics)
+- [Application Tracing](../docs/MetricsAndTraces.md#generating-insights-from-metrics)
+- [Logs and Monitoring](../docs/MetricsAndTraces.md#generating-insights-from-metrics)
+- [FAQs](../docs/faq/FAQs.md)
 
 ## References
 
-- [Releases](https://github.com/PreciselyData/cloudnative-spatial-analytics-helm/releases)
-- [Helm Values](charts/private-spatial-apis/README.md#helm-values)
-- [Environment Variables](charts/private-spatial-apis/README.md#environment-variables)
-- [Memory Recommendations](charts/private-spatial-apis/README.md#memory-recommendations)
+- [Releases](https://github.com/PreciselyData/Private-Spatial-APIs/releases)
+- [Helm Values](../charts/private-spatial-apis/README.md#helm-values)
+- [Environment Variables](../charts/private-spatial-apis/README.md#environment-variables)
+- [Memory Recommendations](../charts/private-spatial-apis/README.md#memory-recommendations)
 
 ## Links
 
