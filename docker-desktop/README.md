@@ -1,6 +1,6 @@
-# Precisely Cloudnative-Spatial-Analytics-helm Service Setup on Local Docker Desktop
+# Precisely Private Spatial APIs Setup on Local Docker Desktop
 
-The Spatial-Analytics application can be setup locally for test purpose.
+The Private Spatial APIs can be setup locally for test purpose.
 
 ## Step 1: Download Reference Data and Required Docker Images
 
@@ -19,8 +19,8 @@ Open a shell on you local system and execute the following steps.
 Run the shell script to push images to Azure Container Registry:
 ```shell
 cd <spatial_analytics_docker_images_dir>
-chmod a+x ~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh
-~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <container_registry_url>
+chmod a+x ~/Private-Spatial-APIs/scripts/aks/push-images.sh
+~/Private-Spatial-APIs/scripts/aks/push-images.sh <container_registry_url>
 ```
 You can also load images one by one if there's no enough disk space available.
 There are six docker images which will be pushed to container registry:
@@ -33,7 +33,7 @@ There are six docker images which will be pushed to container registry:
 
 Upload images one by one:
 ```shell
-~/cloudnative-spatial-analytics-helm/scripts/aks/push-images.sh <container_registry_url>  <tar file name without ext>
+~/Private-Spatial-APIs/scripts/aks/push-images.sh <container_registry_url>  <tar file name without ext>
 ```
 
 
@@ -65,6 +65,6 @@ Upload images one by one:
 
 ## References
 
-- [Sample API Usage](../charts/spatial-cloud-native/README.md)
+- [Sample API Usage](../charts/private-spatial-apis/README.md)
 
 [🔗 Return to `Table of Contents` 🔗](../README.md##)

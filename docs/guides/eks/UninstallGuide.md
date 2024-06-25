@@ -2,7 +2,7 @@
 
 # Uninstall Guide for EKS
 
-To uninstall the Spatial Analytics helm chart, run the following command:
+To uninstall the Private Spatial APIs helm chart, run the following command:
 
 ```shell
 ## set the release-name & namespace (must be same as previously installed)

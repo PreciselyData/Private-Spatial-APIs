@@ -1,4 +1,4 @@
-# Installing Spatial Analytics Helm Chart on Google Cloud GKE
+# Installing Private Spatial APIs Helm Chart on Google Cloud GKE
 
 ### Before starting
 Make sure you have a Google Cloud account with following permissions:  
@@ -24,9 +24,9 @@ kubectl -h
 helm -h
 ```
 
-### Clone Spatial Analytics helm charts & resources
+### Clone Private Spatial APIs helm charts & resources
 ```
-git clone https://github.com/PreciselyData/cloudnative-spatial-analytics-helm
+git clone https://github.com/PreciselyData/Private-Spatial-APIs
 ```
 
 ## Step 2: Create K8s Cluster (GKE)
@@ -93,7 +93,7 @@ The public access url would be like below. Try the url from your browser, you sh
 https://34.23.192.143
 ```
 
-## Step 3: Download Spatial Analytics Docker Images
+## Step 3: Download Private Spatial APIs Docker Images
 
 The docker files can be downloaded from Precisely's DI Suite Console.
 
@@ -120,15 +120,15 @@ Due to the disk space limitation on cloudshell, you need to unzip the image file
 
 Run the shell scripts to load images to artifact registry,
 ```
-chmod a+x ~/cloudnative-spatial-analytics-helm/scripts/gke/push-images.sh
+chmod a+x ~/Private-Spatial-APIs/scripts/gke/push-images.sh
 ```
 ```
-~/cloudnative-spatial-analytics-helm/scripts/gke/push-images.sh <your registry url>
+~/Private-Spatial-APIs/scripts/gke/push-images.sh <your registry url>
 ```
 
 you can also load images one by one if there's no enough disk space available (restart the cloudshell may release more disk space).
 ```
-~/cloudnative-spatial-analytics-helm/scripts/gke/push-images.sh <your registry url> <tar file name without ext>
+~/Private-Spatial-APIs/scripts/gke/push-images.sh <your registry url> <tar file name without ext>
 ```
 
 List images in the artifact registry
@@ -157,7 +157,7 @@ We will use `standard-rwx` auto provisioner to provision a PV through a PVC. The
 
 Create a PVC that dynamically provisioning a PV using standard-rwx storage class,
 ```
-kubectl apply -f ~/cloudnative-spatial-analytics-helm/deploy/gke/pvc.yaml
+kubectl apply -f ~/Private-Spatial-APIs/deploy/gke/pvc.yaml
 ```
 Check results, the pvc status will become `Bound` after service pods are deployed.
 ```
@@ -178,7 +178,7 @@ If you don't have a MongoDB replica set currently, for your convenience, you can
 
 Install MongoDB from helm chart
 ```
-helm install mongo ~/cloudnative-spatial-analytics-helm/charts/mongo-standalone -n mongo --create-namespace
+helm install mongo ~/Private-Spatial-APIs/charts/mongo-standalone -n mongo --create-namespace
 ```
 ```
 kubectl get pod -n mongo
@@ -199,13 +199,13 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 
 ### Deploy Spatial Services
 
-There are two deployment files to choose from that require different amount of resources (CPU and Memory). Start from the small one (`~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-small-values.yaml`). A production deployment should use `~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml`.
+There are two deployment files to choose from that require different amount of resources (CPU and Memory). Start from the small one (`~/Private-Spatial-APIs/deploy/gitlab-deployment-small-values.yaml`). A production deployment should use `~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml`.
 
 > NOTE: if you are not using MongoDB deployed from this guide, you need to update the mongo uri in the values file before install.
 
 ```
-helm install spatial ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
-     -f ~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-small-values.yaml \
+helm install spatial ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+     -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-small-values.yaml \
      --set global.registry.secrets=null \
      --set global.registry.url=<your registry url>
 ```
@@ -216,8 +216,8 @@ kubectl get pod
 
 You can also deploy services with hpa enabled, here is an example (check [gitlab-deployment-values.yaml](../../../deploy/gitlab-deployment-values.yaml) for more details),
 ```
-helm install spatial ~/cloudnative-spatial-analytics-helm/charts/spatial-cloud-native \
-     -f ~/cloudnative-spatial-analytics-helm/deploy/gitlab-deployment-values.yaml \
+helm install spatial ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+     -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
      --set global.registry.secrets=null \
      --set global.registry.url=<your registry url> \
      --set mapping-service.hpaEnabled=true \
@@ -272,7 +272,7 @@ kubectl get svc -n ingress-nginx
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
 ```
-helm install keycloak ~/cloudnative-spatial-analytics-helm/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
+helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
 ```
 Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It may take some time for Ingress to be deployed.
     
@@ -285,7 +285,7 @@ Open a browser and login to keycloak console with the admin credentials (default
 
 SCN has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. SCN authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
 
-Download `~/cloudnative-spatial-analytics-helm/deploy/realm-spatial.json` to your local system.
+Download `~/Private-Spatial-APIs/deploy/realm-spatial.json` to your local system.
 In the administration console, click on realm pulldown menu and select `Create realm`
 
 Click on `Browse...` button, select the realm file `realm-spatial.json`, give a name to the new realm (use all lowercase name, e.g. `development`) and click the `Create` (do not double clicks).
@@ -343,7 +343,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/spatial-cloud-native/README.md)
+- [Spatial Analytics API Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 

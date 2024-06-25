@@ -7,7 +7,7 @@
 This guide is applicable in the following situations:
 
 1. Upgrading to newer versions of the chart.
-3. Upgrading to the newer version of Spatial Analytics releases.
+3. Upgrading to the newer version of Private Spatial APIs releases.
 4. Applying changes to `values.yaml` file.
 
 ## Step 2 - Apply your changes
