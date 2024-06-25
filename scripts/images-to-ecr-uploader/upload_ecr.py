@@ -12,7 +12,7 @@ from zipfile import ZipFile
 import subprocess
 
 image_tag = '1.1.1'
-DOCKER_PRODUCT_NAME = "Spatial Cloud Native SDK#GLOBAL#ALL GLB#Spectrum Platform Data"
+DOCKER_PRODUCT_NAME = "Private Spatial APIs Docker Image#GLOBAL#ALL GLB#Spectrum Platform Data"
 
 def current_milli_time(): return int(round(time.time() * 1000))
 
