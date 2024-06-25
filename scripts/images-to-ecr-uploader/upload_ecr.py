@@ -11,7 +11,7 @@ from builtins import bytes
 from zipfile import ZipFile
 import subprocess
 
-image_tag = '1.1.0'
+image_tag = '1.1.1'
 DOCKER_PRODUCT_NAME = "Spatial Cloud Native SDK#GLOBAL#ALL GLB#Spectrum Platform Data"
 
 def current_milli_time(): return int(round(time.time() * 1000))

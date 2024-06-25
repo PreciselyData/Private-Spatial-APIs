@@ -95,6 +95,8 @@ and push it to your Elastic Container Registry.
 
 >Note: This script requires python, docker and AWS CLI to be installed in your system. Also make sure that AWS CLI is configured before you run the script. Run this command - ``aws sts get-caller-identity``
 
+>Note: Ensure that the value of `image_tag` in script [upload_ecr.py](../../../scripts/images-to-ecr-uploader) is set to the current docker image release version before you run the script.  
+
 ```shell
 cd ./scripts/images-to-ecr-uploader
 pip install -r requirements.txt
