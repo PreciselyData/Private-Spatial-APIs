@@ -130,6 +130,6 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 
 ## Links
 
-- [Private Spatial APIs API Guide](https://help.cloud.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Spatial-Cloud-Native-Guide/Services/Working-With-Spatial-Services)
+- [Private Spatial APIs API Guide](https://help.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Private-Spatial-APIs-Guide/Private-Spatial-APIs-Guide)
 - [Helm Chart Tricks](https://helm.sh/docs/howto/charts_tips_and_tricks/)
 - [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/)
