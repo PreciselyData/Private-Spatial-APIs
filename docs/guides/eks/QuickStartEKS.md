@@ -206,8 +206,8 @@ kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.e
 To install/upgrade the Private Spatial APIs helm chart, use the following command:
 
 ```shell
-helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-apis \
- -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
+helm install spatial-analytics ./charts/private-spatial-apis \
+ -f ./deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
@@ -274,12 +274,12 @@ If you don't have a Keycloak instance available currently, for your convenience,
 
 Identify the external loadbalancer host to expose the Keycloak Management Console UI
 ```
-kubectl get svc -n ingress-nginx
+kubectl get svc
 ```
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
 ```
-helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
+helm install keycloak ./charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
 ```
 Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It may take some time for Ingress to be deployed.
 
