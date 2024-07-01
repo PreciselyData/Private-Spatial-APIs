@@ -211,7 +211,7 @@ helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-api
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
- --set "global.registry.tag=1.1.0" \ 
+ --set "global.registry.tag=1.1.1" \ 
  --set "global.registry.secrets=regcred" \ 
   --namespace spatial-analytics   
 ```
@@ -274,7 +274,7 @@ If you don't have a Keycloak instance available currently, for your convenience,
 
 Identify the external loadbalancer host to expose the Keycloak Management Console UI
 ```
-kubectl get svc -n ingress-nginx
+kubectl get svc
 ```
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
