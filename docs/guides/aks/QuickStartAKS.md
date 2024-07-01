@@ -439,7 +439,7 @@ kubectl create secret docker-registry regcred \
     --docker-username=00000000-0000-0000-0000-000000000000\
     --docker-password=$(az acr login --name [acr_name] --expose-token --output tsv --query accessToken)
 ```
-To install/upgrade the Spatial Analytics helm chart, use the following command:
+To install/upgrade the Private Spatial APIs helm chart, use the following command:
 
 ```shell
 cd ~/Private-Spatial-APIs/
@@ -457,19 +457,19 @@ helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-api
 > Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use a domain name for `global.ingress.host`. 
 > You can skip specifying the `global.ingress.host` parameter altogether to install the chart successfully but that is not recommended for production.   
 
-This should install Spatial Analytics APIs and set up a sample dataset that can be used to play around with the product.
+This should install Private Spatial APIs and set up a sample dataset that can be used to play around with the product.
 
 > Also, for more information, refer to the comments in [values.yaml](../../../charts/private-spatial-apis/values.yaml)
 #### Mandatory Parameters
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
-* ``global.registry.url``: The ACR repository for Spatial Analytics docker image e.g. spatialregistry.azurecr.io
+* ``global.registry.url``: The ACR repository for Private Spatial APIs docker image e.g. spatialregistry.azurecr.io
 * ``global.registry.tag``: The docker image tag value e.g. 1.1.0 or latest.
 * ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
 For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md#helm-values).
 
-Once you run Spatial Analytics helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
+Once you run Private Spatial APIs helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
 kubectl get pods -w --namespace spatial-analytics 
 ```
@@ -504,7 +504,7 @@ General service flow,
 <img src="../../../images/security-flow.png"  width="686" height="783">
 
 
-Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Spatial Analytics is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
+Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Private Spatial APIs is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
 
 If you have a Keycloak instance that can be accessed from inside the Kubernetes cluster, then collect the issuer url for further service config.
 
@@ -535,7 +535,7 @@ Open a browser and login to keycloak console with the admin credentials (default
 
 ### Create a realm for spatial services
 
-Spatial Analytics has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Spatial Analytics authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
+Private Spatial APIs has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Private Spatial APIs authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
 
 Download `Private-Spatial-APIs/deploy/realm-spatial.json` to your local system.
 In the administration console, click on realm pulldown menu and select `Create realm`
@@ -544,7 +544,7 @@ Click on `Browse...` button, select the realm file `realm-spatial.json`, give a 
 
 After imported the realm from the template, use Keycloak Admin console to change admin credentials, default user credentials and spatial client secret.
 
-Keycloak Admin console is used to manage users in realm and roles in spatial client. Spatial Analytics do not use realm roles.
+Keycloak Admin console is used to manage users in realm and roles in spatial client. Private Spatial APIs do not use realm roles.
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
@@ -595,7 +595,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/private-spatial-apis/README.md)
+- [Private Spatial APIs Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
