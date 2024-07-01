@@ -209,7 +209,7 @@ helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-api
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
- --set "global.registry.tag=1.1.0" \ 
+ --set "global.registry.tag=1.1.1" \ 
  --set "global.registry.secrets=regcred" \ 
   --namespace spatial-analytics   
 ```
