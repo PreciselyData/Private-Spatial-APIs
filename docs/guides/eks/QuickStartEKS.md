@@ -350,7 +350,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/private-spatial-apis/README.md)
+- [Private Spatial APIs Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
