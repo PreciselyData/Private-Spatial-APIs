@@ -425,7 +425,7 @@ connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?
 ```
 ## Step 6: Installation of Private Spatial APIs Helm Chart
 
-> NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-spatial-analytics-docker-images) for uploading the docker images with the newest tag.
+> NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-private-spatial-apis-docker-images) for uploading the docker images with the newest tag.
 
 There are two deployment files to choose from that require different amount of resources (CPU and Memory). Use `deploy/gitlab-deployment-small-values.yaml` for trying out the APIs. A production deployment should use `Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml`.
 
