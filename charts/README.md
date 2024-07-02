@@ -111,9 +111,9 @@ More details on Spatial Utilities can be found [here](../docs/guides/spatial-uti
 Following is the helm version chart against Private Spatial APIs PDX docker image version.
 
 | Docker Image PDX Version  | Helm Chart Version |
-|---------------------------|--------------------|
+|---------------------------|------------------|
 | `1.1.0/2024.5/May 8,2024` | `1.1.0`️         |
-
+| `1.1.1/2024.6/Jun 25,2024` | `1.1.1`️         |
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
 > Refer [Downloading Private Spatial APIs Docker Images](#3-download-spatial-private-spatial-apis-images) for more information.
