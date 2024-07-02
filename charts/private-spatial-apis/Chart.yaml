@@ -1,6 +1,6 @@
 apiVersion: v2
-name: spatial-cloud-native
-description: A Helm chart for deploying spatial-cloud-native
+name: private-spatial-apis
+description: A Helm chart for deploying Private Spatial APIs.
 
 type: application
 
