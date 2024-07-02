@@ -2,7 +2,7 @@
 
 ## Description
 
-Spatial Analytics helm chart relies on the availability of Docker images for several essential microservices, all of
+Private Spatial APIs helm chart relies on the availability of Docker images for several essential microservices, all of
 which are conveniently obtainable from Precisely Data Experience. The required docker images include:
 1. Feature Service Docker Image
 2. Mapping Service Docker Image

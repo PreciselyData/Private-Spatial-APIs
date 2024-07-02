@@ -206,12 +206,12 @@ kubectl create secret docker-registry regcred --docker-server=[account_id].dkr.e
 To install/upgrade the Private Spatial APIs helm chart, use the following command:
 
 ```shell
-helm install spatial-analytics ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-apis \
  -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
- --set "global.registry.tag=1.1.0" \ 
+ --set "global.registry.tag=1.1.1" \ 
  --set "global.registry.secrets=regcred" \ 
   --namespace spatial-analytics   
 ```
@@ -274,7 +274,7 @@ If you don't have a Keycloak instance available currently, for your convenience,
 
 Identify the external loadbalancer host to expose the Keycloak Management Console UI
 ```
-kubectl get svc -n ingress-nginx
+kubectl get svc
 ```
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
@@ -350,7 +350,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/private-spatial-apis/README.md)
+- [Private Spatial APIs Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 

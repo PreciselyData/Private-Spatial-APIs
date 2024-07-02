@@ -193,7 +193,7 @@ This will install a single node replica set instance without authentication
 connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
 
-## Step 6: Installation of Spatial Analytics Helm Chart
+## Step 6: Installation of Private Spatial APIs Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
 
@@ -204,7 +204,7 @@ There are two deployment files to choose from that require different amount of r
 > NOTE: if you are not using MongoDB deployed from this guide, you need to update the mongo uri in the values file before install.
 
 ```
-helm install spatial ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+helm install spatial ~/Private-Spatial-APIs/charts/private-spatial-apis \
      -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-small-values.yaml \
      --set global.registry.secrets=null \
      --set global.registry.url=<your registry url>
@@ -216,7 +216,7 @@ kubectl get pod
 
 You can also deploy services with hpa enabled, here is an example (check [gitlab-deployment-values.yaml](../../../deploy/gitlab-deployment-values.yaml) for more details),
 ```
-helm install spatial ~/Private-Spatial-APIs/charts/spatial-cloud-native \
+helm install spatial ~/Private-Spatial-APIs/charts/private-spatial-apis \
      -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
      --set global.registry.secrets=null \
      --set global.registry.url=<your registry url> \
@@ -343,7 +343,7 @@ There are various utilities for:
 More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
 
 ## Next Sections
-- [Spatial Analytics API Usage](../../../charts/private-spatial-apis/README.md)
+- [Private Spatial APIs Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 
