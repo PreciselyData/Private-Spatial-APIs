@@ -41,7 +41,7 @@ The following diagram shows an overview of Private Spatial APIs
 
 Private Spatial APIs enables an organization to rapidly integrate location information into business applications and processes. This enables organizations to create and embed maps, understand spatial relationships, and carry out spatial calculations.
 
-The deployment is available as Micro Services architecture which can be deployed into cloud native Kubernetes environments such as Microsoft Azure (AKS), Amazon Web Services (EKS) and Google Cloud Platform (GKS) and scaled as needed.
+The deployment is available as Micro Services architecture which can be deployed into Private Spatial APIs Kubernetes environments such as Microsoft Azure (AKS), Amazon Web Services (EKS) and Google Cloud Platform (GKS) and scaled as needed.
 
 ### Capabilities
 Following are the main components of architecture:
@@ -79,7 +79,7 @@ Create or use an existing K8s cluster. Click on the link to get steps for specif
 
 ### 3. Download Private Spatial APIs Images
 Download docker images and upload to own container registry. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-3-download-spatial-analytics-docker-images) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-3-download-spatial-analytics-docker-images) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-3-download-spatial-analytics-docker-images)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-3-download-private-spatial-apis-docker-images) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-3-download-private-spatial-apis-docker-images) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-3-download-private-spatial-apis-docker-images)
 
 ### 4. Create a Persistent Volume
 Create a  persistent volume for storing file based spatial data/various caches. Click on the link to get steps for specific cloud platform:
@@ -91,7 +91,7 @@ Install a MongoDB databse or use an existing instance. Click on the link to get 
 
 ### 6. Install Private Spatial APIs Helm Chart
 Deploy Private Spatial APIs chart to K8s cluster. Click on the link to get steps for specific cloud platform:
-[EKS](./docs/guides/eks/QuickStartEKS.md#step-6-installation-of-spatial-analytics-helm-chart) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-6-installation-of-spatial-analytics-helm-chart) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-6-installation-of-spatial-analytics-helm-chart)
+[EKS](./docs/guides/eks/QuickStartEKS.md#step-6-installation-of-private-spatial-apis-helm-chart) | [GKE](./docs/guides/gke/QuickStartGKE.md#step-6-installation-of-private-spatial-apis-helm-chart) | [AKS](./docs/guides/aks/QuickStartAKS.md#step-6-installation-of-private-spatial-apis-helm-chart)
 
 ### 7. Enable Security (optional)
 Install or use an existing Keycloak instance. Click on the link to get steps for specific cloud platform:

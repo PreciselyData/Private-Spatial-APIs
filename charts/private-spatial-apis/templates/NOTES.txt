@@ -1,2 +1,2 @@
 Thank you for installing {{ .Chart.Name }}.
-Spatial Cloud Native stack is installed in namespace {{ .Release.Namespace }}.
+Private Spatial APIs stack is installed in namespace {{ .Release.Namespace }}.
