@@ -55,7 +55,10 @@ data:
   system.spatial.security.subadmin.connections.enable: {{ .Values.property.subadminConnectionsEnable | quote }}
   system.com.precisely.miraster.cache.size: {{ .Values.property.miRasterCacheSize | quote }}
   system.java.rmi.server.useCodebaseOnly: "true"
-  system.com.mapinfo.midev.repository.factory: "com.precisely.swp.repository.mongodb.MongoRepositoryFactory"
+  system.com.mapinfo.midev.repository.factory: {{ .Values.property.repositoryFactory | quote }}
+  {{- if eq .Values.property.repositoryFactory "com.mapinfo.midev.repository.fs.FileSystemRepositoryFactory" }}
+  system.com.mapinfo.midev.repository.fs.root: {{ required "Value for repositoryFSRoot missing." .Values.property.repositoryFSRoot | quote }}
+  {{- end }}
   system.javax.xml.stream.XMLInputFactory: "com.ctc.wstx.stax.WstxInputFactory"
   ################################################################################
   # JAVA_TOOL_OPTIONS
@@ -69,8 +72,10 @@ data:
   # Others
   ################################################################################
   server.tomcat.relaxed-query-chars: "[,],{,}"
+  {{- if eq .Values.property.repositoryFactory "com.precisely.swp.repository.mongodb.MongoRepositoryFactory" }}
   spring.data.mongodb.auto-index-creation: "true"
   spring.data.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
+  {{- end }}
   help.link.topics: |-
     {'100':  'https://help.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Private-Spatial-APIs-Guide/Private-Spatial-APIs-Guide',
      '3000': 'https://help.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Private-Spatial-APIs-Guide/Managing-Spatial/Spatial-Manager', 

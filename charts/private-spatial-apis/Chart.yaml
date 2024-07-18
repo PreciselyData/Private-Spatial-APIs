@@ -13,19 +13,25 @@ dependencies:
   - name: "namedresource-service"
     version: "1.1.1"
     repository: "file://../namedresource-service"
+    condition: deployment.namedresource.enabled
   - name: "tiling-service"
     version: "1.1.1"
     repository: "file://../tiling-service"
+    condition: deployment.tiling.enabled
   - name: "mapping-service"
     version: "1.1.1"
     repository: "file://../mapping-service"
+    condition: deployment.mapping.enabled
   - name: "feature-service"
     version: "1.1.1"
     repository: "file://../feature-service"
+    condition: deployment.feature.enabled
   - name: "spatialmanager-service"
     version: "1.1.1"
     repository: "file://../spatialmanager-service"
+    condition: deployment.spatialmanager.enabled
   - name: "upload-samples"
     version: "1.1.1"
     repository: "file://../upload-samples"
+    condition: deployment.upload-samples.enabled
 

@@ -15,7 +15,20 @@ global:
     #   Host should include full domain name, IP address is not valid.
     #
     host: ""
-
+# Deployment optionals
+deployment: 
+  feature:
+    enabled: true
+  mapping:
+    enabled: true
+  tiling:
+    enabled: true
+  namedresource:
+    enabled: true
+  spatialmanager:
+    enabled: true
+  upload-samples:
+    enabled: true
 # Service configuration
 security:
   enabled: "false"
@@ -46,6 +59,8 @@ property:
   repositoryCacheCapacity: "1000"
   repositoryCachePolicy: "3"
   repositoryCacheExpire: "1000"
+  repositoryFactory: "com.precisely.swp.repository.mongodb.MongoRepositoryFactory"
+  repositoryFSRoot: "/opt/data/samples/resources"
   timeoutFeatureValue: "-1"
   timeoutMappingValue: "-1"
   poolFileEnabled: "true"
