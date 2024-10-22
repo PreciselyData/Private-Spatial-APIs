@@ -11,7 +11,7 @@ The deployment includes,
 A PVC is still required in this deployment
 
 ## Prepare your customized values file
-Make a copy of deploy/feature-only-deployment-values.yaml. Customize the settings based on your environment and needs, such as docker image registry url, ingress host etc.
+Make a copy of [deploy/feature-only-deployment-values.yaml](../../deploy/feature-only-deployment-values.yaml). Customize the settings based on your environment and needs, such as docker image registry url, ingress host etc.
 
 > Also, for more information, refer to the comments in [values.yaml](../../charts/private-spatial-apis/values.yaml)
 
