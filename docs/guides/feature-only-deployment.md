@@ -51,7 +51,7 @@ Ensure the lock file is deleted
 ```
 kubectl -n <your-namespace> exec <feaure-pod-name> -- rm /opt/data/data/.harvested
 ```
-> NOTE: the .harvest file is a flag indicating the folder has been harvested and will not harvest again if it exists.
+> NOTE: the .harvested file is a flag indicating the folder has been harvested and will not harvest again if it exists.
 
 Restart the pod to trigger auto-harvest
 ```
