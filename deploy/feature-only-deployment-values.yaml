@@ -1,0 +1,56 @@
+###
+#   Values for deploying Feature service only. 
+#
+#   It is suitable for the scenario that only query capability is needed, 
+#   like enrich with TAB file datasets. 
+#
+#   After deploy, copy TAB files into Feature pod under /opt/data/data. 
+#   You can create sub-folders to better originate your datasets. 
+#   Delete the .harvested file if it exists in /opt/data/data folder. 
+#   Restart the Feature pod. 
+#   All datasets will be available when you list tables.
+###
+
+# Global
+global:
+  registry:
+    url: ""
+    tag: 1.1.2
+    secrets: regcred-gitlab
+  ingress:
+    host: ""
+    
+property:
+  repositoryFactory: com.mapinfo.midev.repository.fs.FileSystemRepositoryFactory
+  repositoryFSRoot: "/opt/data/resources"
+  repositoryFSData: "/opt/data/data"
+  aclManager: ""
+  
+# Deployment optionals
+deployment: 
+  feature:
+    enabled: true
+  mapping:
+    enabled: false
+  tiling:
+    enabled: false
+  namedresource:
+    enabled: false
+  spatialmanager:
+    enabled: false
+  upload-samples:
+    enabled: false
+ 
+# Individual service overrides
+feature-service:
+  requestCPU: "1"
+  requestMemory: "2G"
+  limitCPU: "2"
+  limitMemory: "2G"
+  initReplicaCount: 2
+  maxReplicaCount: 8
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+# END
+
