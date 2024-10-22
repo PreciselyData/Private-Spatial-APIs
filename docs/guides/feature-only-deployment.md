@@ -13,7 +13,7 @@ A PVC is still required in this deployment
 ## Prepare your customized values file
 Make a copy of deploy/feature-only-deployment-values.yaml. Customize the settings based on your environment and needs, such as docker image registry url, ingress host etc.
 
-> Also, for more information, refer to the comments in [values.yaml](../../../charts/private-spatial-apis/values.yaml)
+> Also, for more information, refer to the comments in [values.yaml](../../charts/private-spatial-apis/values.yaml)
 
 ## Installation of Private Spatial APIs Helm Chart
 Deploy the charts will the vaules yaml file
@@ -37,9 +37,9 @@ Wait till Feature service pod is up and running
 kubectl get pod -n <your-namespace>
 ```
 
-## Copy your TAB files into mount folder in Feature pod
+## Copy TAB files into mount folder in Feature pod
 
-The following cmd will copy your datasets under <local-data-folder> folder to the mount folder. You can have sub-folders to better originate your datasets. The relative path will be reflected in the harvested named tables.
+The following cmd will copy your datasets under local folder to the mount folder. You can have sub-folders to better originate your datasets. The relative path will be reflected in the harvested named tables.
 
 ```
 kubectl cp <local-data-folder> <your-namespace>/<feaure-pod-name>:/opt/data/data/
@@ -58,8 +58,9 @@ kubectl rollout restart deployment -n <your-namespace>
 ```
 
 Try the url below in a browser to verify the tables harvested,
-
+```
 http://<ingress host>:<port>/rest/Spatial/FeatureService/tables.json
+```
 
 > NOTE: you can repeat this step at any time when you want to add new datasets. The removed datasets will NOT be cleaned from harvested tables. You need to delete evergthing under /opt/data/resources, as well as the lock file, then restart the service.
 
