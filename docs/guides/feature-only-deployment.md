@@ -51,6 +51,7 @@ Ensure the lock file is deleted
 ```
 kubectl -n <your-namespace> exec <feaure-pod-name> -- rm /opt/data/data/.harvested
 ```
+> NOTE: the .harvest file is a flag indicating the folder has been harvested and will not harvest again if it exists.
 
 Restart the pod to trigger auto-harvest
 ```
@@ -62,7 +63,7 @@ Try the url below in a browser to verify the tables harvested,
 http://<ingress host>:<port>/rest/Spatial/FeatureService/tables.json
 ```
 
-> NOTE: you can repeat this step at any time when you want to add new datasets. The removed datasets will NOT be cleaned from harvested tables. You need to delete evergthing under /opt/data/resources, as well as the lock file, then restart the service.
+> NOTE: you can repeat this step at any time when you want to add new datasets. The harvested named tables will be created under ``/opt/data/resources``. If you delete any datasets, the harvested named tables under ``/opt/data/resources`` will not change automatically. You need to delete the named tables manually, or delete everything under ``/opt/data/resources``, as well as the lock file, and restart the service to re-harvest.
 
 
 
