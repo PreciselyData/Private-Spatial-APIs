@@ -24,7 +24,7 @@ Optional configuration for additional role based authentication.
 * ``userroleAttribute``: the claim in the JWT token as Role. For example, "resource_access.OIDC-Connect.roles.group"
 * ``requiredAuthority``: define a role (value retrieved from userroleAttribute) that only users with this role are allowed to access the spatial endpoints. For example, "spatial".
 
-Deploy the charts will the vaules yaml file
+Deploy the charts with the values yaml file
 
 ```
 helm install spatial ~/charts/private-spatial-apis -f your-values.yaml

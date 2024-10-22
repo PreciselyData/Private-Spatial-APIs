@@ -1,6 +1,6 @@
 # Feature service only deployment
 
-If you only need search capability from Spatial API (no Mapping or Tiling needed) and only work with TAB file based datasets. The deployment described in this section may simplify the dpeloyment process for you.
+If you only need search capability from Spatial API (no Mapping or Tiling needed) and only work with TAB file based datasets. The deployment described in this section may simplify the deployment process for you.
 
 The deployment includes,
 

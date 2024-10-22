@@ -168,7 +168,8 @@ Check results, wait until the pvc status becomes Bound.
 ```kubectl get pvc -n spatial-analytics```
 
 ## Step 5: Prepare a database for repository
-**NOTE: if you only need Feature service, you may skip step 5,6 see [Feature only deployment](../../guides/feature-only-deployment.md).**
+> NOTE: if you only need Feature service, you may skip step 5,6 see [Feature only deployment](../../guides/feature-only-deployment.md).
+
 A MongoDB replica set is used to persistent repository content.
 
 For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).

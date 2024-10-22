@@ -1,6 +1,6 @@
 # Helm template
 
-In case Helm chart deployment is not possible, you can use Helm to generate Kubernetes manifest file from the charts that allows you to deploy services using kubectl cmd directly. The manifest file also gives you more insights on how the service is to be deployed.
+In case Helm chart deployment is not possible, you can use Helm to generate Kubernetes manifest file from the charts that allows you to deploy services using ``kubectl`` cmd directly. The manifest file also gives you more insights on how the service is to be deployed.
 
 ## Prepare your customized values file
 Make a copy of one of supplied sample values yaml files as a start point, for example gitlab-deployment-values.yaml, customize the settings based on your environment and needs, such as docker image registry url, services, CPU/Mem etc.
