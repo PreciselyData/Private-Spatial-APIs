@@ -10,7 +10,7 @@ data:
   oauth2.enabled: {{ .Values.security.enabled | quote }}
   oauth2.issuer-uri: {{ .Values.security.oauth2.issuerUri | quote }}
   oauth2.client-id: {{ .Values.security.oauth2.clientId | quote }}
-  oauth2.client-secret: {{ .Values.security.oauth2.clientSecret | quote }}
+  oauth2.client-secret: {{ .Values.security.oauth2.clientSecret | default "openid" | quote }}
   oauth2.unsecured-paths: {{ .Values.security.oauth2.unsecuredPaths | quote }}
   {{- if .Values.security.oauth2.requiredAuthority }}
   oauth2.required-authority: {{ .Values.security.oauth2.requiredAuthority | quote }}
