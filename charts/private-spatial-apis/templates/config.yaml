@@ -12,7 +12,9 @@ data:
   oauth2.client-id: {{ .Values.security.oauth2.clientId | quote }}
   oauth2.client-secret: {{ .Values.security.oauth2.clientSecret | quote }}
   oauth2.unsecured-paths: {{ .Values.security.oauth2.unsecuredPaths | quote }}
+  {{- if .Values.security.oauth2.requiredAuthority }}
   oauth2.required-authority: {{ .Values.security.oauth2.requiredAuthority | quote }}
+  {{- end }}
   oauth2.username-attribute: {{ .Values.security.oauth2.usernameAttribute | quote }}
   oauth2.userrole-attribute: {{ .Values.security.oauth2.userroleAttribute | quote }}
   spring.security.oauth2.resourceserver.jwt.issuer-uri: {{ .Values.security.oauth2.issuerUri | quote }}

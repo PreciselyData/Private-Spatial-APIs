@@ -17,6 +17,9 @@ security:
     issuerUri: "<IDP issurer url>"
     clientId: "<client id>"
     clientSecret: ""
+    usernameAttribute: "preferred_username"
+    userroleAttribute: ""
+    requiredAuthority: ""
 ```
 
 Optional configuration for additional role based authentication.
