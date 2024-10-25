@@ -56,7 +56,7 @@ curl --location 'https://<your issurer-url>/protocol/openid-connect/token' \
 --data-urlencode 'username=<username>' \
 --data-urlencode 'password=<password>'
 ```
-
+> NOTE: add --data-urlencode 'client_secret=<your client secret>' to the curl cmd if you use a private client
 
 Call Spatial API (list tables),
 ```
