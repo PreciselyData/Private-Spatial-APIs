@@ -16,7 +16,7 @@ Make a copy of [deploy/feature-only-deployment-values.yaml](../../deploy/feature
 > Also, for more information, refer to the comments in [values.yaml](../../charts/private-spatial-apis/values.yaml)
 
 ## Installation of Private Spatial APIs Helm Chart
-Deploy the charts will the vaules yaml file
+Deploy the charts with the vaules yaml file
 
 ```
 helm install spatial ~/charts/private-spatial-apis -f your-values.yaml

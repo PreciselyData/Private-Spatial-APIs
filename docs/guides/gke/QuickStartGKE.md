@@ -165,6 +165,8 @@ kubectl get pvc
 ```
 
 ## Step 5: Prepare a database for repository
+> NOTE: if you only need Feature service, you may skip step 5,6 see [Feature only deployment](../../guides/feature-only-deployment.md).
+
 A MongoDB replica set is used to persistent repository content.
 
 For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
@@ -223,6 +225,8 @@ helm install spatial ~/Private-Spatial-APIs/charts/private-spatial-apis \
      --set mapping-service.hpaEnabled=true \
      --set mapping-service.maxReplicaCount=3
 ```
+
+> NOTE: In case Helm chart deployment is not possible, check [here](../../guides/helm-template.md) for Kubernetes manifest deployment. 
 
 After all the pods are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps.
 `https://<your external ip>/SpatialServerManager`
@@ -332,6 +336,8 @@ Please follow the user guide for how to apply permissions and other security rel
 
 ### IDP Federation
 Keycloak Federation allows you to authenticate users from your own IDP (such as LDAP) and map user roles to spatial client roles for authorization. Referring to Keycloak documents for the details.
+
+also see [IDP integration](../../guides/IDP-integration.md)
 
 ## Step 8: Use Spatial Utilities
 There are various utilities for:
