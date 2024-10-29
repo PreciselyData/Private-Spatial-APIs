@@ -397,6 +397,8 @@ Make sure the PVC is bound to the PV successfully.
 
 
 ## Step 5: Prepare a database for repository
+> NOTE: if you only need Feature service, you may skip step 5,6 see [Feature only deployment](../../guides/feature-only-deployment.md).
+
 A MongoDB replica set is used to persistent repository content.
 
 For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
@@ -464,10 +466,12 @@ This should install Private Spatial APIs and set up a sample dataset that can be
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 * ``global.registry.url``: The ACR repository for Private Spatial APIs docker image e.g. spatialregistry.azurecr.io
-* ``global.registry.tag``: The docker image tag value e.g. 1.1.1 or latest.
+* ``global.registry.tag``: The docker image tag value e.g. 1.1.2 or latest.
 * ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
 For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md#helm-values).
+
+> NOTE: In case Helm chart deployment is not possible, check [here](../../guides/helm-template.md) for Kubernetes manifest deployment. 
 
 Once you run Private Spatial APIs helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
@@ -584,6 +588,8 @@ Please follow the user guide for how to apply permissions and other security rel
 
 ### IDP Federation
 Keycloak Federation allows you to authenticate users from your own IDP (such as LDAP) and map user roles to spatial client roles for authorization. Referring to Keycloak documents for the details.
+
+also see [IDP integration](../../guides/IDP-integration.md)
 
 ## Step 8: Use Spatial Utilities
 There are various utilities for:

@@ -10,9 +10,11 @@ data:
   oauth2.enabled: {{ .Values.security.enabled | quote }}
   oauth2.issuer-uri: {{ .Values.security.oauth2.issuerUri | quote }}
   oauth2.client-id: {{ .Values.security.oauth2.clientId | quote }}
-  oauth2.client-secret: {{ .Values.security.oauth2.clientSecret | quote }}
+  oauth2.client-secret: {{ .Values.security.oauth2.clientSecret | default "openid" | quote }}
   oauth2.unsecured-paths: {{ .Values.security.oauth2.unsecuredPaths | quote }}
+  {{- if .Values.security.oauth2.requiredAuthority }}
   oauth2.required-authority: {{ .Values.security.oauth2.requiredAuthority | quote }}
+  {{- end }}
   oauth2.username-attribute: {{ .Values.security.oauth2.usernameAttribute | quote }}
   oauth2.userrole-attribute: {{ .Values.security.oauth2.userroleAttribute | quote }}
   spring.security.oauth2.resourceserver.jwt.issuer-uri: {{ .Values.security.oauth2.issuerUri | quote }}
@@ -56,9 +58,14 @@ data:
   system.com.precisely.miraster.cache.size: {{ .Values.property.miRasterCacheSize | quote }}
   system.java.rmi.server.useCodebaseOnly: "true"
   system.com.mapinfo.midev.repository.factory: {{ .Values.property.repositoryFactory | quote }}
+  {{- if .Values.property.repositoryFactoryNamedResource }}
+  system.com.mapinfo.midev.repository.factory.namedresource: {{ .Values.property.repositoryFactoryNamedResource | quote }}
+  {{- end }}
   {{- if eq .Values.property.repositoryFactory "com.mapinfo.midev.repository.fs.FileSystemRepositoryFactory" }}
   system.com.mapinfo.midev.repository.fs.root: {{ required "Value for repositoryFSRoot missing." .Values.property.repositoryFSRoot | quote }}
+  system.com.mapinfo.midev.repository.fs.data: {{ .Values.property.repositoryFSData | quote }}
   {{- end }}
+  system.com.mapinfo.midev.acl.manager: {{ .Values.property.aclManager | quote }}
   system.javax.xml.stream.XMLInputFactory: "com.ctc.wstx.stax.WstxInputFactory"
   ################################################################################
   # JAVA_TOOL_OPTIONS
@@ -72,7 +79,7 @@ data:
   # Others
   ################################################################################
   server.tomcat.relaxed-query-chars: "[,],{,}"
-  {{- if eq .Values.property.repositoryFactory "com.precisely.swp.repository.mongodb.MongoRepositoryFactory" }}
+  {{- if or (eq .Values.property.repositoryFactory "com.precisely.swp.repository.mongodb.MongoRepositoryFactory") (eq .Values.property.repositoryFactoryNamedResource "com.precisely.swp.repository.mongodb.MongoRepositoryFactory") }}
   spring.data.mongodb.auto-index-creation: "true"
   spring.data.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
   {{- end }}

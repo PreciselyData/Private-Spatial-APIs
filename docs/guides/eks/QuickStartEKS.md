@@ -131,6 +131,8 @@ to create EFS and link it to EKS cluster, or directly link existing EFS to the E
 
 **NOTE: If you already have created mount targets for the EFS to EKS cluster, skip this step.**
 
+**NOTE: If you instal CSI driver yourself, make sure the fsGroup is enabled, [also see](https://kubernetes-csi.github.io/docs/support-fsgroup.html).**
+
 - If you DON'T have existing EFS, run the following commands:
   ```shell
   cd ./scripts/efs-creator
@@ -166,6 +168,8 @@ Check results, wait until the pvc status becomes Bound.
 ```kubectl get pvc -n spatial-analytics```
 
 ## Step 5: Prepare a database for repository
+> NOTE: if you only need Feature service, you may skip step 5,6 see [Feature only deployment](../../guides/feature-only-deployment.md).
+
 A MongoDB replica set is used to persistent repository content.
 
 For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
@@ -211,7 +215,7 @@ helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-api
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
- --set "global.registry.tag=1.1.1" \ 
+ --set "global.registry.tag=1.1.2" \ 
  --set "global.registry.secrets=regcred" \ 
   --namespace spatial-analytics   
 ```
@@ -223,10 +227,12 @@ This should install Private Spatial APIs and set up a sample dataset that can be
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false 
 * ``global.registry.url``: The ECR repository for Private Spatial APIs docker image e.g. account_id.dkr.ecr.us-east-1.amazonaws.com
-* ``global.registry.tag``: The docker image tag value e.g. 1.1.1 or latest.
+* ``global.registry.tag``: The docker image tag value e.g. 1.1.2 or latest.
 * ``global.registry.secrets``: The name of the secret holding ECR credential information.
 
 For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md).  
+
+> NOTE: In case Helm chart deployment is not possible, check [here](../../guides/helm-template.md) for Kubernetes manifest deployment. 
 
 Once you run Private Spatial APIs helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
@@ -339,6 +345,8 @@ Please follow the user guide for how to apply permissions and other security rel
 
 ### IDP Federation
 Keycloak Federation allows you to authenticate users from your own IDP (such as LDAP) and map user roles to spatial client roles for authorization. Referring to Keycloak documents for the details.
+
+also see [IDP integration](../../guides/IDP-integration.md)
 
 ## Step 8: Use Spatial Utilities
 There are various utilities for:
