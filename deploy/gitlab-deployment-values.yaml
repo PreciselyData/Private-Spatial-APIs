@@ -14,7 +14,7 @@ global:
 repository:
   mongodb:
     url: "mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false"
- 
+
 # Individual service overrides
 feature-service:
   requestCPU: "4"
@@ -24,7 +24,7 @@ feature-service:
   initReplicaCount: 1
   maxReplicaCount: 16
   hpaEnabled: true
-  hpaCpuAverageUtilization: 80
+  hpaCpuAverageUtilization: 70
 
 mapping-service:
   requestCPU: "4"
@@ -35,36 +35,36 @@ mapping-service:
   maxReplicaCount: 16
   hpaEnabled: true
   hpaCpuAverageUtilization: 70
-  
-namedresource-service:
-  requestCPU: "4"
-  requestMemory: "2G"
-  limitCPU: "4"
-  limitMemory: "2G"
-  initReplicaCount: 1
-  maxReplicaCount: 2
-  hpaEnabled: true
-  hpaCpuAverageUtilization: 80
 
 tiling-service:
   requestCPU: "4"
   requestMemory: "2G"
   limitCPU: "4"
-  limitMemory: "4G"
+  limitMemory: "2G"
   initReplicaCount: 1
   maxReplicaCount: 16
   hpaEnabled: true
   hpaCpuAverageUtilization: 70
 
-spatialmanager-service:
-  requestCPU: "4"
+namedresource-service:
+  requestCPU: "2"
   requestMemory: "2G"
-  limitCPU: "4"
+  limitCPU: "2"
+  limitMemory: "2G"
+  initReplicaCount: 1
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+spatialmanager-service:
+  requestCPU: "2"
+  requestMemory: "2G"
+  limitCPU: "2"
   limitMemory: "2G"
   initReplicaCount: 1
   maxReplicaCount: 2
   hpaEnabled: true
-  hpaCpuAverageUtilization: 80
+  hpaCpuAverageUtilization: 70
 
 # END
 
