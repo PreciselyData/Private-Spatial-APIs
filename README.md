@@ -114,6 +114,7 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 |----------------------------|--------------------|
 | `1.1.0/2024.5/May 8,2024`  | `1.1.0`️           |
 | `1.1.1/2024.6/Jun 25,2024` | `1.1.1`️           |
+| `1.1.2/2024.10/Oct 30,2024` | `1.1.2`️           |
 
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
