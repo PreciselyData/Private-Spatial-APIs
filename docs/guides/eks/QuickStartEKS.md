@@ -34,6 +34,8 @@ You can create the EKS cluster or use an existing EKS cluster.
     ```shell
     eksctl create cluster -f ./cluster-sample/create-eks-cluster.yaml
     ```
+	
+> Note: This scripts uses default node types that may not exist in your specific region. Change them accordingly (`managedNodeGroups.instanceType`) if the node type is not available in your region. 
 
 - If you already have an EKS cluster, make sure you have following addons or plugins related to it, installed on the
   cluster:
