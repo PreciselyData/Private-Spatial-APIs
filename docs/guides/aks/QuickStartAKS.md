@@ -466,7 +466,7 @@ This should install Private Spatial APIs and set up a sample dataset that can be
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 * ``global.registry.url``: The ACR repository for Private Spatial APIs docker image e.g. spatialregistry.azurecr.io
-* ``global.registry.tag``: The docker image tag value e.g. 1.1.2 or latest.
+* ``global.registry.tag``: The docker image tag value e.g. 1.1.3 or latest.
 * ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
 For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md#helm-values).
