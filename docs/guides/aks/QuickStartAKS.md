@@ -81,7 +81,7 @@ Now click on **Create** → **Create a Kubernetes Cluster**
 Create a new Resource group `spatial-aks` for this AKS cluster
 
 Kubernetes cluster name -> `spatial32`\
-Kubernetes version -> `1.31.2`\
+Kubernetes version -> `1.31.6`\
 Node size -> Change size -> F32s_v2\
 Scale method -> `Manual`\
 Node count -> `1`
@@ -135,7 +135,7 @@ kubectl get nodes
 ```
 ```shell
 NAME                                STATUS   ROLES   AGE    VERSION
-aks-agentpool-39271417-vmss000000   Ready    <none>  106s   v1.31.2
+aks-agentpool-39271417-vmss000000   Ready    <none>  106s   v1.31.6
 ```
 
 ###  2.3 Install Ingress-NGINX controller
