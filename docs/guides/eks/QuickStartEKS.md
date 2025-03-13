@@ -217,7 +217,7 @@ helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-api
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 
  --set "global.registry.url=[aws-account-id].dkr.ecr.[aws-region].amazonaws.com" \
- --set "global.registry.tag=1.1.3" \ 
+ --set "global.registry.tag=1.2.0" \ 
  --set "global.registry.secrets=regcred" \ 
   --namespace spatial-analytics   
 ```
@@ -229,7 +229,7 @@ This should install Private Spatial APIs and set up a sample dataset that can be
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false 
 * ``global.registry.url``: The ECR repository for Private Spatial APIs docker image e.g. account_id.dkr.ecr.us-east-1.amazonaws.com
-* ``global.registry.tag``: The docker image tag value e.g. 1.1.3 or latest.
+* ``global.registry.tag``: The docker image tag value e.g. 1.2.0 or latest.
 * ``global.registry.secrets``: The name of the secret holding ECR credential information.
 
 For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md).  
