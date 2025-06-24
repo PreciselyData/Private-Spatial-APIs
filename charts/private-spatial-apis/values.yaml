@@ -89,4 +89,7 @@ property:
   restrictedPath: "/opt/data"
   subadminConnectionsEnable: "false"
   miRasterCacheSize: "200"
+# Application optionals
+app:
+  spatialManagerLocale: "en-US"
 # The END
