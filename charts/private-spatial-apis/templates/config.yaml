@@ -83,6 +83,7 @@ data:
   spring.data.mongodb.auto-index-creation: "true"
   spring.data.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
   {{- end }}
+  help.locale: {{ .Values.app.spatialManagerLocale | quote }}
   help.link.topics: |-
     {'100':  'https://help.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Private-Spatial-APIs-Guide/Private-Spatial-APIs-Guide',
      '3000': 'https://help.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Private-Spatial-APIs-Guide/Managing-Spatial/Spatial-Manager', 
