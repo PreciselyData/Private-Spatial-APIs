@@ -28,4 +28,5 @@ controller:
   config:
     use-forwarded-headers: "true"
     proxy-buffer-size: "128k"
+    proxy-busy-buffers-size: "128k"
     proxy-body-size: "10m"
