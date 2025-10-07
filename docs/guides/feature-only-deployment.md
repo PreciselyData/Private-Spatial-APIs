@@ -68,4 +68,5 @@ http://<ingress host>:<port>/rest/Spatial/FeatureService/tables.json
 ## Enable authentication
 If you have an IDP available, you can enable token based authentication by [IDP integration](./IDP-integration.md). 
 
-
+## Enable traces
+If you have an OTel compatible observability framework, you can enable OTel by [OTel integration](./OTel-integration.md).

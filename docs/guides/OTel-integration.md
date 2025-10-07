@@ -11,7 +11,7 @@ Helm chart deployment, add the jvm option property for each of the services (e.g
 helm install ..... --set "jvm.opts.feature=-javaagent:/app/bin/opentelemetry-javaagent.jar -Dotel.service.name=feature -Dotel.exporter.otlp.endpoint=<collector url>"
 ```
 
-Yaml file deployment, add the JAVA_TOOL_OPTIONS environment veriable to each of the services (e.g. Feature)
+Yaml file deployment, add the JAVA_TOOL_OPTIONS environment variable to each of the services (e.g. Feature)
 ```
           env:
             - name: JAVA_TOOL_OPTIONS
