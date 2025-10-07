@@ -4,7 +4,7 @@ Private Spatial APIs are able to integrate with [OTel](https://opentelemetry.io/
 
 ## Enable OTel 
 
-To enable services to export telemetry data, you need to have your collector url ready, e.g http://jaeger.spatial.svc.cluster.local:4317. Please reference to the specific collector document on installing and configuring a collector.
+To enable services to export telemetry data, you need to have your collector url ready, e.g http://jaeger.spatial.svc.cluster.local:4318. Please reference to the specific collector document on installing and configuring a collector.
 
 Helm chart deployment, add the jvm option property for each of the services (e.g. Feature) 
 ```
@@ -21,4 +21,6 @@ Yaml file deployment, add the JAVA_TOOL_OPTIONS environment variable to each of 
 
 After restart the service, it will start to export telemetry data
 
-More information on OTel Exporter [Configuration Options](https://opentelemetry.io/docs/specs/otel/protocol/exporter/)
+Also see
+OTel Exporter [Configuration Options](https://opentelemetry.io/docs/specs/otel/protocol/exporter/)
+OTel Java SDK [Configure the SDK](https://opentelemetry.io/docs/languages/java/configuration/#environment-variables-and-system-properties)
