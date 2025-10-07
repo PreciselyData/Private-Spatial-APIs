@@ -20,3 +20,5 @@ Yaml file deployment, add the JAVA_TOOL_OPTIONS environment variable to each of 
 ```
 
 After restart the service, it will start to export telemetry data
+
+More information on OTel Exporter [Configuration Options](https://opentelemetry.io/docs/specs/otel/protocol/exporter/)
