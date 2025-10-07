@@ -407,6 +407,8 @@ If you have a MongoDB replica set that can be accessed from inside the Kubernete
 
 If you don't have a MongoDB replica set currently, for your convenience, you can deploy a single node MongoDB replica set for testing as below, otherwise, go to the next step.
 
+> NOTE: Azure [Cosmos DB for MongoDB](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/overview) can also be used for repository. Change Stream feature for Cosmos DB has to be enabled in order to use. Following the [link](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/change-streams?tabs=javascript%2CInsert) to enable Change Stream before use.
+
 ### Install a MongoDB instance by helm for testing
 
 Install MongoDB from helm chart

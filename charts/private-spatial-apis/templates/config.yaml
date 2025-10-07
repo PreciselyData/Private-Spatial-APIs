@@ -99,7 +99,7 @@ data:
      '3019': 'https://help.precisely.com/r/Precisely-Data-Integrity-Suite/Latest/en-US/Private-Spatial-APIs-Guide/Managing-Spatial/Spatial-Manager/Named-Tables/Creating-Named-Tables/Creating-a-View-Table/Creating-a-View-Table-with-Parameters'
     }
   ################################################################################
-  samples.force.update: {{.Values.samplesForceUpdate | default false | quote}}
+  samples.force.update: {{.Values.samplesForceUpdate | default true | quote}}
   ################################################################################
   # Debug
   ################################################################################
