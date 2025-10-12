@@ -15,7 +15,7 @@
 global:
   registry:
     url: ""
-    tag: 1.2.1
+    tag: 1.3.0
     secrets: regcred-gitlab
   ingress:
     host: ""
