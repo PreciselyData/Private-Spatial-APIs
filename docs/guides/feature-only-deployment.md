@@ -58,7 +58,7 @@ Restart the pod to enable auto-harvest
 kubectl rollout restart deployment -n <your-namespace>
 ```
 
-Try the url below in a browser to trigger and verify the tables harvested,
+Tables will be harvested automatically after service is started. Try the url below in a browser to verify the tables harvested,
 ```
 http://<ingress host>:<port>/rest/Spatial/FeatureService/tables.json
 ```
@@ -68,4 +68,5 @@ http://<ingress host>:<port>/rest/Spatial/FeatureService/tables.json
 ## Enable authentication
 If you have an IDP available, you can enable token based authentication by [IDP integration](./IDP-integration.md). 
 
-
+## Enable traces
+If you have an OTel compatible observability framework, you can enable OTel by [OTel integration](./OTel-integration.md).
