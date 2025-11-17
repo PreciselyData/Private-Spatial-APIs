@@ -3,7 +3,11 @@ kind: Ingress
 metadata:
   name: mapping-service
 spec:
+  {{- if .Values.global }}
+  ingressClassName: {{ .Values.global.ingress.ingressClassName | quote }}
+  {{- else }}
   ingressClassName: "nginx"
+  {{- end }}
   rules:
   {{- if .Values.global }}
   - host: {{ .Values.global.ingress.host | quote }}

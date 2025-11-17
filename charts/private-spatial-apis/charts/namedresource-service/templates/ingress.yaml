@@ -5,7 +5,11 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  {{- if .Values.global }}
+  ingressClassName: {{ .Values.global.ingress.ingressClassName | quote }}
+  {{- else }}
   ingressClassName: "nginx"
+  {{- end }}
   rules:
   {{- if .Values.global }}
   - host: {{ .Values.global.ingress.host | quote }}
@@ -63,7 +67,14 @@ spec:
             name: namedresource-service
             port:
               number: 8080
-      - path: /(security|oauth2|login|logout)
+      - path: /security
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /(oauth2|login|logout)
         pathType: ImplementationSpecific
         backend:
           service:

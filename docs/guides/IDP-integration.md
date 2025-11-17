@@ -4,7 +4,7 @@ The Private Spatial APIs are now able to integrate with IDPs that support OpenID
 
 ## IDP OpenID Connect issuer url
 
-An IDP issurer url is required to setup the integration. The login client could be either private or public. If it is private, a client secret is also required in the configuration.
+An IDP issuer url is required to setup the integration. The login client could be either private or public. If it is private, a client secret is also required in the configuration.
 
 ## Configure Security
 
@@ -14,7 +14,7 @@ In your Helm chart values yaml file, add following section. If you use a private
 security:
   enabled: "true"
   oauth2:
-    issuerUri: "<IDP issurer url>"
+    issuerUri: "<IDP issuer url>"
     clientId: "<client id>"
     clientSecret: ""
     usernameAttribute: "preferred_username"
@@ -49,7 +49,7 @@ You need to get JWT token from your IDP and include the JWT access token as Bear
 
 Get token
 ```
-curl --location 'https://<your issurer-url>/protocol/openid-connect/token' \
+curl --location 'https://<your issuer url>/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'grant_type=password' \
 --data-urlencode 'client_id=<your client id>' \
