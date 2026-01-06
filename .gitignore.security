@@ -1,9 +1,7 @@
-*env
-../.idea
-.vscode
-.idea
+# Security-related files to add to your .gitignore
+# Copy these entries to your main .gitignore file
 
-# Security - Secret and credential files
+# Secret and credential files
 secure-values.yaml
 *-secrets.yaml
 *.secret
@@ -16,8 +14,9 @@ secure-values.yaml
 *.pfx
 
 # Credential patterns
-*credentials*.yaml
-*password*.yaml
+*credentials*
+*password*
+*secret*
 
 # Pre-commit
 .secrets.baseline
@@ -29,6 +28,19 @@ secure-values.yaml
 gcloud-service-key.json
 *.credentials.json
 
+# Kubernetes secrets
+*-secret.yaml
+secret-*.yaml
+
+# Vault tokens
+.vault-token
+
+# Certificate files
+*.crt
+*.cer
+*.der
+!**/ca.crt
+
 # SSH keys
 id_rsa
 id_dsa
@@ -36,11 +48,3 @@ id_ecdsa
 id_ed25519
 *.ppk
 
-# Certificate files (except CA certs)
-*.crt
-*.cer
-*.der
-!**/ca.crt
-
-# Vault tokens
-.vault-token
