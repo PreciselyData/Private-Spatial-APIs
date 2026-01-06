@@ -15,6 +15,7 @@ global:
     #   Host should include full domain name, IP address is not valid.
     #
     host: ""
+    ingressClassName: "nginx"
 # Deployment optionals
 deployment: 
   feature:
