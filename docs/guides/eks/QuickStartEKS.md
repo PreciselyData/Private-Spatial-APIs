@@ -197,9 +197,9 @@ Wait until the mongo pod is ready
 NAME                                      READY   STATUS    RESTARTS   AGE
 mongo-XXXXXXXXXX-XXXX                     1/1     Running   0          8m35s
 ```
-This will install a single node replica set instance with authentication
+This will install a single node replica set instance without authentication
 ```
-connection uri = mongodb://<your-username>:<your-secure-password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
+connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
 ## Step 6: Installation of Private Spatial APIs Helm Chart
 
@@ -327,7 +327,7 @@ Update the following properties with the values below,
 oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
-oauth2.client-secret: ""
+auth2.client-secret:  "<get client secret from Keycloak>"
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```

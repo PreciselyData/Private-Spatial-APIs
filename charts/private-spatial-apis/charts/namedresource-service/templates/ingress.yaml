@@ -16,8 +16,8 @@ spec:
   {{- else }}
   - host: {{ .Values.ingress.host | quote }}
   {{- end }}
-  http:
-    paths:
+    http:
+      paths:
       - path: /rest/Spatial/NamedResourceService
         pathType: Prefix
         backend:

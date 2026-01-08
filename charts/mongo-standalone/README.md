@@ -17,7 +17,7 @@ $ helm install mongo ./mongo-standalone \
 
 use connection string to connect:
 ```
-mongodb://<username>:<password>@<host>:<port>/
+mongodb://<host>:<port>/
 
 ```
 

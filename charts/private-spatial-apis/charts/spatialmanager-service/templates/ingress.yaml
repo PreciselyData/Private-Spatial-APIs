@@ -14,8 +14,8 @@ spec:
   {{- else }}
   - host: {{ .Values.ingress.host | quote }}
   {{- end }}
-  http:
-    paths:
+    http:
+      paths:
       - path: /SpatialServerManager
         pathType: Prefix
         backend:
