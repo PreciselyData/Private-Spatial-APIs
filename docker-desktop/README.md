@@ -2,9 +2,7 @@
 
 The Private Spatial APIs can be setup locally for test purpose.
 
-## ⚠️ SECURITY WARNING
-
-**DO NOT use hardcoded credentials!** This deployment requires you to set environment variables for OAuth2 client secrets before starting the services.
+This deployment requires you to set environment variables for OAuth2 client secrets before starting the services.
 
 ## Step 0: Configure Environment Variables
 
@@ -36,25 +34,12 @@ export SPATIAL_PATH="/path/to/spatial/data"
 
 ### Using .env File (Recommended for Development)
 
-1. Copy the example environment file:
-   ```bash
-   cp ../.env.example .env
-   ```
-
-2. Edit `.env` file with your values:
-   ```properties
-   IMAGE_REGISTRY=localhost:5000
-   TAG=latest
-   SPATIAL_PATH=/path/to/your/spatial/data
-   OAUTH2_CLIENT_SECRET=your-secure-client-secret
-   ```
-
-3. **IMPORTANT**: Add `.env` to your `.gitignore` to prevent committing secrets!
-
-### Generate Secure Client Secret
-```bash
-# Generate a secure OAuth2 client secret
-openssl rand -hex 32
+Edit `.env` file with your values:
+```properties
+IMAGE_REGISTRY=localhost:5000
+TAG=latest
+SPATIAL_PATH=/path/to/your/spatial/data
+OAUTH2_CLIENT_SECRET=your-secure-client-secret
 ```
 
 ## Step 1: Download Reference Data and Required Docker Images
@@ -119,17 +104,7 @@ Upload images one by one:
    docker compose down
    ```
 
-## Security Best Practices
-
-- Never commit `.env` files to version control
-- Generate strong, random secrets for all credentials
-- Rotate secrets regularly
-- For production deployments, use Kubernetes Secrets or external secret management systems
-- See [../SECURITY.md](../SECURITY.md) for comprehensive security guidance
-
 ## References
 
 - [Sample API Usage](../charts/private-spatial-apis/README.md)
-- [Security Guide](../SECURITY.md)
-
 [🔗 Return to `Table of Contents` 🔗](../README.md##)

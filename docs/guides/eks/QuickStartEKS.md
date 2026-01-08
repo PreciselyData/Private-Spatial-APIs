@@ -185,7 +185,9 @@ If you don't have a MongoDB replica set currently, for your convenience, you can
 
 Install MongoDB from helm chart
 ```
-helm install mongo ./charts/mongo-standalone -n mongo --create-namespace
+helm install mongo ./charts/mongo-standalone -n mongo --create-namespace \
+  --set credentials.rootUsername=<your-username> \
+  --set credentials.rootPassword=<your-secure-password>
 ```
 ```
 kubectl get pod -n mongo
@@ -195,9 +197,9 @@ Wait until the mongo pod is ready
 NAME                                      READY   STATUS    RESTARTS   AGE
 mongo-XXXXXXXXXX-XXXX                     1/1     Running   0          8m35s
 ```
-This will install a single node replica set instance without authentication
+This will install a single node replica set instance with authentication
 ```
-connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
+connection uri = mongodb://<your-username>:<your-secure-password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
 ## Step 6: Installation of Private Spatial APIs Helm Chart
 
@@ -287,11 +289,14 @@ kubectl get svc
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
 ```
-helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress external ip> 
+helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace \
+  --set hostname=<ingress external ip> \
+  --set adminUser=<your-admin-username> \
+  --set adminPassword=<your-secure-password>
 ```
 Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It may take some time for Ingress to be deployed.
 
-Open a browser and login to keycloak console with the admin credentials (default to admin/admin) at
+Open a browser and login to keycloak console with your admin credentials at
 `http://<ingress external ip>/auth`
 
 > NOTE: this keycloak server is running in DEV mode, only use HTTP to login to admin-console.
@@ -322,7 +327,7 @@ Update the following properties with the values below,
 oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
-oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
+oauth2.client-secret: ""
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```

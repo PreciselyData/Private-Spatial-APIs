@@ -4,25 +4,20 @@ metadata:
   name: namedresource-service
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
-    # Security: Add Content-Security-Policy header to protect against XSS attacks
-    # Uncomment and customize the following line based on your security requirements:
-    # nginx.ingress.kubernetes.io/configuration-snippet: |
-    #   more_set_headers "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'";
-    #   more_set_headers "X-Frame-Options: SAMEORIGIN";
-    #   more_set_headers "X-Content-Type-Options: nosniff";
-    #   more_set_headers "X-XSS-Protection: 1; mode=block";
-    #   more_set_headers "Referrer-Policy: strict-origin-when-cross-origin";
-    # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
 spec:
+  {{- if .Values.global }}
+  ingressClassName: {{ .Values.global.ingress.ingressClassName | quote }}
+  {{- else }}
   ingressClassName: "nginx"
+  {{- end }}
   rules:
   {{- if .Values.global }}
   - host: {{ .Values.global.ingress.host | quote }}
   {{- else }}
   - host: {{ .Values.ingress.host | quote }}
   {{- end }}
-    http:
-      paths:
+  http:
+    paths:
       - path: /rest/Spatial/NamedResourceService
         pathType: Prefix
         backend:
@@ -72,7 +67,14 @@ spec:
             name: namedresource-service
             port:
               number: 8080
-      - path: /(security|oauth2|login|logout)
+      - path: /security
+        pathType: Prefix
+        backend:
+          service:
+            name: namedresource-service
+            port:
+              number: 8080
+      - path: /(oauth2|login|logout)
         pathType: ImplementationSpecific
         backend:
           service:

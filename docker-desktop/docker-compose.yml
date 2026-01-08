@@ -43,7 +43,6 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      # SECURITY WARNING: Set OAUTH2_CLIENT_SECRET environment variable externally
       # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
       - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -92,7 +91,6 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      # SECURITY WARNING: Set OAUTH2_CLIENT_SECRET environment variable externally
       # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
       - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -123,7 +121,6 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      # SECURITY WARNING: Set OAUTH2_CLIENT_SECRET environment variable externally
       # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
       - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -153,7 +150,6 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      # SECURITY WARNING: Set OAUTH2_CLIENT_SECRET environment variable externally
       # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
       - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
@@ -183,7 +179,6 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      # SECURITY WARNING: Set OAUTH2_CLIENT_SECRET environment variable externally
       # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
       - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
