@@ -411,14 +411,11 @@ If you don't have a MongoDB replica set currently, for your convenience, you can
 
 ### Install a MongoDB instance by helm for testing
 
-Install MongoDB from helm chart with required credentials:
+Install MongoDB from helm chart
 ```
-helm install mongo ~/Private-Spatial-APIs/charts/mongo-standalone -n mongo --create-namespace \
-  --set credentials.rootUsername=<your-username> \
-  --set credentials.rootPassword=<your-secure-password>
+helm install mongo ~/Private-Spatial-APIs/charts/mongo-standalone -n mongo --create-namespace
 ```
 
-Check the pod status:
 ```
 kubectl get pod -n mongo
 ```
@@ -429,7 +426,6 @@ mongo-XXXXXXXXXX-XXXX                     1/1     Running   0          8m35s
 ```
 This will install a single node replica set instance without authentication enabled.
 
-Use the following connection URI format (replace `<your-username>` and `<your-secure-password>` with the credentials you provided):
 ```
 connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
@@ -574,11 +570,12 @@ Update the following properties with the values below,
 oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
-oauth2.client-secret: "<get client secret from Keycloak>"
+oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "<http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
 > NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
+> For security reason, change the client-secret in KeyCloak management console
 
 Restart all services to pick up the configuration changes
 ```
