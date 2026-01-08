@@ -3,7 +3,6 @@ image:
 credentials:
   # Set these values using --set flags or a secure values file during deployment
   # Example: helm install --set credentials.rootUsername=<user> --set credentials.rootPassword=<secure-password>
-  # Or use Kubernetes Secrets: kubectl create secret generic mongo-credentials --from-literal=username=<user> --from-literal=password=<secure-password>
   rootUsername: ""
   rootPassword: ""
 resources:
