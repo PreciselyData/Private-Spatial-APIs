@@ -174,7 +174,7 @@ For a production deployment, a multi-node MongoDB replica set is recommended. He
 
 If you have a MongoDB replica set that can be accessed from inside the Kubernetes cluster, then collect the connection uri for further service config.
 
-If you don't have a MongoDB replica set currently, for your convenience, you can deploy a single node MongoDB replica set for testing as below, otherwise, go to the next step.
+If you don't have a MongoDB replica set currently, for your convenience, you can deploy a single node MongoDB replica set for testing as below. Keep in mind that the content will be lost after restart. Otherwise, go to the next step.
 
 ### Install a MongoDB instance by helm for testing
 
