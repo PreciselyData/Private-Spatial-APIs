@@ -327,7 +327,7 @@ Update the following properties with the values below,
 oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
-auth2.client-secret:  "<get client secret from Keycloak>"
+oauth2.client-secret:  "<get client secret from Keycloak>"
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
