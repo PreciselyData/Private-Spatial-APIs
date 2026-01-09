@@ -303,7 +303,7 @@ Keycloak Admin console is used to manage users in realm and roles in spatial cli
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
-Ensure you are in the current created realm, then go to **Clients**, search for **spatial** client, open **Credentials**, and **copy the Client Secret.**
+Ensure you are in the current created realm, then go to **Clients**, search for **spatial** client, open **Credentials**, and **copy the Client Secret.** You need to specify this value for oauth2.client-secret  as explained in next section.
 
 ### Update service config to use your realm in the keycloak
 ```
