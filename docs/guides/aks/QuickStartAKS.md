@@ -415,6 +415,7 @@ Install MongoDB from helm chart
 ```
 helm install mongo ~/Private-Spatial-APIs/charts/mongo-standalone -n mongo --create-namespace
 ```
+
 ```
 kubectl get pod -n mongo
 ```
@@ -424,6 +425,7 @@ NAME                                      READY   STATUS    RESTARTS   AGE
 mongo-XXXXXXXXXX-XXXX                     1/1     Running   0          8m35s
 ```
 This will install a single node replica set instance without authentication
+
 ```
 connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
@@ -468,7 +470,7 @@ This should install Private Spatial APIs and set up a sample dataset that can be
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 * ``global.registry.url``: The ACR repository for Private Spatial APIs docker image e.g. spatialregistry.azurecr.io
-* ``global.registry.tag``: The docker image tag value e.g. 1.3.0 or latest.
+* ``global.registry.tag``: The docker image tag value e.g. 1.3.1 or latest.
 * ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
 For more information on helm values, follow [this link](../../../charts/private-spatial-apis/README.md#helm-values).
@@ -526,7 +528,10 @@ kubectl get svc -n ingress-nginx
 looking for the EXTERNAL-IP in the output for the value of `hostname` used in the next command.
 
 ```
-helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace --set hostname=<ingress_host_name > 
+helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycloak --create-namespace \
+  --set hostname=<ingress_host_name> \
+  --set adminUser=<your-admin-username> \
+  --set adminPassword=<your-secure-password>
 ```
 > Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use the domain name for `hostname`.
 > You can skip specifying the `hostname` parameter altogether to install the chart successfully but that is not recommended for production.
@@ -534,7 +539,7 @@ helm install keycloak ~/Private-Spatial-APIs/charts/keycloak-standalone -n keycl
 
 Wait until `keycloak` pod is up and ready (`kubectl get pod -n keycloak`). It may take some time for Ingress to be deployed.
 
-Open a browser and login to keycloak console with the admin credentials (default to admin/admin) at
+Open a browser and login to keycloak console with your admin credentials at
 `http://<ingress external ip>/auth`
 
 > NOTE: this keycloak server is running in DEV mode, only use HTTP to login to admin-console.
@@ -554,6 +559,7 @@ Keycloak Admin console is used to manage users in realm and roles in spatial cli
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
+Ensure you are in the current created realm, then go to **Clients**, search for **spatial** client, open **Credentials**, and **copy the Client Secret.** You need to specify this value for oauth2.client-secret  as explained in next section.
 
 ### Update service config to use your realm in the keycloak
 ```
@@ -565,11 +571,12 @@ Update the following properties with the values below,
 oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
-oauth2.client-secret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
+oauth2.client-secret: "<get client secret from Keycloak>"
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "<http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
 > NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
+> For security reason, change the client-secret in KeyCloak management console
 
 Restart all services to pick up the configuration changes
 ```

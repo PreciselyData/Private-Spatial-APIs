@@ -1,8 +1,10 @@
 image:
   tag: 7.0
 credentials:
-  rootUsername: mongoadmin
-  rootPassword: admin
+  # Set these values using --set flags or a secure values file during deployment
+  # Example: helm install --set credentials.rootUsername=<user> --set credentials.rootPassword=<secure-password>
+  rootUsername: ""
+  rootPassword: ""
 resources:
   requestCPU: 500m
   requestMemory: 512Mi

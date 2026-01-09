@@ -2,3 +2,45 @@
 ../.idea
 .vscode
 .idea
+
+# Security - Secret and credential files
+secure-values.yaml
+*-secrets.yaml
+*.secret
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Credential patterns
+*credentials*.yaml
+*password*.yaml
+
+# Pre-commit
+.secrets.baseline
+
+# Cloud provider credentials
+.aws/credentials
+.azure/credentials
+.gcp/credentials
+gcloud-service-key.json
+*.credentials.json
+
+# SSH keys
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+*.ppk
+
+# Certificate files (except CA certs)
+*.crt
+*.cer
+*.der
+!**/ca.crt
+
+# Vault tokens
+.vault-token

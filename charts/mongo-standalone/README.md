@@ -1,16 +1,24 @@
 MongoDB Standalone Helm
 =======
 
+This chart requires you to provide secure credentials during installation. Never commit credentials to version control.
+
 TL;DR;
 ------
 
+
+**IMPORTANT**: You must provide credentials during installation.
+
 ```console
-$ helm install mongo ./mongo-standalone
+$ helm install mongo ./mongo-standalone \
+  --set credentials.rootUsername=<your-username> \
+  --set credentials.rootPassword=<your-secure-password>
 ```
 
-use default connection string to connect
+use connection string to connect:
 ```
 mongodb://<host>:<port>/
+
 ```
 
 Introduction

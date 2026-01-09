@@ -43,7 +43,8 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
+      - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 
   samples-data:
@@ -90,7 +91,8 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
+      - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
@@ -119,7 +121,8 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
+      - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
@@ -147,7 +150,8 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
+      - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
@@ -175,7 +179,8 @@ services:
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
-      - OAUTH2.CLIENTSECRET=fd17bc1d-cefc-41a3-8c50-bb545736caa6
+      # Use: export OAUTH2_CLIENT_SECRET=<your-secret> before running docker-compose
+      - OAUTH2.CLIENTSECRET=${OAUTH2_CLIENT_SECRET}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - type: bind
