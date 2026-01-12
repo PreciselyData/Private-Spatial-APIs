@@ -559,7 +559,7 @@ Keycloak Admin console is used to manage users in realm and roles in spatial cli
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
-Ensure you are in the current created realm, then go to **Clients**, search for **spatial** client, open **Credentials**, and **copy the Client Secret.** You need to specify this value for oauth2.client-secret  as explained in next section.
+Ensure you are in the current created realm, then go to **Clients**, search for **spatial** client, open **Credentials**, for security reason **regenerate** the Client Secret and **copy the Client Secret.** You need to specify this value for oauth2.client-secret  as explained in next section.
 
 ### Update service config to use your realm in the keycloak
 ```
@@ -576,7 +576,6 @@ spring.security.oauth2.resourceserver.jwt.issuer-uri: "<http://<ingress external
 ...
 ```
 > NOTE: the property `oauth2.required-authority` restricts service access to the users who have at least the ’user’ client role by default. It can be configured to any spatial client roles. A value "" will disable the restriction.
-> For security reason, change the client-secret in KeyCloak management console
 
 Restart all services to pick up the configuration changes
 ```
