@@ -127,7 +127,7 @@ az aks get-credentials --resource-group spatial-aks --name spatial32
 kubectl config use-context spatial32
 kubectl config current-context
 
-````F
+````
 Now kubectl is set default to the AKS spatial32 cluster. You can check
 the status of the nodes
 ```shell
