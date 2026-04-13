@@ -49,6 +49,11 @@ url:
 repository:
   mongodb:
     url: ""
+  jdbc:
+    url: ""
+    username: ""
+    password: ""
+    dialect: ""
 jvm:
   opts:
     mapping: ""

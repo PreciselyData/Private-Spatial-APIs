@@ -10,7 +10,7 @@ The following Kubernetes objects are created:
 * tiling-service
 
 ## Pre-requisites
-A MongoDB (Replica Set) is required to persist named resources. 
+A MongoDB (Replica Set) or a JDBC-compatible database (SQL Server, PostgreSQL) is required to persist named resources. See the [JDBC-based repository guide](../../docs/guides/JDBC-repository.md) for details on using a JDBC database.
 MongoDB is configured with this Helm variables:
 
 | Value                                  | Description                 |

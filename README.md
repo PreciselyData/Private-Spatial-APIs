@@ -54,7 +54,7 @@ These are collectively known as “Named Resources”. The named resources are p
 - _REST Map Tiling Service / OGC Web Map Tiling Service (WMTS)_: The Map Tiling Service returns map tiles on the fly or from a tile cache at the user's request. Both image-based tiles and vector tiles can be served.
 - _Supporting APIs_: The supporting services are there to facilitate integration with Precisely web and desktop applications. All these services are internal and not intended for use direct use.
 - _External / Other Services_: 
-  - MongoDB Database: This is a required pre-requisite. The named resources managed by Private Spatial APIs using Spatial Manager are persisted to a MongoDB database.
+  - Repository Database: This is a required pre-requisite. The named resources managed by Private Spatial APIs using Spatial Manager are persisted to a MongoDB database or a JDBC-compatible database (SQL Server, PostgreSQL). See the [JDBC-based repository guide](./docs/guides/JDBC-repository.md) for details on using a JDBC database.
   - Keycloak: This is an optional service but is required if role-based access control (RBAC) is needed for individual named resources. You can use it as an IDP allowing SSO, User/Role provisioning & ACL management.  
 
 
@@ -120,6 +120,7 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 | `1.2.1/2025.07/Jul 15,2025` | `1.2.1`️           |
 | `1.3.0/2025.10/Oct 15,2025` | `1.3.0`️           |
 | `1.3.1/2026.01/Jan 14,2026` | `1.3.1`️           |
+| `1.3.2/2026.04/Apr 13,2026` | `1.3.2`️           |
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
 > Refer [Downloading Private Spatial APIs Docker Images](#3-download-spatial-private-spatial-apis-images) for more information.
