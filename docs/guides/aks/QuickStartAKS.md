@@ -399,7 +399,7 @@ Make sure the PVC is bound to the PV successfully.
 ## Step 5: Prepare a database for repository
 > NOTE: if you only need Feature service, you may skip step 5,6 see [Feature only deployment](../../guides/feature-only-deployment.md).
 
-A MongoDB replica set is used to persistent repository content.
+A MongoDB replica set, or a JDBC-compatible database (SQL Server, PostgreSQL) is used to persistent repository content. See the [JDBC-based repository guide](../../guides/JDBC-repository.md) for details on using a JDBC database.
 
 For a production deployment, a multi-node MongoDB replica set is recommended. Here is the link to [Install MongoDB](https://www.mongodb.com/docs/manual/installation/).
 \
