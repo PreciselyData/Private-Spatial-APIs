@@ -1,4 +1,4 @@
-# Private Spatial APIs Helm Charts
+# Precisely Spatial SDK Helm Charts
 
 ## Motivation
 
@@ -46,9 +46,6 @@ The deployment is available as Micro Services architecture which can be deployed
 ### Capabilities
 Following are the main components of architecture:
 
-- _Spatial Manager_: The foundation of Private Spatial APIs is the spatial repository which is managed by the Spatial Manager application.
-It allows users to create connections to supported data sources and to then configure tables, layers, maps, tiles, and styles which are used in the APIs.
-These are collectively known as “Named Resources”. The named resources are persisted to a MongoDB database which is a pre-requisite for the deployment.
 - _REST Feature Service / OGC Web Feature Service (WFS)_: Serves geographical features in a vector format such as Geo JSON or GML. Requests are essentially a query with spatial and attribute filters.
 - _REST Mapping Service / OGC Web Map Service (WMS)_: Serves georeferenced map images which can be dynamically specified. Requests can include a bounding box or center and width along with the maps and layers to use and their styles.
 - _REST Map Tiling Service / OGC Web Map Tiling Service (WMTS)_: The Map Tiling Service returns map tiles on the fly or from a tile cache at the user's request. Both image-based tiles and vector tiles can be served.
@@ -60,7 +57,7 @@ These are collectively known as “Named Resources”. The named resources are p
 
 ### Components
 
-- [Docker Images](../scripts/images-to-ecr-uploader/README.md#description)
+<!-- - [Docker Images](../scripts/images-to-ecr-uploader/README.md#description) -->
 - [Helm Charts](../charts/README.md)
 
 ## Guides
@@ -97,7 +94,7 @@ Deploy Private Spatial APIs chart to K8s cluster. Click on the link to get steps
 Install or use an existing Keycloak instance. Click on the link to get steps for specific cloud platform:
 [EKS](../docs/guides/eks/QuickStartEKS.md#step-7-enabling-security---authnauthz-optional) | [GKE](../docs/guides/gke/QuickStartGKE.md#step-7-enabling-security---authnauthz-optional) | [AKS](../docs/guides/aks/QuickStartAKS.md#step-7-enabling-security---authnauthz-optional)
 
-### 8. Use Spatial Utilities
+<!-- ### 8. Use Spatial Utilities
 There are various utilities for:
 - Generating MapTiling requests
 - Generating Map tiles for the WMTS service
@@ -124,7 +121,7 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 | `1.3.3/2026.05/May 20,2026` | `1.3.3`️           |
 
 > NOTE: The docker images pushed to the image repository should be tagged with the current helm chart version.
-> Refer [Downloading Private Spatial APIs Docker Images](#3-download-spatial-private-spatial-apis-images) for more information.
+> Refer [Downloading Private Spatial APIs Docker Images](#3-download-spatial-private-spatial-apis-images) for more information. -->
 
 ## Miscellaneous
 
@@ -133,7 +130,7 @@ Following is the helm version chart against Private Spatial APIs PDX docker imag
 
 ## References
 
-- [Releases](https://github.com/PreciselyData/Private-Spatial-APIs/releases)
+<!-- - [Releases](https://github.com/PreciselyData/Private-Spatial-APIs/releases) -->
 - [Helm Values](../charts/private-spatial-apis/README.md#helm-values)
 
 ## Links
