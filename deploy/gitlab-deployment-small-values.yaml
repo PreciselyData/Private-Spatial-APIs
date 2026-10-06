@@ -22,6 +22,7 @@ global:
 repository:
   mongodb:
     url: ""
+    database: spatial-sdk
     
 # Deployment optionals
 deployment: 
@@ -42,11 +43,11 @@ deployment:
   mcp:
     enabled: true
   upload-samples:
-    enabled: false
+    enabled: true
     
 # Security   
 security:
-  enabled: true
+  enabled: false
   oauth2:
     issuerUri: ""
     clientId: "spatial"
