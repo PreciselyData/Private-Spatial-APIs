@@ -5,11 +5,11 @@
 # Global values
 global:
   registry:
-    url: "jfrog.precisely.engineering:443/docker-virtual/preciselydata/location-intelligence/spatial/spatial-web-framework"
+    url: ""
     tag: latest
     secrets: regcred
   ingress:
-    host: platform.spatial.preciselybuild.com
+    host: ""
   cors:
     enabled: false
     allowCredentials: false
@@ -21,7 +21,7 @@ global:
 # Repository
 repository:
   mongodb:
-    url: "mongodb+srv://mongoadmin:admin@spatial-mongodb-svc.mongodb.svc.cluster.local/spatial-repository?authSource=admin&ssl=false"
+    url: ""
     
 # Deployment optionals
 deployment: 
@@ -48,46 +48,21 @@ deployment:
 security:
   enabled: true
   oauth2:
-    issuerUri: "https://keycloak.spatial.preciselybuild.com/realms/Spatial"
+    issuerUri: ""
     clientId: "spatial"
-    clientSecret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
+    clientSecret: ""
   upload:
     clientId: "spatial-data-load"
-    clientSecret: "hWkJCDcl5ok7YPafZuTe1OMYn64QpEu7"
+    clientSecret: ""
     
 # JVM options
 jvm:
   opts:
-    mapping: >-
-      -javaagent:/app/bin/opentelemetry-javaagent.jar
-      -Dotel.service.name=mapping
-      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
-      -Dotel.metrics.exporter=none 
-      -Dotel.logs.exporter=none
-    feature: >-
-      -javaagent:/app/bin/opentelemetry-javaagent.jar
-      -Dotel.service.name=feature
-      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
-      -Dotel.metrics.exporter=none 
-      -Dotel.logs.exporter=none
-    tiling: >-
-      -javaagent:/app/bin/opentelemetry-javaagent.jar
-      -Dotel.service.name=tiling
-      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
-      -Dotel.metrics.exporter=none 
-      -Dotel.logs.exporter=none
-    resource: >-
-      -javaagent:/app/bin/opentelemetry-javaagent.jar
-      -Dotel.service.name=resource
-      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
-      -Dotel.metrics.exporter=none 
-      -Dotel.logs.exporter=none
-    data: >-
-      -javaagent:/app/bin/opentelemetry-javaagent.jar
-      -Dotel.service.name=data
-      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
-      -Dotel.metrics.exporter=none 
-      -Dotel.logs.exporter=none
+    mapping: ""
+    feature: ""
+    tiling: ""
+    resource: ""
+    data: ""
     composite: ""
     platform: ""
     mcp: ""
