@@ -1,4 +1,4 @@
-# Installing Private Spatial APIs Helm Chart on Google Cloud GKE
+# Installing Precisely Spatial SDK Helm Chart on Google Cloud GKE
 
 ### Before starting
 Make sure you have a Google Cloud account with following permissions:  
@@ -24,7 +24,7 @@ kubectl -h
 helm -h
 ```
 
-### Clone Private Spatial APIs helm charts & resources
+### Clone Precisely Spatial SDK helm charts & resources
 ```
 git clone https://github.com/PreciselyData/Private-Spatial-APIs
 ```
@@ -52,7 +52,7 @@ gcloud config list
 
 Create GKE cluster (autopilot) named spatial-cloud-native. You can specify different project and region with `--project` and `--region`.
 ```
-gcloud container clusters create-auto spatial-cloud-native --region us-east1 --cluster-version 1.29.1
+gcloud container clusters create-auto spatial-cloud-native --region us-east1 --cluster-version 1.33.0
 ```
 It may take few minutes to create the cluster. Wait until the command finished.
 ```
@@ -93,11 +93,10 @@ The public access url would be like below. Try the url from your browser, you sh
 https://34.23.192.143
 ```
 
-## Step 3: Download Private Spatial APIs Docker Images
+## Step 3: Download Precisely Spatial SDK Docker Images
 
-The docker files can be downloaded from Precisely's DI Suite Console.
+The docker files can be downloaded from provided sources.
 
-AWS Artifact Repository is used to hold the docker images and deploy from it.
 
 ### Create Artifact registry
 
@@ -116,7 +115,7 @@ gcloud artifacts repositories describe spatial-repo --location=<your region>
 
 ### Load images to artifact registry
 
-Due to the disk space limitation on cloudshell, you need to unzip the image file you downloaded from DIS (spatial-cloud-native-images.zip) on your local machine and upload the six tar files to cloudshell. In cloudshell, click on the Upload menu to upload the image tar files.
+Due to the disk space limitation on cloudshell, you need to unzip the image file you downloaded on your local machine and upload the nine tar files to cloudshell. In cloudshell, click on the Upload menu to upload the image tar files.
 
 Run the shell scripts to load images to artifact registry,
 ```
@@ -195,7 +194,7 @@ This will install a single node replica set instance without authentication
 connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
 
-## Step 6: Installation of Private Spatial APIs Helm Chart
+## Step 6: Installation of Precisely Spatial SDK Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-geo-addressing-docker-images) for uploading the docker images with the newest tag.
 
@@ -228,22 +227,15 @@ helm install spatial ~/Private-Spatial-APIs/charts/private-spatial-apis \
 
 > NOTE: In case Helm chart deployment is not possible, check [here](../../guides/helm-template.md) for Kubernetes manifest deployment. 
 
-After all the pods are in 'ready' status, launch SpatialServerManager in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps.
-`https://<your external ip>/SpatialServerManager`
-
-In SpatialServerManager, go to `Samples` -> `NamedMaps` -> `DCWashMap` -> `Preview` to see the map
-
-In a browser, get a map from mapping servie
-```
-https://<your external ip>/rest/Spatial/MappingService/maps/Samples/NamedMaps/DCWashMap/image.png;w=640;h=480;c=-77.0%2C38.9%2Cepsg%3A4326;z=5%20mi;r=96
-```
+After all the pods are in 'ready' status, launch Precisely Spatial in a browser with the URL below (You may need to accept the default self-signed certificate from Ingress. Check out the ingress document on how to change the certificate if you need). By default, the security is off, so you can login with any username/password. You should be able to browser named resources and pre-view maps.
+`https://<your external ip>/spatial`
    
 You can check HPA status while services are running
 ```
 kubectl get hpa mapping-service
 ```
-
-If you are using the OGC services please refer to the on-premise docs ([WFS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wfs_settings.html), [WMS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wms_settings.html), [WMTS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wmts_settings.html)) to configure the Online resource / Service URL with the public access url (Ingress EXTERNAL-IP).
+<!-- 
+If you are using the OGC services please refer to the on-premise docs ([WFS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wfs_settings.html), [WMS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wms_settings.html), [WMTS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wmts_settings.html)) to configure the Online resource / Service URL with the public access url (Ingress EXTERNAL-IP). -->
 
 
 ## Step 7: Enabling security - AuthN/AuthZ (Optional)
@@ -290,7 +282,7 @@ Open a browser and login to keycloak console with your admin credentials at
 
 ### Create a realm for spatial services
 
-SCN has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. SCN authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
+Precisely Spatial SDK has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Precisely Spatial SDK authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
 
 Download `~/Private-Spatial-APIs/deploy/realm-spatial.json` to your local system.
 In the administration console, click on realm pulldown menu and select `Create realm`
@@ -299,7 +291,7 @@ Click on `Browse...` button, select the realm file `realm-spatial.json`, give a 
 
 After imported the realm from the template, use Keycloak Admin console to change admin credentials, default user credentials and spatial client secret. 
 
-Keycloak Admin console is used to manage users in realm and roles in spatial client. SCN do not use realm roles.
+Keycloak Admin console is used to manage users in realm and roles in spatial client. Precisely Spatial SDK do not use realm roles.
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
@@ -330,11 +322,11 @@ Wait for all pods are ready
 kubectl get pod
 ```
 
-Login to Spatial Manager when all services are ready. Initial password for `admin` is `Spatialadmin0`
+Login to Precisely Spatial when all services are ready. Initial password for `admin` is `admin123`
 
-`https://<your external ip>/SpatialServerManager`
+`https://<your external ip>/spatial`
 
-Verify if you can preview a map in Spatial Manager.
+Verify if you can preview a map in Precisely Spatial.
 
 Please follow the user guide for how to apply permissions and other security related topics.
 
@@ -343,17 +335,17 @@ Keycloak Federation allows you to authenticate users from your own IDP (such as 
 
 also see [IDP integration](../../guides/IDP-integration.md)
 
-## Step 8: Use Spatial Utilities
+<!-- ## Step 8: Use Spatial Utilities
 There are various utilities for:
 - Generating MapTiling requests
 - Generating Map tiles for the WMTS service
 - Uploading maps from MapInfo Pro to the Spatial repository
 - Importing and exporting Spatial repository.
 
-More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
+More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md). -->
 
 ## Next Sections
-- [Private Spatial APIs Usage](../../../charts/private-spatial-apis/README.md)
+- [Precisely Spatial SDK Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 

@@ -15,7 +15,7 @@
 global:
   registry:
     url: ""
-    tag: 1.3.3
+    tag: 2.0.0
     secrets: regcred-gitlab
   ingress:
     host: ""
@@ -34,11 +34,19 @@ deployment:
     enabled: false
   tiling:
     enabled: false
-  namedresource:
-    enabled: false
-  spatialmanager:
-    enabled: false
   upload-samples:
+    enabled: false
+  upload-testdata:
+    enabled: false
+  resource:
+    enabled: false
+  private-sdk-mcp:
+    enabled: false
+  composite:
+    enabled: false
+  data:
+    enabled: false
+  spatial-platform-ux:
     enabled: false
  
 # Individual service overrides

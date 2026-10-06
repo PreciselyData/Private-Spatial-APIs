@@ -18,8 +18,8 @@ repository:
 # Individual service overrides
 feature-service:
   requestCPU: "100m"
-  limitCPU: null
   requestMemory: "2Gi"
+  limitCPU: "4"
   limitMemory: "2Gi"
   initReplicaCount: 1
   maxReplicaCount: 2
@@ -28,18 +28,8 @@ feature-service:
 
 mapping-service:
   requestCPU: "100m"
-  limitCPU: null
   requestMemory: "2Gi"
-  limitMemory: "2Gi"
-  initReplicaCount: 1
-  maxReplicaCount: 2
-  hpaEnabled: true
-  hpaCpuAverageUtilization: 80
-  
-namedresource-service:
-  requestCPU: "100m"
-  limitCPU: null
-  requestMemory: "2Gi"
+  limitCPU: "4"
   limitMemory: "2Gi"
   initReplicaCount: 1
   maxReplicaCount: 2
@@ -48,18 +38,58 @@ namedresource-service:
 
 tiling-service:
   requestCPU: "100m"
-  limitCPU: null
   requestMemory: "2Gi"
+  limitCPU: "4"
   limitMemory: "2Gi"
   initReplicaCount: 1
   maxReplicaCount: 2
   hpaEnabled: true
   hpaCpuAverageUtilization: 80
   
-spatialmanager-service:
+resource-service:
   requestCPU: "100m"
-  limitCPU: "4"
   requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+
+private-sdk-mcp:
+  requestCPU: "100m"
+  requestMemory: "512Mi"
+  limitCPU: "500m"
+  limitMemory: "1Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+  
+composite-service:
+  requestCPU: "100m"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+
+spatial-platform-ux:
+  requestCPU: "100m"
+  requestMemory: "500Mi"
+  limitCPU: "2"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 80
+  
+data-service:
+  requestCPU: "100m"
+  requestMemory: "2Gi"
+  limitCPU: "4"
   limitMemory: "2Gi"
   initReplicaCount: 1
   maxReplicaCount: 2

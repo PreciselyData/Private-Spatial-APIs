@@ -1,4 +1,4 @@
-# Installing Private Spatial APIs Helm Chart on Azure AKS
+# Installing Precisely Spatial SDK Helm Chart on Azure AKS
 
 ## **Before starting**
 
@@ -12,15 +12,15 @@ Azure Cloud Shell (Bash). In order to achieve the best performance, create all r
 ## Preview
 - [Step 1: Prepare your environment](#step-1-prepare-your-environment)
 - [Step 2: Create a AKS Cluster ](#step-2-create-k8s-cluster-aks)
-- [Step 3: Download Private Spatial APIs Docker Images](#step-3-download-private-spatial-apis-docker-images)
+- [Step 3: Download Precisely Spatial SDK Docker Images](#step-3-download-private-spatial-apis-docker-images)
 - [Step 4: Create a Persistent Volume](#step-4-create-a-persistent-volume)
 - [Step 5: Prepare a database for repository](#step-5-prepare-a-database-for-repository)
-- [Step 6: Installation of Private Spatial APIs Helm Chart](#step-6-installation-of-private-spatial-apis-helm-chart)
+- [Step 6: Installation of Precisely Spatial SDK Helm Chart](#step-6-installation-of-private-spatial-apis-helm-chart)
 - [Step 7: Enabling security - AuthN/AuthZ (Optional)](#step-7-enabling-security---authnauthz-optional)
-- [Step 8: Use Spatial Utilities](#step-8-use-spatial-utilities)
+<!-- - [Step 8: Use Spatial Utilities](#step-8-use-spatial-utilities) -->
 
 ## Step 1: Prepare your environment
-To deploy Private Spatial APIs application in Azure AKS, install the following client tools on you machine:
+To deploy Precisely Spatial SDK application in Azure AKS, install the following client tools on you machine:
 - [Docker](https://docs.docker.com/engine/install/)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/)
 
@@ -43,7 +43,7 @@ helm version
 ```
 
 
-### Clone Private Spatial APIs helm charts & resources
+### Clone Precisely Spatial SDK helm charts & resources
 ```
 git clone https://github.com/PreciselyData/Private-Spatial-APIs
 ```
@@ -61,7 +61,7 @@ Also see:
 [AKS ingress](https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/aks/ingress-basic.md)
 
 ### 2.1 Create an AKS Cluster 
-Default Private Spatial APIs deployment will need 30 vCPUs + 15GB RAM.
+Default Precisely Spatial SDK deployment will need 30 vCPUs + 15GB RAM.
 It is good to start from a single node AKS cluster with `F32s_v2` VM. It
 has 32 vCPUs + 64GB RAM.
 
@@ -141,7 +141,7 @@ aks-agentpool-39271417-vmss000000   Ready    <none>  106s   v1.29.2
 ###  2.3 Install Ingress-NGINX controller
 > Note: If you would like to setup TLS for HTTPS traffic follow official azure docs: https://docs.microsoft.com/en-us/azure/aks/ingress-tls?tabs=azure-cli
 
-The Private Spatial APIs services requires ingress controller setup. Run the following command in Cloud Shell for setting up NGINX ingress controller:
+The Precisely Spatial SDK services requires ingress controller setup. Run the following command in Cloud Shell for setting up NGINX ingress controller:
   ```shell
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
@@ -165,11 +165,11 @@ ingress-nginx-controller-admission   ClusterIP      10.0.134.147   <none>       
 
 > Make a note of `EXTERNAL-IP=23.96.127.58`, it will be used for later steps.
 
-## Step 3: Download Private Spatial APIs Docker Images
+## Step 3: Download Precisely Spatial SDK Docker Images
 
-The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
+<!-- The docker files can be downloaded from either Precisely's Data Portfolio or [Data Integrity Suite](https://cloud.precisely.com/). For information about Precisely's Data Portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
-access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/).
+access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/). -->
 
 After download, the docker images need to be pushed to a container registry. You can create Azure Container Registry by following [these](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-) steps if you don't have one. Then you can use a script [push-images](../../../scripts/aks/push-images.sh) to push the docker images to container registry.
 
@@ -199,13 +199,16 @@ List images in the registry:
 \
 ``az acr repository list --name <azure_container_registry> --output table``
 
-There are six docker images which will be pushed to container registry:
+There are nine docker images which will be pushed to container registry:
 1. feature-service
 2. mapping-service
 3. tiling-service
-4. namedresource-service
-5. spatialmanager-service
+4. resource-service
+5. spatial-platform-ux
 6. samples-data
+7. composite-service
+8. data-service
+9. private-sdk-mcp
 
 ## Step 4: Create a Persistent Volume
 A PV (Persistent Volume) is required to share files across all services (pods), including
@@ -222,7 +225,7 @@ volume is mounted to the pods.
 \
 \
 By default, Azure File shares use SMB protocol that doesn't perform
-well with Private Spatial APIs deployment. We recommend the NFS protocol.
+well with Precisely Spatial SDK deployment. We recommend the NFS protocol.
 Also, see:\
 [https://docs.microsoft.com/en-us/azure/aks/azure-files-volume](https://docs.microsoft.com/en-us/azure/cloud-shell/overview)\
 [https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-files](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-explorer-files)\
@@ -311,7 +314,7 @@ capacity can be enlarged after creation. Select the NFS protocol
 Create the Fileshares.
 
 #### 4.5 Create PersistentVolume (PV) and PersistentVolumeClaim (PVC)
-In Cloud Shell, clone Private Spatial APIs repository.
+In Cloud Shell, clone Precisely Spatial SDK repository.
 ```shell
 git clone https://github.com/PreciselyData/Private-Spatial-APIs.git
 ```
@@ -429,7 +432,7 @@ This will install a single node replica set instance without authentication
 ```
 connection uri = mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
 ```
-## Step 6: Installation of Private Spatial APIs Helm Chart
+## Step 6: Installation of Precisely Spatial SDK Helm Chart
 
 > NOTE: For every helm chart version update, make sure you run the [Step 3](#step-3-download-private-spatial-apis-docker-images) for uploading the docker images with the newest tag.
 
@@ -445,7 +448,7 @@ kubectl create secret docker-registry regcred \
     --docker-username=00000000-0000-0000-0000-000000000000\
     --docker-password=$(az acr login --name [acr_name] --expose-token --output tsv --query accessToken)
 ```
-To install/upgrade the Private Spatial APIs helm chart, use the following command:
+To install/upgrade the Precisely Spatial SDK helm chart, use the following command:
 
 ```shell
 cd ~/Private-Spatial-APIs/
@@ -463,13 +466,13 @@ helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-api
 > Note: For a production environment, you should create a DNS record for ingress loadbalancer IP and use a domain name for `global.ingress.host`. 
 > You can skip specifying the `global.ingress.host` parameter altogether to install the chart successfully but that is not recommended for production.   
 
-This should install Private Spatial APIs and set up a sample dataset that can be used to play around with the product.
+This should install Precisely Spatial SDK and set up a sample dataset that can be used to play around with the product.
 
 > Also, for more information, refer to the comments in [values.yaml](../../../charts/private-spatial-apis/values.yaml)
 #### Mandatory Parameters
 * ``global.ingress.host``: The Host name of Ingress e.g. http://aab329b2d767544.us-east-1.elb.amazonaws.com
 * ``repository.mongodb.url``: The Mongo DB connection URI e.g. mongodb+srv://<username>:<password>@mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false
-* ``global.registry.url``: The ACR repository for Private Spatial APIs docker image e.g. spatialregistry.azurecr.io
+* ``global.registry.url``: The ACR repository for Precisely Spatial SDK docker image e.g. spatialregistry.azurecr.io
 * ``global.registry.tag``: The docker image tag value e.g. 1.3.3 or latest.
 * ``global.registry.secrets``: The name of the secret holding Azure Container Registry (ACR)  credential information.
 
@@ -477,7 +480,7 @@ For more information on helm values, follow [this link](../../../charts/private-
 
 > NOTE: In case Helm chart deployment is not possible, check [here](../../guides/helm-template.md) for Kubernetes manifest deployment. 
 
-Once you run Private Spatial APIs helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
+Once you run Precisely Spatial SDK helm install/upgrade command, it might take few minutes to get ready for the first time. You can run the following command to check the creation of pods. Please wait until all the pods are in running state:
 ```shell
 kubectl get pods -w --namespace spatial-analytics 
 ```
@@ -512,7 +515,7 @@ General service flow,
 <img src="../../../images/security-flow.png"  width="686" height="783">
 
 
-Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Private Spatial APIs is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
+Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Precisely Spatial SDK is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
 
 If you have a Keycloak instance that can be accessed from inside the Kubernetes cluster, then collect the issuer url for further service config.
 
@@ -546,7 +549,7 @@ Open a browser and login to keycloak console with your admin credentials at
 
 ### Create a realm for spatial services
 
-Private Spatial APIs has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Private Spatial APIs authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
+Precisely Spatial SDK has a realm template (realm-spatial.json) that helps to setup the required realm configuration and spatial client settings. Precisely Spatial SDK authenticate with realm users and authorize with spatial client roles and resource permissions. All resource permissions (ACLs) are managed in spatial client through UMA API.
 
 Download `Private-Spatial-APIs/deploy/realm-spatial.json` to your local system.
 In the administration console, click on realm pulldown menu and select `Create realm`
@@ -555,7 +558,7 @@ Click on `Browse...` button, select the realm file `realm-spatial.json`, give a 
 
 After imported the realm from the template, use Keycloak Admin console to change admin credentials, default user credentials and spatial client secret.
 
-Keycloak Admin console is used to manage users in realm and roles in spatial client. Private Spatial APIs do not use realm roles.
+Keycloak Admin console is used to manage users in realm and roles in spatial client. Precisely Spatial SDK do not use realm roles.
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
@@ -586,11 +589,11 @@ Wait for all pods are ready
 kubectl get pod -n spatial-analytics --watch
 ```
 
-Login to Spatial Manager when all services are ready. Initial password for `admin` is `Spatialadmin0`
+Login to Precisely Spatial when all services are ready. Initial password for `admin` is `admin123`
 
-`https://<your external ip>/SpatialServerManager`
+`https://<your external ip>/spatial`
 
-Verify if you can preview a map in Spatial Manager.
+Verify if you can preview a map in Precisely Spatial.
 
 Please follow the user guide for how to apply permissions and other security related topics.
 
@@ -599,17 +602,17 @@ Keycloak Federation allows you to authenticate users from your own IDP (such as 
 
 also see [IDP integration](../../guides/IDP-integration.md)
 
-## Step 8: Use Spatial Utilities
+<!-- ## Step 8: Use Spatial Utilities
 There are various utilities for:
 - Generating MapTiling requests
 - Generating Map tiles for the WMTS service
 - Uploading maps from MapInfo Pro to the Spatial repository
 - Importing and exporting Spatial repository.
 
-More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md).
+More details on Spatial Utilities can be found [here](../../guides/spatial-utilities.md). -->
 
 ## Next Sections
-- [Private Spatial APIs Usage](../../../charts/private-spatial-apis/README.md)
+- [Precisely Spatial SDK Usage](../../../charts/private-spatial-apis/README.md)
 - [Metrics](../../Metrics.md#generating-insights-from-metrics)
 - [FAQs](../../faq/FAQs.md)
 

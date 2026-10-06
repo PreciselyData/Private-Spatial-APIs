@@ -1,6 +1,6 @@
 # JDBC-based repository
 
-In addition to MongoDB, Private Spatial APIs resource repository is now able to store resources in any JDBC-compatible databases that gives you more options based on your environment requirements. It uses Spring Boot JPA to access a database.
+In addition to MongoDB, Precisely Spatial SDK resource repository is now able to store resources in any JDBC-compatible databases that gives you more options based on your environment requirements. It uses Spring Boot JPA to access a database.
 
 ## Considerations
 

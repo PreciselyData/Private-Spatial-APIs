@@ -17,52 +17,82 @@ repository:
 
 # Individual service overrides
 feature-service:
-  requestCPU: "4"
-  requestMemory: "2G"
-  limitCPU: "4"
-  limitMemory: "2G"
-  initReplicaCount: 1
-  maxReplicaCount: 16
-  hpaEnabled: true
-  hpaCpuAverageUtilization: 70
-
-mapping-service:
-  requestCPU: "4"
-  requestMemory: "2G"
-  limitCPU: "4"
-  limitMemory: "2G"
-  initReplicaCount: 1
-  maxReplicaCount: 16
-  hpaEnabled: true
-  hpaCpuAverageUtilization: 70
-
-tiling-service:
-  requestCPU: "4"
-  requestMemory: "2G"
-  limitCPU: "4"
-  limitMemory: "2G"
-  initReplicaCount: 1
-  maxReplicaCount: 16
-  hpaEnabled: true
-  hpaCpuAverageUtilization: 70
-
-namedresource-service:
   requestCPU: "2"
-  requestMemory: "2G"
-  limitCPU: "2"
-  limitMemory: "2G"
-  initReplicaCount: 1
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "4Gi"
+  initReplicaCount: 2
   maxReplicaCount: 4
   hpaEnabled: true
   hpaCpuAverageUtilization: 70
 
-spatialmanager-service:
+mapping-service:
   requestCPU: "2"
-  requestMemory: "2G"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "4Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+tiling-service:
+  requestCPU: "2"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "4Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+  
+resource-service:
+  requestCPU: "2"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "4Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+private-sdk-mcp:
+  requestCPU: "200m"
+  requestMemory: "512Mi"
+  limitCPU: "500m"
+  limitMemory: "1Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+  
+composite-service:
+  requestCPU: "2"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "4Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+spatial-platform-ux:
+  requestCPU: "100m"
+  requestMemory: "500Mi"
   limitCPU: "2"
-  limitMemory: "2G"
-  initReplicaCount: 1
-  maxReplicaCount: 2
+  limitMemory: "2Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+  
+data-service:
+  requestCPU: "2"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "4Gi"
+  initReplicaCount: 2
+  maxReplicaCount: 4
   hpaEnabled: true
   hpaCpuAverageUtilization: 70
 

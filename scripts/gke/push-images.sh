@@ -15,18 +15,6 @@ if ! [ -z "$2" ]; then
   exit 0
 fi
 
-echo ">>>load spatialmanager-service image"
-docker load -i spatialmanager-service.tar
-docker tag spatialmanager-service:latest $1/spatialmanager-service:latest
-docker push $1/spatialmanager-service:latest
-echo -e "<<<image loaded\n"
-
-echo ">>>load namedresource-service image"
-docker load -i namedresource-service.tar
-docker tag namedresource-service:latest $1/namedresource-service:latest
-docker push $1/namedresource-service:latest
-echo -e "<<<image loaded\n"
-
 echo ">>>load mapping-service image"
 docker load -i mapping-service.tar
 docker tag mapping-service:latest $1/mapping-service:latest
@@ -43,6 +31,36 @@ echo ">>>load tiling-service image"
 docker load -i tiling-service.tar
 docker tag tiling-service:latest $1/tiling-service:latest
 docker push $1/tiling-service:latest
+echo -e "<<<image loaded\n"
+
+echo ">>>load resource-service image"
+docker load -i resource-service.tar
+docker tag resource-service:latest $1/resource-service:latest
+docker push $1/resource-service:latest
+echo -e "<<<image loaded\n"
+
+echo ">>>load spatial-platform-ux image"
+docker load -i spatial-platform-ux.tar
+docker tag spatial-platform-ux:latest $1/spatial-platform-ux:latest
+docker push $1/spatial-platform-ux:latest
+echo -e "<<<image loaded\n"
+
+echo ">>>load composite-service image"
+docker load -i composite-service.tar
+docker tag composite-service:latest $1/composite-service:latest
+docker push $1/composite-service:latest
+echo -e "<<<image loaded\n"
+
+echo ">>>load data-service image"
+docker load -i data-service.tar
+docker tag data-service:latest $1/data-service:latest
+docker push $1/data-service:latest
+echo -e "<<<image loaded\n"
+
+echo ">>>load private-sdk-mcp image"
+docker load -i private-sdk-mcp.tar
+docker tag private-sdk-mcp:latest $1/private-sdk-mcp:latest
+docker push $1/private-sdk-mcp:latest
 echo -e "<<<image loaded\n"
 
 echo ">>>load samples-data image"

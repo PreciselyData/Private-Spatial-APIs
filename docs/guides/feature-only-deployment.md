@@ -15,7 +15,7 @@ Make a copy of [deploy/feature-only-deployment-values.yaml](../../deploy/feature
 
 > Also, for more information, refer to the comments in [values.yaml](../../charts/private-spatial-apis/values.yaml)
 
-## Installation of Private Spatial APIs Helm Chart
+## Installation of Precisely Spatial SDK Helm Chart
 Deploy the charts with the values yaml file
 
 ```

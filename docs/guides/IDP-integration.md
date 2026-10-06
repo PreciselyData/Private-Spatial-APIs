@@ -1,6 +1,6 @@
 # IDP integration
 
-The Private Spatial APIs are now able to integrate with IDPs that support OpenID Connect without Keycloak installed. The Spatial APIs will authenticate users based on the JWT token issued by the IDP. Access to Private Spatial APIs endpoints can be configured to allow only users with specific roles if needed. Note that Keycloak will be required in cases where you do not have an IDP, where you need more granular ACL control on specific named resources (tables, layers, maps) or where user federation (such as LDAP and Active Directory) is needed.
+The Precisely Spatial SDK are now able to integrate with IDPs that support OpenID Connect without Keycloak installed. The Spatial APIs will authenticate users based on the JWT token issued by the IDP. Access to Precisely Spatial SDK endpoints can be configured to allow only users with specific roles if needed. Note that Keycloak will be required in cases where you do not have an IDP, where you need more granular ACL control on specific named resources (tables, layers, maps) or where user federation (such as LDAP and Active Directory) is needed.
 
 ## IDP OpenID Connect issuer url
 

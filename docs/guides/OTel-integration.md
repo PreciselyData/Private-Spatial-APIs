@@ -1,6 +1,6 @@
 # OTel integration
 
-Private Spatial APIs are able to integrate with [OTel](https://opentelemetry.io/docs/) compatible observability framework. Private Spatial API services can export telemetry data such as traces, metrics, and log to OTel collectors.
+Precisely Spatial SDK are able to integrate with [OTel](https://opentelemetry.io/docs/) compatible observability framework. Private Spatial API services can export telemetry data such as traces, metrics, and log to OTel collectors.
 
 ## Enable OTel 
 
