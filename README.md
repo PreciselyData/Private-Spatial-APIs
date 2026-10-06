@@ -46,9 +46,6 @@ The deployment is available as Micro Services architecture which can be deployed
 ### Capabilities
 Following are the main components of architecture:
 
-- _Spatial Manager_: The foundation of Precisely Spatial SDK is the spatial repository which is managed by the Spatial Manager application.
-It allows users to create connections to supported data sources and to then configure tables, layers, maps, tiles, and styles which are used in the APIs.
-These are collectively known as “Named Resources”. The named resources are persisted to a MongoDB database which is a pre-requisite for the deployment.
 - _REST Feature Service / OGC Web Feature Service (WFS)_: Serves geographical features in a vector format such as Geo JSON or GML. Requests are essentially a query with spatial and attribute filters.
 - _REST Mapping Service / OGC Web Map Service (WMS)_: Serves georeferenced map images which can be dynamically specified. Requests can include a bounding box or center and width along with the maps and layers to use and their styles.
 - _REST Map Tiling Service / OGC Web Map Tiling Service (WMTS)_: The Map Tiling Service returns map tiles on the fly or from a tile cache at the user's request. Both image-based tiles and vector tiles can be served.
