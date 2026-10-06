@@ -81,7 +81,7 @@ Now click on **Create** → **Create a Kubernetes Cluster**
 Create a new Resource group `spatial-aks` for this AKS cluster
 
 Kubernetes cluster name -> `spatial32`\
-Kubernetes version -> `1.29.2`\
+Kubernetes version -> `1.36.0`\
 Node size -> Change size -> F32s_v2\
 Scale method -> `Manual`\
 Node count -> `1`
