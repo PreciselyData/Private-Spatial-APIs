@@ -52,7 +52,7 @@ gcloud config list
 
 Create GKE cluster (autopilot) named spatial-cloud-native. You can specify different project and region with `--project` and `--region`.
 ```
-gcloud container clusters create-auto spatial-cloud-native --region us-east1 --cluster-version 1.33.0
+gcloud container clusters create-auto spatial-cloud-native --region us-east1 --cluster-version 1.36.0
 ```
 It may take few minutes to create the cluster. Wait until the command finished.
 ```
