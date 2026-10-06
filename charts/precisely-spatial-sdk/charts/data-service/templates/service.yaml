@@ -1,0 +1,14 @@
+# Feature service
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-service
+  labels:
+    app: data-service
+spec:
+  selector:
+      app: data-service
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http

@@ -1,0 +1,21 @@
+registry:
+  url: "registry.gitlab.com/preciselydata/location-intelligence/spatial/spatial-analytics/poc"
+  tag: "latest"
+  secrets: "regcred-gitlab"
+
+initReplicaCount: 1
+maxReplicaCount: 2
+hpaEnabled: false
+hpaCpuAverageUtilization: 80
+
+requestCPU: "100m"
+limitCPU: "500m"
+requestMemory: "512Mi"
+limitMemory: "1Gi"
+
+spatialApi:
+  timeout: "60"
+
+ingress:
+  host: ""
+  ingressClassName: "nginx"

@@ -1,0 +1,42 @@
+# Default values for spatial-platform-ux.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Image registry
+registry:
+  url: "jfrog.precisely.engineering:443/docker-virtual/preciselydata/cloud/di-suite/ui/spatial"
+  tag: "latest"
+  secrets: "regcred"
+
+# HPA counts
+initReplicaCount: 1
+maxReplicaCount: 4
+
+# Resources
+requestCPU: "100m"
+requestMemory: "256Mi"
+limitMemory: "512Mi"
+
+# Ingress
+ingress:
+  host: ""
+  path: "/spatial"
+  # nginx upload body limit for multipart uploads.
+  proxyBodySize: "360m"
+  # nginx proxy timeouts in seconds.
+  proxyReadTimeout: "300"
+  proxySendTimeout: "120"
+
+# Bing Maps public key used by the UX for map rendering
+bingMapsPublicKey: "AhW2B-pxbzo88zBHsBowhgmi0-B7Qi1TRcDmCvP7IfgjbbqoOL53CQhRMJdlcI2K"
+
+# Additional environment variables (Platform URLs sourced from spatial-config ConfigMap)
+env: {
+  DIS_CLOUD_URL: "https://api.cloud.precisely.com",
+  NEXT_PUBLIC_PRECISELY_API_BASE: "https://api.cloud.precisely.com",
+  AI_ENABLED: "true",
+  NODE_ENV: "production",
+  NEXT_TELEMETRY_DISABLED: "1",
+  DIS_IAM_URL: https://iam.onboarding.cloud.precisely.com,
+  DIS_BFF_URL: https://bff.onboarding.cloud.precisely.com
+}

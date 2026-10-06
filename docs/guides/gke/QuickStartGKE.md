@@ -205,7 +205,7 @@ There are two deployment files to choose from that require different amount of r
 > NOTE: if you are not using MongoDB deployed from this guide, you need to update the mongo uri in the values file before install.
 
 ```
-helm install spatial ~/Private-Spatial-APIs/charts/private-spatial-apis \
+helm install spatial ~/Private-Spatial-APIs/charts/precisely-spatial-sdk \
      -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-small-values.yaml \
      --set global.registry.secrets=null \
      --set global.registry.url=<your registry url>
@@ -217,7 +217,7 @@ kubectl get pod
 
 You can also deploy services with hpa enabled, here is an example (check [gitlab-deployment-values.yaml](../../../deploy/gitlab-deployment-values.yaml) for more details),
 ```
-helm install spatial ~/Private-Spatial-APIs/charts/private-spatial-apis \
+helm install spatial ~/Private-Spatial-APIs/charts/precisely-spatial-sdk \
      -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
      --set global.registry.secrets=null \
      --set global.registry.url=<your registry url> \

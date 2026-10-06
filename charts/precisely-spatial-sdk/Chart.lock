@@ -1,0 +1,30 @@
+dependencies:
+- name: feature-service
+  repository: file://../feature-service
+  version: 2.0.0-SNAPSHOT
+- name: mapping-service
+  repository: file://../mapping-service
+  version: 2.0.0-SNAPSHOT
+- name: tiling-service
+  repository: file://../tiling-service
+  version: 2.0.0-SNAPSHOT
+- name: resource-service
+  repository: file://../resource-service
+  version: 2.0.0-SNAPSHOT
+- name: data-service
+  repository: file://../data-service
+  version: 2.0.0-SNAPSHOT
+- name: composite-service
+  repository: file://../composite-service
+  version: 2.0.0-SNAPSHOT
+- name: spatial-platform-ux
+  repository: file://../spatial-platform-ux
+  version: 2.0.0-SNAPSHOT
+- name: private-sdk-mcp
+  repository: file://../private-sdk-mcp
+  version: 2.0.0-SNAPSHOT
+- name: upload-samples
+  repository: file://../upload-samples
+  version: 2.0.0-SNAPSHOT
+digest: sha256:0b6b5d710384e4dd3904fd06f9ee9db421f0c2358e4261cb9f05e9c8e03eb423
+generated: "2026-10-06T08:47:55.4193235-04:00"

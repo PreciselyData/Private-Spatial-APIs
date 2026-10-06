@@ -1,0 +1,148 @@
+# Default values for platform.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global values
+global:
+  # Image registry
+  registry:
+    url: ""
+    tag: "latest"
+    secrets: ""
+    
+  ingress:
+    # A specific host should be specified for ingress when deploying into a namespace other than default.
+    #   Host should include full domain name, IP address is not valid.
+    #
+    host: ""
+    ingressClassName: "nginx"
+  cors:
+    enabled: false
+    allowCredentials: false
+    allowHeaders: "*"
+    allowMethods: "*"
+    allowOrigin: "*"
+    maxAge: "3600"
+
+# Repository
+repository:
+  mongodb:
+    url: ""
+    database: "spatial-repository"
+  jdbc:
+    url: ""
+    username: ""
+    password: ""
+    dialect: ""
+
+# Deployment optionals
+deployment: 
+  feature:
+    enabled: true
+  mapping:
+    enabled: true
+  tiling:
+    enabled: true
+  resource:
+    enabled: true
+  data:
+    enabled: true
+  composite:
+    enabled: true
+  platform:
+    enabled: true
+  mcp:
+    enabled: true
+  upload-samples:
+    enabled: true
+
+# Service configuration
+security:
+  enabled: "false"
+  oauth2:
+    issuerUri: ""
+    clientId: ""
+    clientSecret: ""
+    unsecuredPaths: >-
+      /v1/spatial/security/token/**,/mapping/**,/tiling/**,/feature/**,/resource/**,/composite/**,/data/**
+    requiredAuthority: ""
+    usernameAttribute: "preferred_username"
+    userroleAttribute: "role"
+  upload:
+    clientId: ""
+    clientSecret: ""
+
+# Service URLs
+precisely:
+  connection:
+    path: ""
+
+url:
+  feature: "http://feature-service:8080"
+  mapping: "http://mapping-service:8080"
+  tiling: "http://tiling-service:8080"
+  resource: "http://resource-service:8080"
+  data: "http://data-service:8080"
+  composite: "http://composite-service:8080"
+  mcp: "http://private-sdk-mcp:8000"
+
+# JVM options
+jvm:
+  opts:
+    mapping: ""
+    feature: ""
+    tiling: ""
+    resource: ""
+    data: ""
+    composite: ""
+    platform: ""
+    mcp: ""
+
+#Common Service Configuration Properties
+property:
+  repositoryCacheCapacity: "1000"
+  repositoryCachePolicy: "3"
+  repositoryCacheExpire: "1000"
+  repositoryFactoryNamedResource: ""
+  repositoryFactory: "com.precisely.swp.repository.mongodb.MongoRepositoryFactory"
+  repositoryFSRoot: "/opt/data/samples/resources"
+  repositoryFSData: ""
+  aclManager: "com.precisely.swp.permission.management.keycloak.KeycloakAclPermissionManager"
+  timeoutFeatureValue: "-1"
+  timeoutMappingValue: "-1"
+  poolFileEnabled: "true"
+  poolFileMaxTotal: "20"
+  poolFileMaxTotalPerKey: "10"
+  poolFileMinIdlePerKey: "-1"
+  poolFileMaxIdlePerKey: "-1"
+  poolFileMaxWaitMillis: "30000"
+  poolFileMinEvictableIdleTimeMillis: "60000"
+  poolFileNumTestsPerEvictionRun: "1"
+  poolFileTestOnBorrow: "false"
+  poolFileTestWhileIdle: "false"
+  poolFileTimeBetweenEvictionRunsMillis: "10000"
+  poolFileBlockWhenExhausted: "false"
+  poolDatabaseMaxActive: "10"
+  poolDatabaseMaxIdle: "10"
+  poolDatabaseMinIdle: "5"
+  poolDatabaseInitialSize: "5"
+  poolDatabaseTestOnBorrow: "true"
+  poolDatabaseJdbcInterceptors: "QueryTimeoutInterceptor(queryTimeout=-1);SlowQueryReport(threshold=1000)"
+  poolDatabaseAutoRegisterMBean: "false"
+  searchTabCaseInsensitive: "false"
+  restrictedPath: "/opt/data"
+  subadminConnectionsEnable: "false"
+  miRasterCacheSize: "200"
+  uploadStagingDir: "/opt/data/upload/staging"
+  asyncTransport: "mongo"
+  asyncVisibilityTimeout: "5h"
+  asyncOperationTTL: "24h"
+  asyncMaxRetry: "3"
+  asyncConcurrencyWorker: "2"
+# Application optionals
+app:
+  spatialManagerLocale: "en-US"
+  
+# Others
+samplesForceUpdate: "true"
+# The END

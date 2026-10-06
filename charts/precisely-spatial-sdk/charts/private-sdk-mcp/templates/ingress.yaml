@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: private-sdk-mcp
+  annotations:
+    {{- with .Values.global }}
+    {{- with .cors }}
+    {{- if eq .enabled true }}
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: {{ .allowCredentials | default "false" | quote }}
+    nginx.ingress.kubernetes.io/cors-allow-headers: {{ .allowHeaders | default "*" | quote }}
+    nginx.ingress.kubernetes.io/cors-allow-methods: {{ .allowMethods | default "*" | quote }}
+    nginx.ingress.kubernetes.io/cors-allow-origin: {{ .allowOrigin | default "*" | quote }}
+    nginx.ingress.kubernetes.io/cors-max-age: {{ .maxAge | default "3600" | quote }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+spec:
+  {{- if .Values.global }}
+  ingressClassName: {{ .Values.global.ingress.ingressClassName | quote }}
+  {{- else }}
+  ingressClassName: "nginx"
+  {{- end }}
+  rules:
+  {{- if .Values.global }}
+    - host: {{ .Values.global.ingress.host | quote }}
+  {{- else }}
+    - host: {{ .Values.ingress.host | quote }}
+  {{- end }}
+      http:
+        paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: private-sdk-mcp
+                port:
+                  name: http

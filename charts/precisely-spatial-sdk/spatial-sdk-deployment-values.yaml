@@ -1,0 +1,185 @@
+###
+#   Values for deployment using JFrog container registry
+###
+
+# Global values
+global:
+  registry:
+    url: "jfrog.precisely.engineering:443/docker-virtual/preciselydata/location-intelligence/spatial/spatial-web-framework"
+    tag: latest
+    secrets: regcred
+  ingress:
+    host: platform.spatial.preciselybuild.com
+  cors:
+    enabled: false
+    allowCredentials: false
+    allowHeaders: "*"
+    allowMethods: "*"
+    allowOrigin: "*"
+    maxAge: "3600"
+
+# Repository
+repository:
+  mongodb:
+    url: "mongodb+srv://mongoadmin:admin@spatial-mongodb-svc.mongodb.svc.cluster.local/spatial-repository?authSource=admin&ssl=false"
+    
+# Deployment optionals
+deployment: 
+  feature:
+    enabled: true
+  mapping:
+    enabled: true
+  tiling:
+    enabled: true
+  resource:
+    enabled: true
+  data:
+    enabled: true
+  composite:
+    enabled: true
+  platform:
+    enabled: true
+  mcp:
+    enabled: true
+  upload-samples:
+    enabled: false
+    
+# Security   
+security:
+  enabled: true
+  oauth2:
+    issuerUri: "https://keycloak.spatial.preciselybuild.com/realms/Spatial"
+    clientId: "spatial"
+    clientSecret: "fd17bc1d-cefc-41a3-8c50-bb545736caa6"
+  upload:
+    clientId: "spatial-data-load"
+    clientSecret: "hWkJCDcl5ok7YPafZuTe1OMYn64QpEu7"
+    
+# JVM options
+jvm:
+  opts:
+    mapping: >-
+      -javaagent:/app/bin/opentelemetry-javaagent.jar
+      -Dotel.service.name=mapping
+      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
+      -Dotel.metrics.exporter=none 
+      -Dotel.logs.exporter=none
+    feature: >-
+      -javaagent:/app/bin/opentelemetry-javaagent.jar
+      -Dotel.service.name=feature
+      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
+      -Dotel.metrics.exporter=none 
+      -Dotel.logs.exporter=none
+    tiling: >-
+      -javaagent:/app/bin/opentelemetry-javaagent.jar
+      -Dotel.service.name=tiling
+      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
+      -Dotel.metrics.exporter=none 
+      -Dotel.logs.exporter=none
+    resource: >-
+      -javaagent:/app/bin/opentelemetry-javaagent.jar
+      -Dotel.service.name=resource
+      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
+      -Dotel.metrics.exporter=none 
+      -Dotel.logs.exporter=none
+    data: >-
+      -javaagent:/app/bin/opentelemetry-javaagent.jar
+      -Dotel.service.name=data
+      -Dotel.exporter.otlp.endpoint=http://jaeger-collector.jaeger.svc.cluster.local:4318 
+      -Dotel.metrics.exporter=none 
+      -Dotel.logs.exporter=none
+    composite: ""
+    platform: ""
+    mcp: ""
+
+# Properties
+property:    
+  asyncTransport: "jpa"
+  asyncVisibilityTimeout: "5h"
+  asyncOperationTTL: "24h"
+  asyncMaxRetry: "3"
+  asyncConcurrencyWorker: "2"
+
+# Individual service overrides
+feature-service:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 3
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+mapping-service:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 3
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+tiling-service:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "4"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 3
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+resource-service:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "2"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 3
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+  
+data-service:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "2"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 3
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+  
+composite-service:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "2"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 3
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+spatial-platform-ux:
+  requestCPU: "200m"
+  requestMemory: "2Gi"
+  limitCPU: "2"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+  
+private-sdk-mcp:
+  requestCPU: "200m"
+  requestMemory: "100Mi"
+  limitCPU: "2"
+  limitMemory: "2Gi"
+  initReplicaCount: 1
+  maxReplicaCount: 2
+  hpaEnabled: true
+  hpaCpuAverageUtilization: 70
+
+# END
+

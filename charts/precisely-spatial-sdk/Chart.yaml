@@ -1,0 +1,43 @@
+apiVersion: v2
+appVersion: 2.0.0
+dependencies:
+- condition: deployment.feature.enabled
+  name: feature-service
+  repository: file://../feature-service
+  version: 2.0.0
+- condition: deployment.mapping.enabled
+  name: mapping-service
+  repository: file://../mapping-service
+  version: 2.0.0
+- condition: deployment.tiling.enabled
+  name: tiling-service
+  repository: file://../tiling-service
+  version: 2.0.0
+- condition: deployment.resource.enabled
+  name: resource-service
+  repository: file://../resource-service
+  version: 2.0.0
+- condition: deployment.data.enabled
+  name: data-service
+  repository: file://../data-service
+  version: 2.0.0
+- condition: deployment.composite.enabled
+  name: composite-service
+  repository: file://../composite-service
+  version: 2.0.0
+- condition: deployment.platform.enabled
+  name: spatial-platform-ux
+  repository: file://../spatial-platform-ux
+  version: 2.0.0
+- condition: deployment.mcp.enabled
+  name: private-sdk-mcp
+  repository: file://../private-sdk-mcp
+  version: 2.0.0
+- condition: deployment.upload-samples.enabled
+  name: upload-samples
+  repository: file://../upload-samples
+  version: 2.0.0
+description: A Helm chart for deploying Spatial SDK.
+name: spatial-sdk
+type: application
+version: 2.0.0-SNAPSHOT

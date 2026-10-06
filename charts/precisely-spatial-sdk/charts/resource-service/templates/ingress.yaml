@@ -1,0 +1,60 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: resource-service
+  annotations:
+    {{- with .Values.global }}
+    {{- with .cors }}
+    {{- if eq .enabled true}}
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: {{ .allowCredentials | default "false" | quote }}
+    nginx.ingress.kubernetes.io/cors-allow-headers: {{ .allowHeaders | default "*" | quote }}
+    nginx.ingress.kubernetes.io/cors-allow-methods: {{ .allowMethods | default "*" | quote }}
+    nginx.ingress.kubernetes.io/cors-allow-origin: {{ .allowOrigin | default "*" | quote }}
+    nginx.ingress.kubernetes.io/cors-max-age: {{ .maxAge | default "3600" | quote }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  {{- if .Values.global }}
+  ingressClassName: {{ .Values.global.ingress.ingressClassName | quote }}
+  {{- else }}
+  ingressClassName: "nginx"
+  {{- end }}
+  rules:
+  {{- if .Values.global }}
+  - host: {{ .Values.global.ingress.host | quote }}
+  {{- else }}
+  - host: {{ .Values.ingress.host | quote }}
+  {{- end }}
+    http:
+      paths:
+      - path: /v1/resources
+        pathType: Prefix
+        backend:
+          service:
+            name: resource-service
+            port:
+              number: 8080
+      - path: /v1/data-assets
+        pathType: Prefix
+        backend:
+          service:
+            name: resource-service
+            port:
+              number: 8080
+      - path: /resource
+        pathType: Prefix
+        backend:
+          service:
+            name: resource-service
+            port:
+              number: 8080
+      - path: /v1/spatial/(acl|map-projects|resources|connections|bulk-create-resources|security|user-management|external|llmProviders|assistant)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: resource-service
+            port:
+              number: 8080              

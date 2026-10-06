@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spatial-config
+data:
+  ################################################################################
+  # Authentication
+  ################################################################################
+  oauth2.enabled: {{ .Values.security.enabled | quote }}
+  oauth2.issuer-uri: {{ .Values.security.oauth2.issuerUri | quote }}
+  oauth2.client-id: {{ .Values.security.oauth2.clientId | quote }}
+  oauth2.client-secret: {{ .Values.security.oauth2.clientSecret | default "openid" | quote }}
+  oauth2.unsecured-paths: {{ .Values.security.oauth2.unsecuredPaths | quote }}
+  {{- if .Values.security.oauth2.requiredAuthority }}
+  oauth2.required-authority: {{ .Values.security.oauth2.requiredAuthority | quote }}
+  {{- end }}
+  oauth2.username-attribute: {{ .Values.security.oauth2.usernameAttribute | quote }}
+  oauth2.userrole-attribute: {{ .Values.security.oauth2.userroleAttribute | quote }}
+  spring.security.oauth2.resourceserver.jwt.issuer-uri: {{ .Values.security.oauth2.issuerUri | quote }}
+  {{- if .Values.precisely.connection.path }}
+  precisely.connection.path: {{ .Values.precisely.connection.path | quote }}
+  {{- end }}
+  upload.client-id: {{ .Values.security.upload.clientId | quote }}
+  upload.client-secret: {{ .Values.security.upload.clientSecret | default "openid" | quote }}
+  ################################################################################
+  # Service URLs
+  ################################################################################
+  feature.url: {{ .Values.url.feature | quote }}
+  mapping.url: {{ .Values.url.mapping | quote }}
+  tiling.url: {{ .Values.url.tiling | quote }}
+  resource.url: {{ .Values.url.resource | quote }}
+  data.url: {{ .Values.url.data | quote }}
+  composite.url: {{ .Values.url.composite | quote }}
+  mcp.url: {{ .Values.url.mcp | quote }}
+  ################################################################################
+  # Java Properties
+  ################################################################################
+  system.repository.cache.capacity: {{ .Values.property.repositoryCacheCapacity | quote }}
+  system.repository.cache.policy: {{ .Values.property.repositoryCachePolicy | quote }}
+  system.repository.cache.expire: {{ .Values.property.repositoryCacheExpire | quote }}
+  system.timeout.feature.value: {{ .Values.property.timeoutFeatureValue | quote }}
+  system.timeout.mapping.value: {{ .Values.property.timeoutMappingValue | quote }}
+  system.pool.file.enabled: {{ .Values.property.poolFileEnabled | quote }}
+  system.pool.file.maxTotal: {{ .Values.property.poolFileMaxTotal | quote }}
+  system.pool.file.maxTotalPerKey: {{ .Values.property.poolFileMaxTotalPerKey | quote }}
+  system.pool.file.minIdlePerKey: {{ .Values.property.poolFileMinIdlePerKey | quote }}
+  system.pool.file.maxIdlePerKey: {{ .Values.property.poolFileMaxIdlePerKey | quote }}
+  system.pool.file.maxWaitMillis: {{ .Values.property.poolFileMaxWaitMillis | quote }}
+  system.pool.file.minEvictableIdleTimeMillis: {{ .Values.property.poolFileMinEvictableIdleTimeMillis | quote }}
+  system.pool.file.numTestsPerEvictionRun: {{ .Values.property.poolFileNumTestsPerEvictionRun | quote }}
+  system.pool.file.testOnBorrow: {{ .Values.property.poolFileTestOnBorrow | quote }}
+  system.pool.file.testWhileIdle: {{ .Values.property.poolFileTestWhileIdle | quote }}
+  system.pool.file.timeBetweenEvictionRunsMillis: {{ .Values.property.poolFileTimeBetweenEvictionRunsMillis | quote }}
+  system.pool.file.blockWhenExhausted: {{ .Values.property.poolFileBlockWhenExhausted | quote }}
+  system.pool.database.maxActive: {{ .Values.property.poolDatabaseMaxActive | quote }}
+  system.pool.database.maxIdle: {{ .Values.property.poolDatabaseMaxIdle | quote }}
+  system.pool.database.minIdle: {{ .Values.property.poolDatabaseMinIdle | quote }}
+  system.pool.database.initialSize: {{ .Values.property.poolDatabaseInitialSize | quote }}
+  system.pool.database.testOnBorrow: {{ .Values.property.poolDatabaseTestOnBorrow | quote }}
+  system.pool.database.jdbcInterceptors: {{ .Values.property.poolDatabaseJdbcInterceptors | quote }}
+  system.pool.database.autoRegisterMBean: {{ .Values.property.poolDatabaseAutoRegisterMBean | quote }}
+  system.search.tab.case-insensitive: {{ .Values.property.searchTabCaseInsensitive | quote }}
+  system.list.file.restricted.path: {{ .Values.property.restrictedPath | quote }}
+  system.spatial.security.subadmin.connections.enable: {{ .Values.property.subadminConnectionsEnable | quote }}
+  system.com.precisely.miraster.cache.size: {{ .Values.property.miRasterCacheSize | quote }}
+  system.java.rmi.server.useCodebaseOnly: "true"
+  system.com.mapinfo.midev.repository.factory: {{ .Values.property.repositoryFactory | quote }}
+  {{- if .Values.property.repositoryFactoryNamedResource }}
+  system.com.mapinfo.midev.repository.factory.namedresource: {{ .Values.property.repositoryFactoryNamedResource | quote }}
+  {{- end }}
+  {{- if eq .Values.property.repositoryFactory "com.mapinfo.midev.repository.fs.FileSystemRepositoryFactory" }}
+  system.com.mapinfo.midev.repository.fs.root: {{ required "Value for repositoryFSRoot missing." .Values.property.repositoryFSRoot | quote }}
+  system.com.mapinfo.midev.repository.fs.data: {{ .Values.property.repositoryFSData | quote }}
+  {{- end }}
+  system.com.mapinfo.midev.acl.manager: {{ .Values.property.aclManager | quote }}
+  system.javax.xml.stream.XMLInputFactory: "com.ctc.wstx.stax.WstxInputFactory"
+  system.spatial.upload.staging-dir: {{ .Values.property.uploadStagingDir | quote }}
+  system.spatial.async.transport: {{ .Values.property.asyncTransport | quote }}
+  system.spatial.async.visibility-timeout: {{ .Values.property.asyncVisibilityTimeout | quote }}
+  system.spatial.async.operation-ttl: {{ .Values.property.asyncOperationTTL | quote }}
+  system.spatial.async.retry-max-attempts: {{ .Values.property.asyncMaxRetry | quote }}
+  system.spatial.async.worker-concurrency: {{ .Values.property.asyncConcurrencyWorker | quote }}
+  ################################################################################
+  # JAVA_TOOL_OPTIONS
+  ################################################################################
+  jvm.opts.feature: {{ .Values.jvm.opts.feature | quote }}
+  jvm.opts.mapping: {{ .Values.jvm.opts.mapping | quote }}
+  jvm.opts.tiling: {{ .Values.jvm.opts.tiling | quote }}
+  jvm.opts.data: {{ .Values.jvm.opts.data | quote }}
+  jvm.opts.resource: {{ .Values.jvm.opts.resource | quote }}
+  jvm.opts.composite: {{ .Values.jvm.opts.composite | quote }}
+  jvm.opts.platform: {{ .Values.jvm.opts.platform | quote }}
+  jvm.opts.mcp: {{ .Values.jvm.opts.mcp | quote }}
+  ################################################################################
+  # Others
+  ################################################################################
+  {{- if .Values.global }}
+  swagger.server.url: {{ printf "https://%s" .Values.global.ingress.host | quote }}
+  {{- else }}
+  swagger.server.url: {{ printf "https://%s" .Values.ingress.host | quote }}
+  {{- end }}
+  server.tomcat.relaxed-query-chars: "[,],{,}"
+  {{- if or (eq .Values.property.repositoryFactory "com.precisely.swp.repository.mongodb.MongoRepositoryFactory") (eq .Values.property.repositoryFactoryNamedResource "com.precisely.swp.repository.mongodb.MongoRepositoryFactory") }}
+  spring.data.mongodb.auto-index-creation: "true"
+  spring.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
+  spring.mongodb.database: {{ required "Value for repository.mongodb.database missing." .Values.repository.mongodb.database | quote }}
+  {{- end }}
+  {{- if or (eq .Values.property.repositoryFactory "com.precisely.swp.repository.jpa.JpaRepositoryFactory") (eq .Values.property.repositoryFactoryNamedResource "com.precisely.swp.repository.jpa.JpaRepositoryFactory") }}
+  spring.datasource.url: {{ required "Value for repository.jdbc.url missing." .Values.repository.jdbc.url | quote }}
+  spring.jpa.hibernate.ddl-auto: "update"
+  datasources.default.url: {{ .Values.repository.jdbc.url | quote }}
+  {{- if .Values.repository.jdbc.username }}
+  spring.datasource.username: {{ .Values.repository.jdbc.username | quote }}
+  spring.datasource.password: {{ .Values.repository.jdbc.password | quote }}
+  datasources.default.username: {{ .Values.repository.jdbc.username | quote }}
+  datasources.default.password: {{ .Values.repository.jdbc.password | quote }}
+  {{- end }}
+  {{- if .Values.repository.jdbc.dialect }}
+  spring.jpa.database-platform: {{ .Values.repository.jdbc.dialect | quote }}
+  {{- end }}
+  {{- end }}
+  help.locale: {{ .Values.app.spatialManagerLocale | quote }}
+  ################################################################################
+  samples.force.update: {{.Values.samplesForceUpdate | default true | quote}}
+  ################################################################################
+  # Debug
+  ################################################################################
+  logging.level.org.springframework: "INFO"
+  logging.level.com.mapinfo: "INFO"
+  logging.level.tomcat: "INFO"

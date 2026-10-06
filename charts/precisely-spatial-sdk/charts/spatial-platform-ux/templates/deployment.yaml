@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spatial-platform-ux
+  labels:
+    app: spatial-platform-ux
+spec:
+  replicas: {{ .Values.initReplicaCount }}
+  selector:
+    matchLabels:
+      app: spatial-platform-ux
+  template:
+    metadata:
+      labels:
+        app: spatial-platform-ux
+      annotations:
+        spatial.build: {{ .Values.build | default .Chart.Version | quote }}
+    spec:
+      containers:
+        - name: spatial-platform-ux
+          {{- $tag := include "spatial-platform-ux.imageTag" . }}
+          {{- if .Values.global }}
+          image: "{{ include "spatial-platform-ux.registryUrl" . }}/{{ include "platform.pipelineImageName" (dict "root" . "imageName" "spatial-platform-ux-frontend") }}"
+          {{- else if eq $tag "latest" }}
+          image: "{{ include "spatial-platform-ux.registryUrl" . }}/spatial-platform-ux-frontend:{{ $tag }}"
+          {{- else }}
+          image: "{{ include "spatial-platform-ux.registryUrl" . }}/spatial-platform-ux-frontend/dev:{{ $tag }}"
+          {{- end }}
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: spatial-config
+                optional: true
+            - secretRef:
+                name: spatial-config
+                optional: true
+          env:
+            - name: PLATFORM_FEATURE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: spatial-config
+                  key: feature.url
+                  optional: true
+            - name: PLATFORM_MAPPING_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: spatial-config
+                  key: mapping.url
+                  optional: true
+            - name: PLATFORM_TILING_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: spatial-config
+                  key: tiling.url
+                  optional: true
+            - name: PLATFORM_RESOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: spatial-config
+                  key: resource.url
+                  optional: true
+            - name: PLATFORM_DATA_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: spatial-config
+                  key: data.url
+                  optional: true
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            - name: BING_MAPS_PUBLIC_KEY
+              value: {{ .Values.bingMapsPublicKey | quote }}
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ .Values.requestCPU }}
+              memory: {{ .Values.requestMemory }}
+            limits:
+              {{- if .Values.limitCPU }}
+              cpu: {{ .Values.limitCPU }}
+              {{- end }}
+              memory: {{ .Values.limitMemory }}
+          startupProbe:
+            httpGet:
+              path: {{ .Values.ingress.path | default "/" }}
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 20
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.ingress.path | default "/" }}
+              port: 3000
+            periodSeconds: 10
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.ingress.path | default "/" }}
+              port: 3000
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+      imagePullSecrets:
+        {{- if .Values.global }}
+        - name: {{ .Values.global.registry.secrets }}
+        {{- else }}
+        - name: {{ .Values.registry.secrets }}
+        {{- end }}

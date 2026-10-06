@@ -1,0 +1,2 @@
+Thank you for installing {{ .Chart.Name }}.
+Spatial SDK stack is installed in namespace {{ .Release.Namespace }}.

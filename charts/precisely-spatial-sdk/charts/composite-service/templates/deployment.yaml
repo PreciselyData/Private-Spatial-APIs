@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: composite-service
+  labels:
+    app: composite-service
+spec:
+  replicas: {{ .Values.initReplicaCount }}
+  selector:
+    matchLabels:
+      app: composite-service
+  template:
+    metadata:
+      labels:
+        app: composite-service
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/actuator/prometheus'
+        prometheus.io/port: '8080'
+        spatial.build: {{ .Values.build | default .Chart.Version | quote }}
+    spec:
+      containers:
+        - name: composite-service
+          {{- if .Values.global }}
+          image: "{{ .Values.global.registry.url }}/{{ include "platform.pipelineImageName" (dict "root" . "imageName" "composite-service") }}"
+          {{- else }}
+          image: "{{ .Values.registry.url }}/composite-service:{{ .Values.registry.tag }}"
+          {{- end }}
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: spatial-config
+                optional: true
+            - secretRef:
+                name: spatial-config
+                optional: true
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: $(jvm.opts.composite)
+            - name: AUTH_ENABLED
+              value: $(oauth2.enabled)
+            - name: POLICY_AUTH_ENABLED
+              value: "FALSE"
+            - name: AUTH_JWKS
+              value: $(oauth2.issuer-uri)/protocol/openid-connect/certs
+            - name: REDIS_ENABLED
+              value: "FALSE"
+            - name: MONGO_CONNECTION_STRING
+              value: $(spring.mongodb.uri)
+            - name: MONGO_AUTH_MECHANISM
+              value: "MONGODB"
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /opt/data
+          resources:
+            requests:
+              cpu: {{ .Values.requestCPU }}
+              memory: {{ .Values.requestMemory }}
+            limits:
+              {{- if .Values.limitCPU }}
+              cpu: {{ .Values.limitCPU }}
+              {{- end }}
+              memory: {{ .Values.limitMemory }}
+          startupProbe:
+            httpGet:
+              path: /health/liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 30
+          livenessProbe:
+            # similar to the startupProbe except the failureThreshold is smaller
+            httpGet:
+              path: /health/liveness
+              port: 8080
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            # similar to the livenessProbe
+            httpGet:
+              path: /health/readiness
+              port: 8080
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: 
+                  - sh
+                  - -c
+                  - "sleep 15"
+      imagePullSecrets:
+        {{- if .Values.global }}
+        - name: {{ .Values.global.registry.secrets }}
+        {{- else }}
+        - name: {{ .Values.registry.secrets }}
+        {{- end }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-volume-claim
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 60

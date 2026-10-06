@@ -453,7 +453,7 @@ To install/upgrade the Precisely Spatial SDK helm chart, use the following comma
 ```shell
 cd ~/Private-Spatial-APIs/
 
-helm install spatial-analytics ~/Private-Spatial-APIs/charts/private-spatial-apis \
+helm install spatial-analytics ~/Private-Spatial-APIs/charts/precisely-spatial-sdk \
  -f ~/Private-Spatial-APIs/deploy/gitlab-deployment-values.yaml \
  --set "global.ingress.host=[ingress-host-name]" \
  --set "repository.mongodb.url=[mongodb-url]" \ 

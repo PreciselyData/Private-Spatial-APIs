@@ -1,0 +1,14 @@
+apiVersion: v2
+appVersion: 2.0.0
+description: A Helm chart for deploying the Spatial Platform UX Frontend (Next.js)
+keywords:
+- spatial
+- frontend
+- nextjs
+- precisely
+maintainers:
+- email: spatial-team@precisely.com
+  name: Spatial Analytics Team
+name: spatial-platform-ux
+type: application
+version: 2.0.0-SNAPSHOT

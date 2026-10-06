@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: private-sdk-mcp
+  labels:
+    app: private-sdk-mcp
+spec:
+  replicas: {{ .Values.initReplicaCount }}
+  selector:
+    matchLabels:
+      app: private-sdk-mcp
+  template:
+    metadata:
+      labels:
+        app: private-sdk-mcp
+      annotations:
+        spatial.build: {{ .Values.build | default .Chart.Version | quote }}
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: private-sdk-mcp
+          {{- if .Values.global }}
+          image: "{{ include "private-sdk-mcp.globalRegistryUrl" . }}/{{ include "platform.pipelineImageName" (dict "root" . "imageName" "private-sdk-mcp") }}"
+          {{- else }}
+          image: "{{ .Values.registry.url }}/private-sdk-mcp:{{ .Values.registry.tag }}"
+          {{- end }}
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: spatial-config
+                optional: true
+            - secretRef:
+                name: spatial-config
+                optional: true
+          env:
+            - name: SPATIAL_API_BASE_URL
+              {{- if .Values.global }}
+              value: {{ printf "https://%s" .Values.global.ingress.host | quote }}
+              {{- else }}
+              value: {{ printf "https://%s" .Values.ingress.host | quote }}
+              {{- end }}
+            - name: SPATIAL_API_TIMEOUT
+              value: {{ .Values.spatialApi.timeout | quote }}
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "8000"
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ .Values.requestCPU }}
+              memory: {{ .Values.requestMemory }}
+            limits:
+              {{- if .Values.limitCPU }}
+              cpu: {{ .Values.limitCPU }}
+              {{- end }}
+              memory: {{ .Values.limitMemory }}
+          startupProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+      imagePullSecrets:
+        {{- if .Values.global }}
+        - name: {{ .Values.global.registry.secrets }}
+        {{- else }}
+        - name: {{ .Values.registry.secrets }}
+        {{- end }}
+      terminationGracePeriodSeconds: 20

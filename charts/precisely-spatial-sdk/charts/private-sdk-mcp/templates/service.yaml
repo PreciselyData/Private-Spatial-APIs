@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: private-sdk-mcp
+  labels:
+    app: private-sdk-mcp
+spec:
+  selector:
+    app: private-sdk-mcp
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+      protocol: TCP

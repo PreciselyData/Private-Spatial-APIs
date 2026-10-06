@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: 2.0.0
+description: A Helm chart for copying Sample data to a persistent volume and uploading named resources to spatial repository.
+name: upload-samples
+type: application
+version: 2.0.0-SNAPSHOT
