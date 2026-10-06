@@ -502,7 +502,7 @@ kubectl get hpa mapping-service
 If you are using the OGC services please refer to the on-premise docs ([WFS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wfs_settings.html), [WMS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wms_settings.html), [WMTS](https://docs.precisely.com/docs/sftw/spectrum/24.1/en/webhelp/Spatial/Spatial/source/Resources/resources/repoman/wmts_settings.html)) to configure the Online resource / Service URL with the public access url (Ingress EXTERNAL-IP).
 
 ## Step 7: Enabling security - AuthN/AuthZ (Optional)
-A `Keycloak` (18.0.0+) is used for authentication and authorization.
+A `Keycloak` (>=24.0.3) is used for authentication and authorization.
 - Authenticate a user
 - Issue JWT token for an authenticated user
 - Verify the JWT token used in a service request
@@ -515,7 +515,7 @@ General service flow,
 <img src="../../../images/security-flow.png"  width="686" height="783">
 
 
-Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Precisely Spatial SDK is compatible with Keycloak version 18.0.0 ~ 24.0.1. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
+Keycloak should have KC_HTTP_RELATIVE_PATH and KC_HOSTNAME_PATH set to ‘/auth’. Precisely Spatial SDK is compatible with Keycloak version >=24.0.3 ~ 24.0.4. For a production deployment, a multi-node Keycloak cluster is recommended. Here is a link to [Keycloak Install](https://www.keycloak.org/operator/installation), [Keycloak User Guides](https://www.keycloak.org/guides)
 
 If you have a Keycloak instance that can be accessed from inside the Kubernetes cluster, then collect the issuer url for further service config.
 

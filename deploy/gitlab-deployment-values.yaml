@@ -9,12 +9,71 @@ global:
     tag: latest
     secrets: regcred
   ingress:
-    host: 
+    host: ""
+  cors:
+    enabled: false
+    allowCredentials: false
+    allowHeaders: "*"
+    allowMethods: "*"
+    allowOrigin: "*"
+    maxAge: "3600"
 
+# Repository
 repository:
   mongodb:
-    url: "mongodb://mongo-svc.mongo.svc.cluster.local/spatial-repository?authSource=admin&ssl=false"
+    url: ""
+    
+# Deployment optionals
+deployment: 
+  feature:
+    enabled: true
+  mapping:
+    enabled: true
+  tiling:
+    enabled: true
+  resource:
+    enabled: true
+  data:
+    enabled: true
+  composite:
+    enabled: true
+  platform:
+    enabled: true
+  mcp:
+    enabled: true
+  upload-samples:
+    enabled: false
+    
+# Security   
+security:
+  enabled: true
+  oauth2:
+    issuerUri: ""
+    clientId: "spatial"
+    clientSecret: ""
+  upload:
+    clientId: "spatial-data-load"
+    clientSecret: ""
+    
+# JVM options
+jvm:
+  opts:
+    mapping: ""
+    feature: ""
+    tiling: ""
+    resource: ""
+    data: ""
+    composite: ""
+    platform: ""
+    mcp: ""
 
+# Properties
+property:    
+  asyncTransport: "mongo"
+  asyncVisibilityTimeout: "5h"
+  asyncOperationTTL: "24h"
+  asyncMaxRetry: "3"
+  asyncConcurrencyWorker: "2"
 # Individual service overrides
 feature-service:
   requestCPU: "2"
