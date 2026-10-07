@@ -339,13 +339,15 @@ In the administration console, click on realm pulldown menu and select `Create r
 
 Click on `Browse...` button, select the realm file `realm-spatial.json`, give a name to the new realm (use all lowercase name, e.g. `development`) and click the `Create` (do not double clicks).
 
-After imported the realm from the template, use Keycloak Admin console to change admin credentials, default user credentials and spatial client secret.
+After imported the realm from the template, use Keycloak Admin console to change admin credentials, default user credentials and client secrets.
 
 Keycloak Admin console is used to manage users in realm and roles in spatial client. Precisely Spatial SDK do not use realm roles.
 
 also see Keycloak document about the [Management Console](https://www.keycloak.org/docs/latest/server_admin/)
 
-Ensure you are in the current created realm, then go to **Clients**, search for **spatial** client, open **Credentials**, for security reason **regenerate** the Client Secret and **copy the Client Secret.** You need to specify this value for oauth2.client-secret  as explained in next section.
+In your newly created realm, update and copy both client secrets:
+1. Go to **Clients** > **spatial** > **Credentials**, then **Regenerate** and copy the Client Secret. Use this value for `oauth2.client-secret` in the next section.
+2. Go to **Clients** > **spatial-data-load** > **Credentials**, then **Regenerate** and copy the Client Secret. Use this value for `upload.client-secret` in the next section.
 
 ### Update service config to use your realm in the keycloak
 ```
@@ -358,6 +360,7 @@ oauth2.enabled: "true"
 oauth2.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 oauth2.client-id: "spatial"
 oauth2.client-secret: "<get client secret from Keycloak>"
+upload.client-secret: "<get client secret from Keycloak>"
 spring.security.oauth2.resourceserver.jwt.issuer-uri: "http://<ingress external ip>/auth/realms/<your realm name>"
 ...
 ```
@@ -372,7 +375,7 @@ Wait for all pods are ready
 kubectl get pod -n spatial-analytics 
 ```
 
-Login to Precisely Spatial when all services are ready. Initial password for `admin` is `admin123`
+Login to Precisely Spatial when all services are ready with the password configured for `admin` in Keycloak.
 
 `https://<your external ip>/spatial`
 

@@ -7,7 +7,6 @@
       "clientId": "spatial-data-load",
       "enabled": true,
       "publicClient": false,
-      "secret": "hWkJCDcl5ok7YPafZuTe1OMYn64QpEu7",
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
       "authorizationServicesEnabled": false,
@@ -19,7 +18,6 @@
       "clientId": "spatial",
       "enabled": true,
       "publicClient": false,
-      "secret": "fd17bc1d-cefc-41a3-8c50-bb545736caa6",
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
       "authorizationServicesEnabled": true,
@@ -80,7 +78,6 @@
       "lastName": "User",
       "email": "admin@test.com",
       "requiredActions": [],
-      "credentials": [{ "type": "password", "value": "admin123", "temporary": false }],
       "clientRoles": { "spatial": ["admin"] }
     },
     {
@@ -91,7 +88,6 @@
       "lastName": "User",
       "email": "creatorUser@test.com",
       "requiredActions": [],
-      "credentials": [{ "type": "password", "value": "creator123", "temporary": false }],
       "clientRoles": { "spatial": ["creator"] }
     },
     {
@@ -102,7 +98,6 @@
       "lastName": "User",
       "email": "viewerUser@test.com",
       "requiredActions": [],
-      "credentials": [{ "type": "password", "value": "viewer123", "temporary": false }],
       "clientRoles": { "spatial": ["viewer"] }
     },
     {
@@ -113,7 +108,6 @@
       "lastName": "User",
       "email": "guest@test.com",
       "requiredActions": [],
-      "credentials": [{ "type": "password", "value": "guest123", "temporary": false }],
       "clientRoles": { "spatial": ["guest"] }
     },
     {
