@@ -137,7 +137,7 @@ There are nine docker images which will be pushed to ECR with the tag of helm ch
 2. mapping-service
 3. tiling-service
 4. resource-service
-5. spatial-platform-ux
+5. spatial-platform-ux-frontend
 6. samples-data
 7. composite-service
 8. data-service
