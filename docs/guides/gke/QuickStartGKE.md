@@ -122,12 +122,12 @@ Run the shell scripts to load images to artifact registry,
 chmod a+x ~/Private-Spatial-APIs/scripts/gke/push-images.sh
 ```
 ```
-~/Private-Spatial-APIs/scripts/gke/push-images.sh <your registry url>
+~/Private-Spatial-APIs/scripts/gke/push-images.sh <your registry url> <spatial_analytics_docker_images_dir>
 ```
 
 you can also load images one by one if there's no enough disk space available (restart the cloudshell may release more disk space).
 ```
-~/Private-Spatial-APIs/scripts/gke/push-images.sh <your registry url> <tar file name without ext>
+~/Private-Spatial-APIs/scripts/gke/push-images.sh <your registry url> <tar file name without ext> <spatial_analytics_docker_images_dir>
 ```
 
 List images in the artifact registry

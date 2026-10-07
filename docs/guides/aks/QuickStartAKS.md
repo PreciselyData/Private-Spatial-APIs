@@ -187,13 +187,12 @@ az acr login --name <azure_container_registry>
 
 Run the shell script to push images to Azure Container Registry:
 ```shell
-cd <spatial_analytics_docker_images_dir>
 chmod a+x ~/Private-Spatial-APIs/scripts/aks/push-images.sh
-~/Private-Spatial-APIs/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io
+~/Private-Spatial-APIs/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io <spatial_analytics_docker_images_dir>
 ```
 You can also load images one by one if there's no enough disk space available
 ```shell
-~/Private-Spatial-APIs/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io  <tar file name without ext>
+~/Private-Spatial-APIs/scripts/aks/push-images.sh <azure_container_registry>.azurecr.io <tar file name without ext> <spatial_analytics_docker_images_dir>
 ```
 List images in the registry:
 \

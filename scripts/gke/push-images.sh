@@ -3,69 +3,48 @@ set -e
 
 if [ -z "$1" ]; then
   echo "Registry URL does not specify."
+  echo "Usage:"
+  echo "  $0 <registry-url> [image-name] [images-dir]"
+  echo "  $0 <registry-url> [images-dir]"
   exit 1
 fi
 
-if ! [ -z "$2" ]; then
-  echo ">>>load $2 image"
-  docker load -i $2.tar
-  docker tag $2:latest $1/$2:latest
-  docker push $1/$2:latest
-  echo -e "<<<image loaded\n"
-  exit 0
+registry_url="$1"
+arg2="${2:-}"
+arg3="${3:-}"
+image_name=""
+images_dir="$PWD"
+
+if [ -n "$arg2" ] && [ -d "$arg2" ]; then
+  images_dir="$arg2"
+else
+  image_name="$arg2"
+  if [ -n "$arg3" ]; then
+    images_dir="$arg3"
+  fi
 fi
 
-echo ">>>load mapping-service image"
-docker load -i mapping-service.tar
-docker tag mapping-service:latest $1/mapping-service:latest
-docker push $1/mapping-service:latest
-echo -e "<<<image loaded\n"
+if [ ! -d "$images_dir" ]; then
+  echo "Images directory not found: $images_dir"
+  exit 1
+fi
 
-echo ">>>load feature-service image"
-docker load -i feature-service.tar
-docker tag feature-service:latest $1/feature-service:latest
-docker push $1/feature-service:latest
-echo -e "<<<image loaded\n"
+images="mapping-service feature-service tiling-service resource-service spatial-platform-ux composite-service data-service private-sdk-mcp samples-data"
+if [ -n "$image_name" ]; then
+  images="$image_name"
+fi
 
-echo ">>>load tiling-service image"
-docker load -i tiling-service.tar
-docker tag tiling-service:latest $1/tiling-service:latest
-docker push $1/tiling-service:latest
-echo -e "<<<image loaded\n"
+for image in $images; do
+  tar_path="$images_dir/$image.tar"
+  if [ ! -f "$tar_path" ]; then
+    echo "Image tar file not found: $tar_path"
+    exit 1
+  fi
 
-echo ">>>load resource-service image"
-docker load -i resource-service.tar
-docker tag resource-service:latest $1/resource-service:latest
-docker push $1/resource-service:latest
-echo -e "<<<image loaded\n"
-
-echo ">>>load spatial-platform-ux image"
-docker load -i spatial-platform-ux.tar
-docker tag spatial-platform-ux:latest $1/spatial-platform-ux:latest
-docker push $1/spatial-platform-ux:latest
-echo -e "<<<image loaded\n"
-
-echo ">>>load composite-service image"
-docker load -i composite-service.tar
-docker tag composite-service:latest $1/composite-service:latest
-docker push $1/composite-service:latest
-echo -e "<<<image loaded\n"
-
-echo ">>>load data-service image"
-docker load -i data-service.tar
-docker tag data-service:latest $1/data-service:latest
-docker push $1/data-service:latest
-echo -e "<<<image loaded\n"
-
-echo ">>>load private-sdk-mcp image"
-docker load -i private-sdk-mcp.tar
-docker tag private-sdk-mcp:latest $1/private-sdk-mcp:latest
-docker push $1/private-sdk-mcp:latest
-echo -e "<<<image loaded\n"
-
-echo ">>>load samples-data image"
-docker load -i samples-data.tar
-docker tag samples-data:latest $1/samples-data:latest
-docker push $1/samples-data:latest
-echo -e "<<<image loaded\n"
+  echo ">>>load $image image"
+  docker load -i "$tar_path"
+  docker tag "$image:latest" "$registry_url/$image:latest"
+  docker push "$registry_url/$image:latest"
+  echo -e "<<<image loaded\n"
+done
 echo "Images pushed to artifact registry successfully."

@@ -105,14 +105,13 @@ aws ecr get-login-password --region <aws-region> | docker login --username AWS -
 
 Run the shell script to push images to ECR:
 ```shell
-cd <spatial_analytics_docker_images_dir>
 chmod a+x ~/Private-Spatial-APIs/scripts/eks/push-images.sh
-~/Private-Spatial-APIs/scripts/eks/push-images.sh <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
+~/Private-Spatial-APIs/scripts/eks/push-images.sh <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com <spatial_analytics_docker_images_dir>
 ```
 
 You can also load images one by one if there is not enough disk space available:
 ```shell
-~/Private-Spatial-APIs/scripts/eks/push-images.sh <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com <tar file name without ext>
+~/Private-Spatial-APIs/scripts/eks/push-images.sh <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com <tar file name without ext> <spatial_analytics_docker_images_dir>
 ```
 
 List images in ECR:
