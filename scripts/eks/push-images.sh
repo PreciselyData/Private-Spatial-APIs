@@ -141,8 +141,20 @@ for pair in $selected_images; do
   fi
 
   echo ">>>load $tar_name image"
-  docker load -i "$tar_path"
-  docker tag "$image_repo:latest" "$registry_url/$image_repo:$image_tag"
+  load_output="$(docker load -i "$tar_path")"
+  echo "$load_output"
+
+  loaded_ref="$(echo "$load_output" | sed -n 's/^Loaded image: //p' | tail -n 1)"
+  if [ -z "$loaded_ref" ]; then
+    loaded_ref="$(echo "$load_output" | sed -n 's/^Loaded image ID: //p' | tail -n 1)"
+  fi
+
+  if [ -z "$loaded_ref" ]; then
+    echo "Unable to resolve loaded image reference from tar: $tar_path"
+    exit 1
+  fi
+
+  docker tag "$loaded_ref" "$registry_url/$image_repo:$image_tag"
   docker push "$registry_url/$image_repo:$image_tag"
   echo -e "<<<image loaded\n"
 done
