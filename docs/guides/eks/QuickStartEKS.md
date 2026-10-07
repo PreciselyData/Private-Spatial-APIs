@@ -86,13 +86,39 @@ EKS cluster must have the above addons and ingress for the ease of installation 
 
 ## Step 3: Download Precisely Spatial SDK Docker Images
 
-Download the Precisely Spatial SDK Docker Images from the given location . 
+Download the Precisely Spatial SDK Docker Images from the given location.
 <!-- For information about Precisely's Data Portfolio,
 see the [Precisely Data Guide](https://dataguide.precisely.com/) where you can also sign up for a free account and
 access software, reference data and docker files available in [Precisely Data Experience](https://data.precisely.com/). -->
 
-The Precisely Spatial SDK docker images need to be present in the ECR. If you haven't pushed the required docker
-images to ECR, then push all the images to the ECR.
+After download, the docker images need to be pushed to Amazon ECR. You can use the script [push-images](../../../scripts/eks/push-images.sh) to push the docker images to ECR.
+
+> Note: Install **[Docker](https://docs.docker.com/engine/install/)** and **[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)** on your local system, and ensure AWS CLI is configured.
+
+Open a shell on your local system and log in to ECR:
+```shell
+aws sts get-caller-identity
+aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
+```
+
+> Note: Unzip the downloaded docker images to a directory `<spatial_analytics_docker_images_dir>` so that it contains tar files.
+
+Run the shell script to push images to ECR:
+```shell
+cd <spatial_analytics_docker_images_dir>
+chmod a+x ~/Private-Spatial-APIs/scripts/eks/push-images.sh
+~/Private-Spatial-APIs/scripts/eks/push-images.sh <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com
+```
+
+You can also load images one by one if there is not enough disk space available:
+```shell
+~/Private-Spatial-APIs/scripts/eks/push-images.sh <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com <tar file name without ext>
+```
+
+List images in ECR:
+```shell
+aws ecr describe-repositories --region <aws-region> --query 'repositories[].repositoryName'
+```
 <!-- then you can use a sample script [upload_ecr.py](../../../scripts/images-to-ecr-uploader) to download the docker images
 from [Precisely Data Experience](https://data.precisely.com/)
 and push it to your Elastic Container Registry. -->
