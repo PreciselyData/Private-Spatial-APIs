@@ -62,7 +62,7 @@ services:
     ports:
       - "8075:5005"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - SPRING_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - samples.force.update=false
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
@@ -87,7 +87,7 @@ services:
       - "8051:8081"
       - "8055:5005"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - SPRING_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo      
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
@@ -117,7 +117,7 @@ services:
       - "8041:8081"
       - "8045:5005"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - SPRING_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
@@ -146,7 +146,7 @@ services:
       - "8031:8081"
       - "8035:5005"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - SPRING_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial
@@ -175,7 +175,7 @@ services:
       - "8061:8081"
       - "8065:5005"
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
+      - SPRING_MONGODB_URI=mongodb://mongo1:27017/spatial-repository?replicaSet=spatial-repo
       - OAUTH2.ENABLED=FALSE
       - OAUTH2.ISSUERURI=https://keycloak.example.com
       - OAUTH2.CLIENTID=spatial

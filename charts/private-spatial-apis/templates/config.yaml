@@ -81,7 +81,7 @@ data:
   server.tomcat.relaxed-query-chars: "[,],{,}"
   {{- if or (eq .Values.property.repositoryFactory "com.precisely.swp.repository.mongodb.MongoRepositoryFactory") (eq .Values.property.repositoryFactoryNamedResource "com.precisely.swp.repository.mongodb.MongoRepositoryFactory") }}
   spring.data.mongodb.auto-index-creation: "true"
-  spring.data.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
+  spring.mongodb.uri: {{ required "Value for repository.mongodb.url missing." .Values.repository.mongodb.url | quote }}
   {{- end }}
   {{- if or (eq .Values.property.repositoryFactory "com.precisely.swp.repository.jpa.JpaRepositoryFactory") (eq .Values.property.repositoryFactoryNamedResource "com.precisely.swp.repository.jpa.JpaRepositoryFactory") }}
   spring.datasource.url: {{ required "Value for repository.jdbc.url missing." .Values.repository.jdbc.url | quote }}
